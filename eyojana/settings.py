@@ -40,11 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my_app',
+    'corsheaders',
     
     
 ]
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3001',  # React app URL
+]
+CORS_ALLOW_ALL_ORIGINS = True
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -87,13 +92,10 @@ DATABASES = {
         'NAME': 'Cluster0', 
         'ENFORCE_SCHEMA': False, 
         'CLIENT': {
-            'host': 'mongodb://localhost:27017', 
-            'port': 27017,       
-            'username': 'shravanipatil1427',
-            'password': 'Shweta2509',
-            'host': 'mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-            'authSource': 'admin',
-        }
+    'host': 'mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    'authSource': 'admin',
+}
+
     }
 }
 
