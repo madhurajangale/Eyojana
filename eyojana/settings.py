@@ -80,6 +80,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eyojana.wsgi.application'
 AUTHENTICATION_BACKENDS = [
     'my_app.backends.CustomAuthBackend',
+    'my_app.backends.CustomEmailBackend',
+    'my_app.backends.CustomAdminEmailBackend'   
 ]
 
 MEDIA_URL = '/media/'

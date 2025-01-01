@@ -14,11 +14,18 @@ class SchemeCreateView(APIView):
         serializer = SchemeSerializer(data=request.data)
         
         if serializer.is_valid():
-            # If valid, save the data (it will also handle the documents creation)
+            # Save the scheme and handle related operations
             scheme = serializer.save()
-            return Response({'message': 'Scheme created successfully', 'scheme_id': scheme.id}, status=status.HTTP_201_CREATED)
+            return Response({
+                'message': 'Scheme created successfully',
+                'details': serializer.data
+            }, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Return detailed errors if validation fails
+            return Response({
+                'message': 'Failed to create scheme',
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 class SignupView(APIView):
     def post(self, request):
@@ -40,36 +47,27 @@ class AdminSignupView(APIView):
             admin=serializer.save()
             return Response({'message': 'Admin created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-# Login View
+
 class LoginView(APIView):
     def get(self, request):
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
 
-        # Authenticate the user using the custom backend
-        user = authenticate(request, username=username, password=password)
+        # Authenticate the user
+        user = authenticate(request, username=email, password=password)
 
         if user is not None:
-            # Successful authentication
             return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class AdminLoginView(APIView):
     def get(self, request):
-        adminname = request.data.get('adminname')
+        email = request.data.get('email')
         password = request.data.get('password')
 
-        # Validate input
-        if not adminname or not password:
-            return Response({'error': 'Admin name and password are required.'}, status=status.HTTP_400_BAD_REQUEST)
+        # Authenticate the admin using the custom backend
+        admin = authenticate(request, username=email, password=password)
 
-        try:
-            # Retrieve admin record
-            admin = Admin.objects.get(adminname=adminname)
-        except Admin.DoesNotExist:
-            return Response({'error': 'Invalid credentials.'}, status=status.HTTP_404_NOT_FOUND)
-
-        # Check password
-        if check_password(password, admin.password):
-            return Response({'message': 'Login successful.'}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+        if admin is not None:
+            return Response({'message': 'Admin login successful'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
