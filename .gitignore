@@ -1,6 +1,5 @@
-eyojana/__pycache__/
-my_app/__pycache__/
-my_app/migrations/__pycache__/
-/__pycache__/
-*.pyc
+# Ignore all __pycache__ directories in any subdirectory
+**/__pycache__/
+**/*.pyc
+**/*.pyo
 
