@@ -8,63 +8,63 @@ import eyojana from '../images/e-yojana.png';
 // import { useAuth } from "../components/AuthContext";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GTranslateRoundedIcon from '@mui/icons-material/GTranslateRounded';
-
+import { useLanguage } from '../context/LanguageContext';
 function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
     const [translatedTexts, setTranslatedTexts] = useState({});
     const [loading, setLoading] = useState(false);
-    const [selectedLang, setSelectedLang] = useState('hi');
+    const { selectedLang, setSelectedLang } = useLanguage();
   const navigate = useNavigate(); // Hook for navigation in React Router
 //   const { isLoggedIn } = useAuth();
 // const { setIsLoggedIn } = useAuth();
-const fetchTextFromTags = () => {
-  const tags = ['h1', 'p', 'span', 'div', 'option', 'select']; // Specify tags to search
-  let texts = [];
-  tags.forEach((tag) => {
-    const elements = document.querySelectorAll(tag);
-    elements.forEach((element) => {
-      const id = element.id || element.textContent.slice(0, 20); // Use ID or partial text for mapping
-      texts.push({ id, text: element.textContent });
-    });
-  });
-  return texts;
-};
+// const fetchTextFromTags = () => {
+//   const tags = ['h1', 'p', 'span', 'div', 'option', 'select']; // Specify tags to search
+//   let texts = [];
+//   tags.forEach((tag) => {
+//     const elements = document.querySelectorAll(tag);
+//     elements.forEach((element) => {
+//       const id = element.id || element.textContent.slice(0, 20); // Use ID or partial text for mapping
+//       texts.push({ id, text: element.textContent });
+//     });
+//   });
+//   return texts;
+// };
 
 
-const translateTexts = async (texts, language) => {
-  setLoading(true);
-  try {
-    const response = await axios.post('http://127.0.0.1:8000/api/translate/', {
-      sentences: texts.map((item) => item.text),
-      target_lang: language,
-    });
+// const translateTexts = async (texts, language) => {
+//   setLoading(true);
+//   try {
+//     const response = await axios.post('http://127.0.0.1:8000/api/translate/', {
+//       sentences: texts.map((item) => item.text),
+//       target_lang: language,
+//     });
 
-    const translations = response.data.translated_sentences;
+//     const translations = response.data.translated_sentences;
 
-    // Map translations back to elements
-    const mappedTranslations = {};
-    texts.forEach((item, index) => {
-      mappedTranslations[item.id] = translations[index];
-    });
+//     // Map translations back to elements
+//     const mappedTranslations = {};
+//     texts.forEach((item, index) => {
+//       mappedTranslations[item.id] = translations[index];
+//     });
 
-    setTranslatedTexts(mappedTranslations);
+//     setTranslatedTexts(mappedTranslations);
 
-    // Apply translations to <option> tags directly
-    document.querySelectorAll('option').forEach((option) => {
-      const originalText = option.textContent;
-      const translatedText = translations.find((t) =>
-        t.startsWith(originalText.slice(0, 20))
-      );
-      if (translatedText) {
-        option.textContent = translatedText;
-      }
-    });
-  } catch (error) {
-    console.error('Error translating texts:', error);
-  } finally {
-    setLoading(false);
-  }
-};
+//     // Apply translations to <option> tags directly
+//     document.querySelectorAll('option').forEach((option) => {
+//       const originalText = option.textContent;
+//       const translatedText = translations.find((t) =>
+//         t.startsWith(originalText.slice(0, 20))
+//       );
+//       if (translatedText) {
+//         option.textContent = translatedText;
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error translating texts:', error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 const handleLogout = () => {
 // eslint-disable-next-line no-restricted-globals
   if (confirm("Are you sure you want to logout?")) {
