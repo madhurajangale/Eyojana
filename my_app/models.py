@@ -50,8 +50,20 @@ class Admin(models.Model):
 
 class Scheme(models.Model):
     schemename = models.CharField(max_length=100)
-    status = models.CharField(max_length=20, default='pending')
-    category = models.CharField(max_length=255) 
+    category = models.CharField(max_length=255)
+    gender = models.CharField(max_length=20, null=True, blank=True)
+    age_range = models.CharField(max_length=50, default='0')
+    state = models.CharField(max_length=50, default='Maharashtra')
+    marital_status = models.CharField(max_length=20, null=True, blank=True)
+    income = models.CharField(max_length=50, default='0')
+    caste = models.JSONField(default=list) 
+    documents = models.JSONField(default=list)
+    ministry = models.CharField(max_length=100, null=True, blank=True)
+    employment_status = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
-        return self.schemename 
+        return self.schemename
+    
+    class Meta:
+        db_table = 'scheme'
+

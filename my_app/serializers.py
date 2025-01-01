@@ -1,24 +1,17 @@
 from rest_framework import serializers
 from .models import User, Admin, Scheme
 
-
-
-
 class SchemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scheme
-        fields = ['schemename', 'user_id', 'email', 'status', 'category', 'documents']
+        fields = [
+            'schemename', 'category', 'gender', 'age_range', 'state',
+            'marital_status', 'income', 'caste', 'ministry', 'employment_status', 'documents'
+        ]
 
     def create(self, validated_data):
-     
-      
         scheme = Scheme.objects.create(**validated_data)        
         return scheme
-
-    def validate_documents(self, value):
-        if not value:
-            raise serializers.ValidationError("At least one document is required.")
-        return value
 
 
 class UserSerializer(serializers.ModelSerializer):
