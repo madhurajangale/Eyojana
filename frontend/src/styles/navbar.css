@@ -10,7 +10,7 @@
   }
   
   .logo #emblem {
-    height: 65px;
+    height: 45px;
     width: auto;
   }
   
@@ -78,7 +78,9 @@
   .btn:hover {
     color: rgb(34, 167, 71);
   }
-  
+  .language{
+    margin-right: 50px;
+   }
   
   @media (max-width: 768px) {
     .navbar-content {
@@ -108,7 +110,8 @@
   
   .profile-icon i {
       font-size: 20px;             
-      color: #8BC34A;              
+      color: #8BC34A;    
+             
   }
   
     .nav-links li {
