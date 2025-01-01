@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AutoTranslate from './components/test';
 import Login from './pages/Login';
 import UserSignUp from './pages/sign-up';
+import Profile from './components/Profile';
 function App() {
   return (
     <div className="App">
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/Category" element={<Category />} />
                 <Route path="/signup" element={<UserSignUp />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/translate" element={<AutoTranslate/>}/>
             </Routes>
         </BrowserRouter>
