@@ -23,7 +23,7 @@
     align-items: center;
     padding: 30px;
     padding-top: 100px;
-    background: linear-gradient(135deg, #3D52A0, #6790e9);
+    background: linear-gradient(135deg,  #779307, #8BC34A);
     color: white;
     text-align: center;
   }
@@ -77,7 +77,7 @@
     width: 100%;
     margin-top: 20px;
     padding: 12px;
-    background: #3D52A0;
+    background: #8BC34A;
     color: white;
     font-size: 16px;
     border: none;
@@ -86,7 +86,7 @@
   }
   
   .signupButton:hover {
-    background: #6790e9;
+    background: #72a347;
   }
   
   .loginLink {
