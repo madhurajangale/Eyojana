@@ -1,28 +1,18 @@
 from rest_framework import serializers
-from .models import User, Admin, Scheme, SchemeDocument
+from .models import User, Admin, Scheme
 
 
 
-class SchemeDocumentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SchemeDocument
-        fields = ['document_name', 'document']
 
 class SchemeSerializer(serializers.ModelSerializer):
-    documents = SchemeDocumentSerializer(many=True)
-
     class Meta:
         model = Scheme
         fields = ['schemename', 'user_id', 'email', 'status', 'category', 'documents']
 
     def create(self, validated_data):
      
-        documents_data = validated_data.pop('documents', [])
-        scheme = Scheme.objects.create(**validated_data)
-
-        for document_data in documents_data:
-            SchemeDocument.objects.create(scheme=scheme, **document_data)
-        
+      
+        scheme = Scheme.objects.create(**validated_data)        
         return scheme
 
     def validate_documents(self, value):
@@ -34,7 +24,7 @@ class SchemeSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'phone_number', 'state', 'gender']
+        fields = ['username', 'email', 'password', 'phone_number', 'state', 'gender', 'income', 'age', 'city', 'marital_status', 'pincode', 'district', 'caste', 'employment_status']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):

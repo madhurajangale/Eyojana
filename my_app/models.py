@@ -11,8 +11,16 @@ class User(models.Model):
         max_length=10,
         validators=[RegexValidator(r'^[7-9][0-9]{9}$', message="Phone number must start with 7-9 and have 10 digits.")]
     )
+    income=models.IntegerField(default=0)
+    age=models.IntegerField(default=0)
+    pincode=models.IntegerField(default=0)
+    city=models.CharField(max_length=50,default='')
+    district=models.CharField(max_length=50,default='')
     state = models.CharField(max_length=50)
     gender = models.CharField(max_length=25)
+    caste=models.CharField(max_length=30, default='general')
+    employment_status=models.CharField(max_length=30, default='unemployed')
+    marital_status=models.CharField(max_length=30, default='unmarried')
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -40,17 +48,8 @@ class Admin(models.Model):
     class Meta:
         db_table = 'admin'
 
-class SchemeDocument(models.Model):
-    scheme = models.ForeignKey('Scheme', related_name='documents', on_delete=models.CASCADE)
-    document_name = models.CharField(max_length=255)  # Document name
-    document = models.FileField(upload_to='scheme_documents/', 
-                                 validators=[FileExtensionValidator(allowed_extensions=['pdf', 'png'])])  
-    def __str__(self):
-        return self.document_name 
 class Scheme(models.Model):
     schemename = models.CharField(max_length=100)
-    user_id = models.CharField(max_length=100) 
-    email = models.EmailField(max_length=100, unique=True) 
     status = models.CharField(max_length=20, default='pending')
     category = models.CharField(max_length=255) 
 
