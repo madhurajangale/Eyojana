@@ -1143,11 +1143,11 @@
         "Details": "The Banking, Financial Services, and Insurance (BFSI) scheme aims to provide comprehensive financial services to underserved and marginalized populations across the country. It includes initiatives to open bank accounts, promote digital banking, and increase financial literacy among the masses. By enabling easier access to credit and insurance, the scheme ensures that all citizens, especially in rural and remote areas, can benefit from formal financial services."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 1",
+        "Scheme Name": "Jeevanam Self-Employment Scheme To Dependents Of Crime Victims",
         "Category": "Business Entrepreneurship",
         "Gender": "Male",
         "Age Range": "30-42",
-        "State": "Maharashtra",
+        "State": "Kerala",
         "Marital Status": "Unmarried",
         "Income": "< 2,00,000",
         "Caste": [
@@ -1171,7 +1171,7 @@
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 2",
+        "Scheme Name": "Reimbursement of Stamp Duty and Registration Charges",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "30-60",
@@ -1197,11 +1197,11 @@
             "Medical Certificate",
             "Research Proposal"
         ],
-        "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Benefits": "50% reimbursement of stamp duty and Registration charges paid to the Registration department on the purchase of land meant for industrial use",
+        "Details": "The scheme aims to provide financial assistance and support to small and medium-sized enterprises (MSEs) in the agricultural sector. The Reimbursement of Stamp Duty and Registration Charges by the Micro Small and Medium Enterprises Department, Government of Tamil Nadu, is introduced with the objective of reducing the stamp duty and registration charges incurred by MSEs investing in backward blocks, i.e. the charges paid to the Registration department on the purchase of land meant for industrial use."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 3",
+        "Scheme Name": "Promotion of Energy Audit and Conservation of Energy (PEACE): Incentive for Implementing Energy Audit Recommendations",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "25-37",
@@ -1224,11 +1224,11 @@
             "Income Certificate",
             "Aadhar Card"
         ],
-        "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Benefits": "50% of the cost of eligible components, subject to a maximum limit of ₹ 10,00,000/ -.Investments made after the energy audit alone will be eligible for the subsidy.",
+        "Details":"The scheme comprises four main components: Awareness Programme; Training Programme; Detailed Energy Audit; and Implementation of Energy Audit Recommendations. The Incentive for lmplementing Energy Audit Recommendations component of this scheme is introduced to incentivise MSMEs to implement the recommendations of the Energy Audit Report and to optimize energy consumption leading to energy saving and money savings in electricity bills."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 4",
+        "Scheme Name": "Production Linked Incentive Scheme For Automobile And Auto Component Industry",
         "Category": "Business Entrepreneurship",
         "Gender": "Male",
         "Age Range": "30-37",
@@ -1238,7 +1238,7 @@
         "Caste": [
             "General"
         ],
-        "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry of Heavy Industries",
         "Employment Status": "Self-Employed",
         "Documents": [
             "PAN Card",
@@ -1253,14 +1253,14 @@
             "Research Proposal"
         ],
         "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Details": " The “Production Linked Incentive Scheme for Automobile and Auto Components Industry” proposes financial incentives to boost domestic manufacturing of Advanced Automotive Technology products and attract investments in the automotive manufacturing value chain."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 5",
+        "Scheme Name": "Asangathit Karmakaar Silai Machine Sahayata Yojana",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "21-41",
-        "State": "Uttar Pradesh",
+        "State": "Chattisgarh",
         "Marital Status": "Widowed",
         "Income": "< 2,00,000",
         "Caste": [
@@ -1283,11 +1283,11 @@
             "GST Certificate",
             "Land Ownership Certificate"
         ],
-        "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Benefits": "Under the scheme, sewing machines will be supplied every year to the registered unorganized women workers of the state.",
+        "Details": "The Asangathit Karmakaar Silai Machine Sahayata Yojana (Unorganized Workers Sewing Machine Assistance Scheme) is a government scheme in Chhattisgarh State that provides sewing machines. The objective of this scheme is to promote unorganized workers in their businesses and make them self-reliant. "
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 6",
+        "Scheme Name": "Biotechnology Ignition Grant Scheme",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "30-60",
@@ -1298,7 +1298,7 @@
             "EWS",
             "General"
         ],
-        "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry Of Science And Technology",
         "Employment Status": "Unemployed",
         "Documents": [
             "Ration Card",
@@ -1311,15 +1311,15 @@
             "GST Certificate",
             "Disability Certificate (if applicable)"
         ],
-        "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Benefits": " Under the BIG scheme, BIRAC provides a grant-in-aid of up to INR 50 lakhs (approx. USD 75,000) for a period of 18 months.",
+        "Details": "The “Biotechnology Ignition Grant Scheme (BIG)” is a flagship scheme of the Biotechnology Industry Research Assistance Council (BIRAC), (a not-for-profit Section 8, Schedule B, Public Sector Enterprise, set up by the Department of Biotechnology (DBT), Government of India), which recognizes and invests in innovative ideas in the biotech sector. The ideas should have clear potential to translate into commercial products/technologies. BIG supports individual entrepreneurs/ start-ups from ideation to Proof of Concept (PoC)."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 7",
+        "Scheme Name": "Aamar Dukan On Wheels",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "28-54",
-        "State": "Maharashtra",
+        "State": "Assam",
         "Marital Status": "Widowed",
         "Income": "< 2,00,000",
         "Caste": [
@@ -1342,14 +1342,14 @@
             "Aadhar Card"
         ],
         "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Details": "The Assam Government proposes to introduce a new module of “Aamar Dukan” namely “AAMAR DUKAN ON WHEELS” in the same line as the existing ‘Aamar Dukan’ on 22.02.2017."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 8",
+        "Scheme Name": "Assistance Scheme for Handicraft Artisans",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "28-37",
-        "State": "Karnataka",
+        "State": "Kerala",
         "Marital Status": "Married",
         "Income": "3,00,000 - 6,00,000",
         "Caste": [
@@ -1370,15 +1370,15 @@
             "Income Certificate",
             "Aadhar Card"
         ],
-        "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
+        "Benefits": "Artisans will gain access to low-interest loans, funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 9",
+        "Scheme Name": "E-Thela Sahaayata Yojana",
         "Category": "Business Entrepreneurship",
         "Gender": "Other",
         "Age Range": "18-39",
-        "State": "Tamil Nadu",
+        "State": "Chhattisgarh",
         "Marital Status": "Divorced",
         "Income": "3,00,000 - 6,00,000",
         "Caste": [
@@ -1402,10 +1402,10 @@
             "Police Clearance Certificate"
         ],
         "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Details": "Chhattisgarh State Government started a scheme E-Thela Sahaayata Yojana for unorganized worker on 19 June 2017."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 10",
+        "Scheme Name": "Pradhan Mantri Kaushal Vikas Yojana - Short Term Training",
         "Category": "Business Entrepreneurship",
         "Gender": "Male",
         "Age Range": "20-44",
@@ -1419,7 +1419,7 @@
             "EWS",
             "ST"
         ],
-        "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry Of Skill Development And Entrepreneurship",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Training Completion Certificate",
@@ -1434,14 +1434,14 @@
             "Research Proposal"
         ],
         "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Details": "STT component imparted at PMKVY Training Centres (TC) is expected to benefit candidates of Indian nationality who are either school/college dropouts or unemployed. Apart from providing training according to the National Skills Qualification Framework (NSQF), TCs also impart training in soft skills, entrepreneurship, financial and digital literacy. Upon successful completion of assessment, candidates are provided placement assistance by training providers."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 11",
+        "Scheme Name": "Rise Together",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "24-59",
-        "State": "Uttar Pradesh",
+        "State": "Jammu and Kashmir",
         "Marital Status": "Widowed",
         "Income": "5,00,000 - 10,00,000",
         "Caste": [
@@ -1465,7 +1465,7 @@
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 12",
+        "Scheme Name": "Prime Minister's Employment Generation Programme",
         "Category": "Business Entrepreneurship",
         "Gender": "Other",
         "Age Range": "26-40",
@@ -1475,7 +1475,7 @@
         "Caste": [
             "EWS"
         ],
-        "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry Of Micro, Small and Medium Enterprises",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Sports Achievement Certificates",
@@ -1489,15 +1489,15 @@
             "Police Clearance Certificate",
             "Land Ownership Certificate"
         ],
-        "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Benefits": "a) Funds will be allocated under annual Budget Estimates toward disbursement of Margin Money (subsidy) for setting up new micro-enterprises/units; and b) From the funds allocated under BE for the Margin Money subsidy, ₹ 100 Crores or as approved by the competent authority will be earmarked for each FY towards disbursement of Margin Money (subsidy) for the upgradation of existing PMEGP/REGP/MUDRA units. ",
+        "Details": "Prime Minister's Employment Generation Programme (PMEGP) is a credit-linked subsidy scheme, administered by the Ministry of Micro, Small and Medium Enterprises (MSME). PMEGP aims to generate employment opportunities through the establishment of micro-enterprises in the non-farm sector for rural as well as urban areas. The scheme has been approved for continuation over the 15th Finance Commission cycle i.e., for the period of five years from 2021-22 to 2025-26. PMEGP was formed by merging the two schemes that were in operation till 31st March 2008, namely Prime Minister's Rojgar Yojana (PMRY) and Rural Employment Generation Programme (REGP). An outlay of ₹13,554.42 Crore has been approved for PMEGP for five Financial Years (2021-22 to 2025-26) to set up about 4,00,000 projects with the creation of 30,00,000 employment @8 persons per unit). In addition, 1,000 Units will be upgraded in each FY. "
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 13",
+        "Scheme Name": "Biponi Scheme",
         "Category": "Business Entrepreneurship",
         "Gender": "Male",
         "Age Range": "27-56",
-        "State": "Maharashtra",
+        "State": "Assam",
         "Marital Status": "Married",
         "Income": "5,00,000 - 10,00,000",
         "Caste": [
@@ -1520,10 +1520,10 @@
             "GST Certificate"
         ],
         "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Details": "The objective of the scheme is to support to the Micro & Small enterprises to participate in different trade fairs and events within the State, in the Country and abroad for marketing of their products and also getting the exposure."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 14",
+        "Scheme Name": "Scheme for Margin Money Grant to Nano Units",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "18-59",
@@ -1550,7 +1550,7 @@
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 15",
+        "Scheme Name": "Skill Development Fee Reimbursement Scheme",
         "Category": "Business Entrepreneurship",
         "Gender": "Other",
         "Age Range": "18-33",
@@ -1577,7 +1577,7 @@
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 16",
+        "Scheme Name": "Skill Development Promotion Scheme",
         "Category": "Business Entrepreneurship",
         "Gender": "Male",
         "Age Range": "27-57",
@@ -1609,7 +1609,7 @@
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 17",
+        "Scheme Name": "Gatidhara Scheme",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "20-33",
@@ -1635,7 +1635,7 @@
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 18",
+        "Scheme Name": "Coir Vikas Yojana-Skill Upgradation and Mahila Coir Yojana",
         "Category": "Business Entrepreneurship",
         "Gender": "Other",
         "Age Range": "26-48",
@@ -1663,7 +1663,7 @@
         "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 19",
+        "Scheme Name": "Incubation Scheme",
         "Category": "Business Entrepreneurship",
         "Gender": "Male",
         "Age Range": "30-52",
@@ -1688,10 +1688,10 @@
             "GST Certificate"
         ],
         "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Details": "Incubation Scheme aims to promote and support untapped creativity and to promote adoption of latest technologies in MSMEs that seek the validation of their ideas at the proof-of-concept level."
     },
     {
-        "Scheme Name": "Business & Entrepreneurship 20",
+        "Scheme Name": "Reimbursement of membership Fee in Government promoted E-Commerce Portals",
         "Category": "Business Entrepreneurship",
         "Gender": "Female",
         "Age Range": "24-49",
@@ -1704,7 +1704,7 @@
             "SC",
             "EWS"
         ],
-        "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry Of Micro, Small and Medium Enterprises",
         "Employment Status": "Unemployed",
         "Documents": [
             "Travel Itinerary",
@@ -1717,12 +1717,12 @@
             "School ID (if student)",
             "GST Certificate"
         ],
-        "Benefits": "Entrepreneurs will gain access to low-interest loans, seed funding, and grants to help launch and grow their businesses. The scheme also provides access to a network of experienced mentors and business leaders who offer guidance and advice on business development. With government support for market entry, young entrepreneurs can overcome initial barriers to success. This leads to job creation, innovation, and increased entrepreneurial activity within local economies.",
-        "Details": "The Business & Entrepreneurship scheme is designed to support aspiring entrepreneurs and small businesses through a combination of financial aid, mentoring, and resource access. It aims to cultivate a startup ecosystem by offering seed funding, business incubation, and mentoring programs. This initiative provides the necessary tools to help individuals turn their business ideas into successful ventures."
+        "Benefits": "The financial assistance may be provided 80% or a maximum of ₹ 25,000/- (excluding applicable taxes) whichever is less, per financial year for new as well as renewals for SC/ST MSE.",
+        "Details": "Reimbursement of Membership fee of Government promoted e-commerce portals Scheme is a sub scheme under National Scheduled Caste and Scheduled Tribe Hub (NSSH) scheme."
     },
     {
-        "Scheme Name": "Education & Learning 1",
-        "Category": "Education",
+        "Scheme Name": "ICMR- Post Doctoral Fellowship",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "20-39",
         "State": "Maharashtra",
@@ -1733,7 +1733,7 @@
             "EWS",
             "OBC"
         ],
-        "Ministry": "Ministry of Education",
+        "Ministry": "Ministry Of Health & Family Welfare",
         "Employment Status": "Employed",
         "Documents": [
             "School/College ID",
@@ -1746,11 +1746,11 @@
             "Disability Certificate (if applicable)"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "ICMR- Post Doctoral Fellowship (ICMR-PDF) Scheme is being instituted to foster high-quality research opportunities for promising fresh Ph.D./MD/MS holders in the cutting-edge areas of basic science, communicable and non-communicable diseases, and reproductive health including nutrition at ICMR Institutes /Centers. Special focus will be on fundamental research in areas of science and other priority areas identified by ICMR from time to time. ICMR intends to offer fifty (50) such fellowships every year for working in ICMR Institutes/Centers with state-of-the-art R&D facilities. These fellowships will be allocated by the Director General, ICMR, depending upon the needs of the ICMR Institute/Centre."
     },
     {
-        "Scheme Name": "Education & Learning 2",
-        "Category": "Education",
+        "Scheme Name": "Savitribai Jyotirao Phule Fellowship For Single Girl Child",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "26-31",
         "State": "Karnataka",
@@ -1774,15 +1774,15 @@
             "Research Proposal",
             "Land Ownership Certificate"
         ],
-        "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Benefits": "Female Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
+        "Details": "The Education & Learning scheme strives to make quality education more accessible to female students. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
     },
     {
-        "Scheme Name": "Education & Learning 3",
-        "Category": "Education",
+        "Scheme Name": "Exposure Visits To The Assam Legislative Assembly",
+        "Category": "Education & Learning",
         "Gender": "Other",
         "Age Range": "23-41",
-        "State": "Tamil Nadu",
+        "State": "Assam",
         "Marital Status": "Divorced",
         "Income": "2,00,000 - 5,00,000",
         "Caste": [
@@ -1808,8 +1808,8 @@
         "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
     },
     {
-        "Scheme Name": "Education & Learning 4",
-        "Category": "Education",
+        "Scheme Name": "MANAGE Internship Programme",
+        "Category": "Education & Learning",
         "Gender": "Male",
         "Age Range": "27-52",
         "State": "Kerala",
@@ -1821,7 +1821,7 @@
             "EWS",
             "OBC"
         ],
-        "Ministry": "Ministry of Education",
+        "Ministry": "Ministry Of Agriculture and Farmers Welfare",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Training Completion Certificate",
@@ -1838,8 +1838,8 @@
         "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
     },
     {
-        "Scheme Name": "Education & Learning 5",
-        "Category": "Education",
+        "Scheme Name": "Coaching Schemes For Sc/st/obc (non-creamy Layer) & Minority Students For Universities",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "18-52",
         "State": "Uttar Pradesh",
@@ -1852,7 +1852,7 @@
             "OBC",
             "EWS"
         ],
-        "Ministry": "Ministry of Education",
+        "Ministry": "Ministry Of Minority Affairs",
         "Employment Status": "Unemployed",
         "Documents": [
             "School/College ID",
@@ -1865,11 +1865,11 @@
             "Aadhar Card"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "Coaching schemes for students belonging to SC (Scheduled Caste), ST (Scheduled Tribe), OBC (Other Backward Classes) (non-creamy layer), and minority communities are implemented to provide them with equal opportunities and support in pursuing higher education."
     },
     {
-        "Scheme Name": "Education & Learning 6",
-        "Category": "Education",
+        "Scheme Name": "AICTE – Saksham Scholarship Scheme For Specially-Abled Student (Diploma)",
+        "Category": "Education & Learning",
         "Gender": "Other",
         "Age Range": "26-53",
         "State": "Gujarat",
@@ -1894,11 +1894,11 @@
             "School/College ID"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "Saksham is a Scholarship Scheme by the Ministry of Education, implemented by AICTE, aimed at providing encouragement and support to specially-abled children to pursue technical education. This is an attempt to give every young student, who is otherwise specially abled, the opportunity to study further and prepare for a successful future through technical education/ knowledge. ₹50,000/- per annum for every year of study i.e. maximum 3 years for the first year admitted students and maximum 2 years for the second year admitted students through lateral entry as lump sum amount towards payment of college fee, purchase of computer, stationeries, books, equipment, software, etc. The candidate should be admitted to the First year of the Diploma level course OR the Second year of the Diploma level course through lateral entry in any of the AICTE-approved institutions of the respective year. Family income from all sources should not be more than Rs. 8 lakh per annum during the current financial year."
     },
     {
-        "Scheme Name": "Education & Learning 7",
-        "Category": "Education",
+        "Scheme Name": "Junior Research Fellowship (JRF) And Research Associateship (RA) For Foreign Nationals",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "27-48",
         "State": "Maharashtra",
@@ -1924,11 +1924,11 @@
             "Aadhar Card"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "The scheme was initiated keeping in view the political and cultural bilateral relations of India with other developing countries of Asia, Africa, and Latin America. The scheme has opened new vistas for foreign students and teachers, enabling them to come to India and undertake advanced studies and research in sciences, humanities, and social sciences in Indian Universities. "
     },
     {
-        "Scheme Name": "Education & Learning 8",
-        "Category": "Education",
+        "Scheme Name": "Industry Linked Biotechnology Research Scheme",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "23-40",
         "State": "Karnataka",
@@ -1954,11 +1954,11 @@
             "School/College ID"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "The Scheme “Industry Linked Biotechnology Research Scheme (IBRS)” facilitates Academia-Industry interaction by undertaking projects in collaboration with an industrial partner which should result in commercializing the product or process or service."
     },
     {
-        "Scheme Name": "Education & Learning 9",
-        "Category": "Education",
+        "Scheme Name": "Shram Kalyan Shaikshanik Chatravriti Yojana",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "30-52",
         "State": "Tamil Nadu",
@@ -1985,8 +1985,8 @@
         "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
     },
     {
-        "Scheme Name": "Education & Learning 10",
-        "Category": "Education",
+        "Scheme Name": "Innovation In Science Pursuit For Inspired Research (INSPIRE) - Faculty Fellowship",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "18-52",
         "State": "Kerala",
@@ -2013,11 +2013,11 @@
         "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
     },
     {
-        "Scheme Name": "Education & Learning 11",
-        "Category": "Education",
+        "Scheme Name": "Scholarship For Transgender Students",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "29-35",
-        "State": "Uttar Pradesh",
+        "State": "Kerala",
         "Marital Status": "Unmarried",
         "Income": "1,00,000 - 3,00,000",
         "Caste": [
@@ -2041,11 +2041,11 @@
             "School/College ID"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "The scheme “Scholarship for Transgender Students” was launched by the Social Justice Department, Government of Kerala for providing scholarships to Transgender students from 7th standard onwards studying in State Government/ Government aided/ Self Financing schools."
     },
     {
-        "Scheme Name": "Education & Learning 12",
-        "Category": "Education",
+        "Scheme Name": "Junior Research Fellowship",
+        "Category": "Education & Learning",
         "Gender": "Other",
         "Age Range": "20-39",
         "State": "Gujarat",
@@ -2069,11 +2069,11 @@
             "Aadhar Card"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "The Department of Biotechnology, Ministry of Science & Technology, Government of India provides fellowships for pursuing research in biotechnology and life-sciences through the DBT-Junior Research Fellowship  (DBT-JRF) Programme."
     },
     {
-        "Scheme Name": "Education & Learning 13",
-        "Category": "Education",
+        "Scheme Name": "Scholarships to Students with Disabilities Scheme",
+        "Category": "Education & Learning",
         "Gender": "Male",
         "Age Range": "30-41",
         "State": "Maharashtra",
@@ -2098,11 +2098,11 @@
             "School/College ID"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "The objective of the scheme is to assist students with disabilities to secure education, academic, technical, or professional training to enable them to earn a living and to become useful members of society."
     },
     {
-        "Scheme Name": "Education & Learning 14",
-        "Category": "Education",
+        "Scheme Name": "Post Graduate Indira Gandhi Scholarship For Single Girl Child",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "23-46",
         "State": "Karnataka",
@@ -2116,28 +2116,24 @@
         "Ministry": "Ministry of Education",
         "Employment Status": "Unemployed",
         "Documents": [
-            "Travel Itinerary",
-            "Caste Certificate",
             "PAN Card",
             "Admission Receipt",
             "Birth Certificate",
             "Income Certificate",
             "Aadhar Card",
-            "Police Clearance Certificate",
-            "School/College ID",
-            "Research Proposal"
+            "School/College ID"
         ],
-        "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Benefits": "Amount of fellowship: ₹36,200/- per annum for a period of two years only i.e. full duration of a PG course. 3,000 fresh scholarships will be awarded every year and will be paid on DBT mode on annual basis.",
+        "Details": "A scholarship scheme by the University Grants Commission for Girl students who are admitted in the first year of PG courses in any designated university or a postgraduate college, and happen to be the only girl child in the family. The amount of fellowship is ₹ 36,200/- p.a. for the full duration of a PG course. The scheme has been introduced with an aim to compensate direct costs of girl education at all levels, especially for such girls who happen to be the only girl child in their families. "
     },
     {
-        "Scheme Name": "Education & Learning 15",
-        "Category": "Education",
+        "Scheme Name": "Merit Based Award and Recognition Of High Performance In The Board Exams Of SSC In The State Of Goa",
+        "Category": "Education & Learning",
         "Gender": "Other",
-        "Age Range": "29-31",
-        "State": "Tamil Nadu",
-        "Marital Status": "Divorced",
-        "Income": "5,00,000 - 10,00,000",
+        "Age Range": "15-17",
+        "State": "Goa",
+        "Marital Status": "Unmarried",
+        "Income": "0-0",
         "Caste": [
             "OBC",
             "General",
@@ -2145,28 +2141,23 @@
             "SC"
         ],
         "Ministry": "Ministry of Education",
-        "Employment Status": "Self-Employed",
+        "Employment Status": "Unemployed",
         "Documents": [
             "Caste Certificate",
-            "Electricity Bill",
-            "Doctor's Prescription",
-            "Admission Receipt",
-            "Insurance Certificate",
-            "Bank Passbook",
             "Birth Certificate",
-            "Income Certificate",
+            "SSC Marksheet",
             "Aadhar Card",
             "School/College ID"
         ],
-        "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Benefits": "₹ 20,000/- to the First Five Rank Holders (separately for all the streams of Science, Commerce, Arts and Vocational).",
+        "Details": "The Department of Tribal Welfare, Government of Goa is implementing a scheme titled ‘Merit-Based Award and Recognition of High Performance in the Board exams of SSC and HSSC in the state of Goa’ for Scheduled Tribe Students. The objective of this scheme is to motivate students by giving Merit Based Award on the benchmark of performance and to provide financial incentives to high-performing students who are economically weak. Any Scheduled Caste student who has passed Class 10th and Class 12th, securing 50% and above marks will be given a financial award. The scheme aims to increase the representation of the ST Community in the High-Rank holders are very few in the Class 10th and Class 12th."
     },
     {
-        "Scheme Name": "Education & Learning 16",
-        "Category": "Education",
+        "Scheme Name": "Fee Waiver Scheme For SC/ST Students Pursuing Higher Education",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "19-38",
-        "State": "Kerala",
+        "State": "Goa",
         "Marital Status": "Widowed",
         "Income": "< 2,00,000",
         "Caste": [
@@ -2190,14 +2181,14 @@
             "School/College ID"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "Fee Waiver Scheme for SC/ST Students Pursuing Higher Education provides free access to every SC/ST student, to the institutions of higher learning so that that no eligible SC/ST students are deprived of higher education for want of resources."
     },
     {
-        "Scheme Name": "Education & Learning 17",
-        "Category": "Education",
+        "Scheme Name": "Financial Assistance To Pre-primary School In Remote Areas",
+        "Category": "Education & Learning",
         "Gender": "Female",
-        "Age Range": "25-53",
-        "State": "Uttar Pradesh",
+        "Age Range": "1-20",
+        "State": "Goa",
         "Marital Status": "Widowed",
         "Income": "3,00,000 - 6,00,000",
         "Caste": [
@@ -2223,8 +2214,8 @@
         "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
     },
     {
-        "Scheme Name": "Education & Learning 18",
-        "Category": "Education",
+        "Scheme Name": "Visiting Advanced Joint Research Faculty Scheme",
+        "Category": "Education & Learning",
         "Gender": "Other",
         "Age Range": "27-54",
         "State": "Gujarat",
@@ -2234,7 +2225,7 @@
             "SC",
             "ST"
         ],
-        "Ministry": "Ministry of Education",
+        "Ministry": "Ministry Of Science And Technology",
         "Employment Status": "Unemployed",
         "Documents": [
             "Caste Certificate",
@@ -2251,8 +2242,8 @@
         "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
     },
     {
-        "Scheme Name": "Education & Learning 19",
-        "Category": "Education",
+        "Scheme Name": "Modernisation And Removal Of Obsolescence",
+        "Category": "Education & Learning",
         "Gender": "Male",
         "Age Range": "24-48",
         "State": "Maharashtra",
@@ -2277,11 +2268,11 @@
             "School/College ID"
         ],
         "Benefits": "Students will receive financial aid to cover tuition fees, study materials, and living expenses. The scheme also includes career counseling services, helping students identify future career opportunities and pathways. By ensuring that educational resources reach even the most marginalized populations, the scheme helps create a well-educated workforce. This will result in better employment opportunities, reduced poverty, and increased national productivity.",
-        "Details": "The Education & Learning scheme strives to make quality education more accessible to students from underprivileged backgrounds. By providing scholarships, free textbooks, and vocational training, the scheme ensures that every child has an equal opportunity to succeed academically. This initiative is designed to reduce dropout rates, improve school infrastructure, and encourage lifelong learning."
+        "Details": "MODROB scheme, one of the AICTE Quality Improvement Scheme (AQIS), intends to support the development of laboratories with appropriate equipment/ technology/ tools/ software and encourages financial contribution from the industry. This is to ensure that the practical work and project work to be carried out by students is contemporary and suits the needs of the industry."
     },
     {
-        "Scheme Name": "Education & Learning 20",
-        "Category": "Education",
+        "Scheme Name": "National Talent Scholarship Undergraduate",
+        "Category": "Education & Learning",
         "Gender": "Female",
         "Age Range": "22-44",
         "State": "Karnataka",

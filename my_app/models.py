@@ -9,37 +9,44 @@ from bson.objectid import ObjectId
 def generate_object_id():
     return str(ObjectId())
 
-class UserApplication(models.Model):
-    id = models.CharField(max_length=24, primary_key=True, default=generate_object_id)
-    user_email = models.EmailField(max_length=100)
-    schemename = models.CharField(max_length=100)
-    status = models.CharField(max_length=20, default='Pending')
-    applied_on = models.DateTimeField(default=now)
-    documents = models.JSONField(default=list, blank=True)
-    uploaded_files = models.FileField(
-        upload_to='documents/',
-        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'png', 'jpeg', 'jpg'])],
-        null=True, blank=True
-    )
+from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.timezone import now
+from django.conf import settings
+from gridfs import GridFS
+from pymongo import MongoClient
+import os
 
-    def clean(self):
-        from .models import User, Scheme
-        if not User.objects.filter(email=self.user_email).exists():
-            raise ValidationError(f"User with email {self.user_email} does not exist.")
-        if not Scheme.objects.filter(schemename=self.schemename).exists():
-            raise ValidationError(f"Scheme with name {self.schemename} does not exist.")
-def save(self, *args, **kwargs):
-    print(f"Uploaded file: {self.uploaded_files}")  # Debug print
-    self.full_clean()  # Run custom validations
-    super().save(*args, **kwargs)
+# Assuming you are using a MongoDB connection
+mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = mongo_client['Cluster0']
+fs = GridFS(db)
 
+
+from django.db import models
+from bson import ObjectId
+
+
+class UserApplications(models.Model):
+    user_email = models.EmailField()
+    scheme_name = models.CharField(max_length=255)
+    category = models.CharField(max_length=255)
+    status = models.CharField(max_length=50, default='Pending')
+    applied_date = models.DateTimeField(auto_now_add=True)
+    documents = models.JSONField(default=list)  # Stores document metadata
+
+    def add_document(self, name, file_id):
+        """
+        Add a document's metadata to the documents list.
+        """
+        self.documents.append({"name": name, "file_id": str(file_id)})
+        self.save()
 
     def __str__(self):
-        return f"{self.user_email} applied for {self.schemename}"
+        return f"{self.user_email} - {self.scheme_name}"
 
     class Meta:
-        db_table = 'user_application'
-
+        db_table = 'user_applications'
 
 
 class User(models.Model):
@@ -69,23 +76,7 @@ class User(models.Model):
 
     class Meta:
         db_table = 'user'
-class Admin(models.Model):
-    adminname = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
-    password = models.CharField(max_length=255)
-    phone_number = models.CharField(
-        max_length=10,
-        validators=[RegexValidator(r'^[7-9][0-9]{9}$', message="Phone number must start with 7-9 and have 10 digits.")]
-    )
 
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-
-    def __str__(self):
-        return self.adminname
-
-    class Meta:
-        db_table = 'admin'
 
 class Scheme(models.Model):
     schemename = models.CharField(max_length=100,unique=True)
@@ -108,5 +99,23 @@ class Scheme(models.Model):
     class Meta:
         db_table = 'scheme'
 
+
+class Admin(models.Model):
+    adminname = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(max_length=100, unique=True)
+    password = models.CharField(max_length=255)
+    phone_number = models.CharField(
+        max_length=10,
+        validators=[RegexValidator(r'^[7-9][0-9]{9}$', message="Phone number must start with 7-9 and have 10 digits.")]
+    )
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def __str__(self):
+        return self.adminname
+
+    class Meta:
+        db_table = 'admin'
 
 

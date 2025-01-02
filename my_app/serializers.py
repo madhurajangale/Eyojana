@@ -1,49 +1,72 @@
 from rest_framework import serializers
-from .models import User, Admin, Scheme, UserApplication
+from .models import User, Admin, Scheme
 from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from .models import UserApplications
+from django.core.exceptions import ValidationError
 
 
-from rest_framework import serializers
-from .models import UserApplication, User, Scheme
+from pymongo import MongoClient
+from gridfs import GridFS
+from bson import ObjectId
 
-class ApplicationCreateSerializer(serializers.ModelSerializer):
-    documents = serializers.ListField(
-        child=serializers.CharField(),  # Assuming documents are names/IDs stored as strings
-        required=False,  # Optional field
-    )
+
+
+class DocumentSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255)
+    file = serializers.FileField()
+
+    def create(self, validated_data):
+        """
+        Custom document processing (if required).
+        """
+        return validated_data
+
+
+class UserApplicationsSerializer(serializers.ModelSerializer):
+    documents = DocumentSerializer(many=True, write_only=True, required=False)
 
     class Meta:
-        model = UserApplication
-        fields = ['user_email', 'schemename', 'status', 'applied_on', 'documents']
+        model = UserApplications
+        fields = ['id', 'user_email', 'scheme_name', 'category', 'status', 'applied_date', 'documents']
 
     def validate(self, data):
-        # Validate user_email exists in User model
-        if not User.objects.filter(email=data['user_email']).exists():
-            raise serializers.ValidationError({
-                'user_email': f"User with email {data['user_email']} does not exist."
-            })
+        """
+        Validate the application data.
+        """
+        user_email = data.get('user_email')
+        scheme_name = data.get('scheme_name')
 
-        # Validate schemename exists in Scheme model
-        if not Scheme.objects.filter(schemename=data['schemename']).exists():
-            raise serializers.ValidationError({
-                'schemename': f"Scheme with name {data['schemename']} does not exist."
-            })
+        # Check if user exists
+        if not User.objects.filter(email=user_email).exists():
+            raise serializers.ValidationError({'user_email': "The user with this email does not exist."})
+
+        # Check if scheme exists
+        if not Scheme.objects.filter(schemename=scheme_name).exists():
+            raise serializers.ValidationError({'scheme_name': "The scheme with this name does not exist."})
 
         return data
 
     def create(self, validated_data):
         """
-        Override the create method to handle documents properly
+        Create a new application and save documents in GridFS.
         """
-        documents = validated_data.pop('documents', [])  # Retrieve documents or set an empty list
-        application = UserApplication.objects.create(**validated_data)
-        
-        # Process documents (if necessary)
-        application.documents = documents
-        application.save()
-        
+        documents = validated_data.pop('documents', [])
+        application = UserApplications.objects.create(**validated_data)
+
+        # Connect to MongoDB and GridFS
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['your_database_name']
+        fs = GridFS(db)
+
+        for document in documents:
+            file_id = fs.put(document['file'], filename=document['name'])
+            application.add_document(name=document['name'], file_id=file_id)
+
         return application
+
+
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,35 +74,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'phone_number', 'income', 'age', 'pincode', 'city', 'district', 'state', 'gender', 'caste', 'employment_status', 'marital_status']
         # You can add the 'read_only_fields' option if you want to restrict certain fields from being updated
         read_only_fields = ['email']  # Prevent updating email since it is unique
-
-# class ApplicationCreateSerializer(serializers.ModelSerializer):
-#     documents = serializers.ListField(
-#         child=serializers.CharField(),  # You can specify any type of field (e.g., CharField for document names)
-#         required=False,  # This makes the documents field optional
-#     )
-
-#     class Meta:
-#         model = UserApplication
-#         fields = ['user_email', 'schemename', 'status', 'applied_on', 'documents']
-
-#     def validate(self, data):
-#         from .models import User, Scheme
-
-#         # Validate user_email exists in User model
-#         if not User.objects.filter(email=data['user_email']).exists():
-#             raise serializers.ValidationError(f"User with email {data['user_email']} does not exist.")
-
-#         # Validate schemename exists in Scheme model
-#         if not Scheme.objects.filter(schemename=data['schemename']).exists():
-#             raise serializers.ValidationError(f"Scheme with name {data['schemename']} does not exist.")
-
-#         return data
-
-class ApplicationRetrieveSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserApplication
-        fields = ['id', 'user_email', 'schemename', 'status', 'applied_on', 'documents', 'uploaded_files']
-        read_only_fields = ['id', 'status', 'applied_on']
 
 class SchemeSerializer(serializers.ModelSerializer):
     class Meta:
