@@ -2,6 +2,9 @@
 
 import django.core.validators
 from django.db import migrations, models
+import django.utils.timezone
+import djongo.models.fields
+import my_app.models
 
 
 class Migration(migrations.Migration):
@@ -12,6 +15,39 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.CreateModel(
+            name='Admin',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('adminname', models.CharField(max_length=50, unique=True)),
+                ('email', models.EmailField(max_length=100, unique=True)),
+                ('password', models.CharField(max_length=255)),
+                ('phone_number', models.CharField(max_length=10, validators=[django.core.validators.RegexValidator('^[7-9][0-9]{9}$', message='Phone number must start with 7-9 and have 10 digits.')])),
+            ],
+            options={
+                'db_table': 'admin',
+            },
+        ),
+        migrations.CreateModel(
+            name='Scheme',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('schemename', models.CharField(max_length=100, unique=True)),
+                ('category', models.CharField(max_length=255)),
+                ('gender', models.CharField(blank=True, max_length=20, null=True)),
+                ('age_range', models.CharField(default='0', max_length=50)),
+                ('state', models.CharField(default='Maharashtra', max_length=50)),
+                ('marital_status', models.CharField(blank=True, max_length=20, null=True)),
+                ('income', models.CharField(default='0', max_length=50)),
+                ('caste', djongo.models.fields.JSONField(default=list)),
+                ('documents', djongo.models.fields.JSONField(default=list)),
+                ('ministry', models.CharField(blank=True, max_length=100, null=True)),
+                ('employment_status', models.CharField(blank=True, max_length=20, null=True)),
+            ],
+            options={
+                'db_table': 'scheme',
+            },
+        ),
         migrations.CreateModel(
             name='User',
             fields=[

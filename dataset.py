@@ -3,21 +3,40 @@ import random
 
 # Define scheme categories, schemes, and related attributes
 scheme_names = {
-    "Agriculture": [f"Agriculture Support Scheme {i+1}" for i in range(20)],
-    "Banking": [f"Banking Empowerment Scheme {i+1}" for i in range(20)],
-    "Business Entrepreneurship": [f"Entrepreneur Growth Scheme {i+1}" for i in range(20)],
-    "Education": [f"Education Aid Program {i+1}" for i in range(20)],
-    "Health": [f"Health Improvement Scheme {i+1}" for i in range(20)],
-    "Housing": [f"Housing Assistance Scheme {i+1}" for i in range(20)],
-    "Public Safety": [f"Safety Enhancement Scheme {i+1}" for i in range(20)],
-    "Science": [f"Science Promotion Scheme {i+1}" for i in range(20)],
-    "Skills": [f"Skill Development Program {i+1}" for i in range(20)],
-    "Social Welfare": [f"Social Security Scheme {i+1}" for i in range(20)],
-    "Sports": [f"Sports Encouragement Scheme {i+1}" for i in range(20)],
-    "Transport": [f"Transport Improvement Scheme {i+1}" for i in range(20)],
-    "Travel": [f"Travel Subsidy Scheme {i+1}" for i in range(20)],
-    "Utility and Sanitation": [f"Sanitation and Utility Scheme {i+1}" for i in range(20)],
-    "Women and Child": [f"Women and Child Welfare Scheme {i+1}" for i in range(20)],
+    "Agriculture": [f"Agriculture, Rural & Environment {i+1}" for i in range(20)],
+    "Banking": [f"Banking, Financial Services and Insurance {i+1}" for i in range(20)],
+    "Business Entrepreneurship": [f"Business & Entrepreneurship {i+1}" for i in range(20)],
+    "Education": [f"Education & Learning {i+1}" for i in range(20)],
+    "Health": [f"Health & Wellness {i+1}" for i in range(20)],
+    "Housing": [f"Housing & Shelter {i+1}" for i in range(20)],
+    "Public Safety": [f"Public Safety, Law & Justice {i+1}" for i in range(20)],
+    "Science": [f"Science, IT & Communications {i+1}" for i in range(20)],
+    "Skills": [f"Skills & Employment {i+1}" for i in range(20)],
+    "Social Welfare": [f"Social Welfare & Empowerment {i+1}" for i in range(20)],
+    "Sports": [f"Sports & Culture {i+1}" for i in range(20)],
+    "Transport": [f"Transport & Infrastructure {i+1}" for i in range(20)],
+    "Travel": [f"Travel & Tourism {i+1}" for i in range(20)],
+    "Utility and Sanitation": [f"Utility & Sanitation {i+1}" for i in range(20)],
+    "Women and Child": [f"Women and Child {i+1}" for i in range(20)],
+}
+
+# Ministries for each category
+ministries_by_category = {
+    "Agriculture": "Ministry of Agriculture",
+    "Banking": "Ministry of Finance",
+    "Business Entrepreneurship": "Ministry of Finance",
+    "Education": "Ministry of Education",
+    "Health": "Ministry of Health",
+    "Housing": "Ministry of Housing",
+    "Public Safety": "Ministry of Home Affairs",
+    "Science": "Ministry of Science",
+    "Skills": "Ministry of Skill Development",
+    "Social Welfare": "Ministry of Social Justice and Empowerment",
+    "Sports": "Ministry of Sports",
+    "Transport": "Ministry of Transport",
+    "Travel": "Ministry of Tourism",
+    "Utility and Sanitation": "Ministry of Urban Development",
+    "Women and Child": "Ministry of Women and Child Development"
 }
 
 age_ranges = {
@@ -33,16 +52,6 @@ income_ranges_proper_format = [
     "3,00,000 - 6,00,000", "5,00,000 - 10,00,000"
 ]
 available_castes = ["General", "OBC", "SC", "ST", "EWS"]
-ministries = [
-    "Ministry of Agriculture", "Ministry of Finance", "Ministry of Education",
-    "Ministry of Health", "Ministry of Housing", "Ministry of Transport",
-    "Ministry of Women and Child Development", "Ministry of Sports", "Ministry of Science"
-]
-employment_statuses = ["Employed", "Unemployed", "Self-Employed", "Student"]
-import json
-import random
-
-# Define unique documents for each category
 documents_by_category = {
     "Agriculture": [
         "Aadhar Card", "Land Ownership Certificate", "Income Certificate",
@@ -105,9 +114,10 @@ documents_by_category = {
     ],
 }
 documents_list = [
-     "Income Certificate", "Ration Card", "Caste Certificate", 
+    "Income Certificate", "Ration Card", "Caste Certificate", 
     "Birth Certificate", "Passport", "Voter ID", "Bank Passbook", "Salary Slip"
 ]
+
 # Other scheme attributes
 scheme_names = {
     category: [f"{category} Scheme {i+1}" for i in range(20)]
@@ -144,11 +154,10 @@ for category, schemes in scheme_names.items():
             marital_status = random.choice(["Unmarried", "Married"])
         
         # Assign documents specific to category
-        
         random_documents = random.sample(
-    list(all_documents - set(documents_by_category[category])),
-    k=random.randint(2, 4)
-)
+            list(all_documents - set(documents_by_category[category])),
+            k=random.randint(2, 4)
+        )
 
         # Create an entry
         entry = {
@@ -160,10 +169,9 @@ for category, schemes in scheme_names.items():
             "Marital Status": marital_status,
             "Income": income_ranges[i % len(income_ranges)],
             "Caste": random.sample(available_castes, k=random.randint(1, len(available_castes))),
-            "Ministry": ministries[i % len(ministries)],
+            "Ministry": ministries_by_category[category],  # Assign the correct ministry based on category
             "Employment Status": employment_status,
-           "Documents": list(set(documents_by_category[category]).union(random_documents)),
-
+            "Documents": list(set(documents_by_category[category]).union(random_documents)),
         }
         data.append(entry)
 
@@ -171,5 +179,3 @@ for category, schemes in scheme_names.items():
 output_file = "C:\\Docs\\Rujuta\\techathon\\Eyojana\\dataset_updated.json"
 with open(output_file, "w") as json_file:
     json.dump(data, json_file, indent=4)
-
-
