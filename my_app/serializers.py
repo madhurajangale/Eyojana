@@ -86,7 +86,7 @@ class SchemeSerializer(serializers.ModelSerializer):
         model = Scheme
         fields = [
             'schemename', 'category', 'gender', 'age_range', 'state',
-            'marital_status', 'income', 'caste', 'ministry', 'employment_status', 'documents'
+            'marital_status', 'income', 'caste', 'ministry', 'employment_status', 'documents','benefits','details'
         ]
 
     def create(self, validated_data):

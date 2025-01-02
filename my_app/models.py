@@ -99,6 +99,8 @@ class Scheme(models.Model):
     documents = models.JSONField(default=list)
     ministry = models.CharField(max_length=100, null=True, blank=True)
     employment_status = models.CharField(max_length=20, null=True, blank=True)
+    benefits=models.CharField(max_length=500, null=True, blank=True)
+    details=models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.schemename
