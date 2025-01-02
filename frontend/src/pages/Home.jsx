@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';  // Assuming this is where you get selected language
 import '../styles/Home.css'; 
-import carousel1 from '../images/kisang.png';
-import carousel2 from '../images/2.png';
+import carousel1 from '../images/carousel1.png';
+import carousel2 from '../images/carousel2.png';
 import about from '../images/video.mp4';
 import applysteps from '../images/Steps.png';
 import faq from '../images/faq3.png';

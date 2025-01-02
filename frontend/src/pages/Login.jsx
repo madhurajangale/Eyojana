@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import Loginimg from "../images/Loginimg.png";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login ,user} = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,9 +36,9 @@ const Login = () => {
 
       if (response.ok) {
         // Assume the API returns user data and a token
-        login({ email: data.email });
+        login({ email: data.data });
         console.log("login");
-        console.log(login);
+        console.log(user);
         localStorage.setItem("authToken", data.authToken); // Save token for future requests
         setShowPopup(true);
         setTimeout(() => {
