@@ -21,8 +21,10 @@ def generate_object_id():
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
 fs = GridFS(db)
+from bson import ObjectId
 
 class UserApplications(models.Model):
+    id = models.CharField(primary_key=True, max_length=24, default=lambda: str(ObjectId()))
     user_email = models.EmailField()
     scheme_name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
@@ -31,9 +33,6 @@ class UserApplications(models.Model):
     documents = models.JSONField(default=list)  # Store document metadata
 
     def add_document(self, name, file_id):
-        """
-        Add a document's metadata to the documents list.
-        """
         self.documents.append({"name": name, "file_id": str(file_id)})
         self.save()
 
@@ -42,6 +41,7 @@ class UserApplications(models.Model):
 
     class Meta:
         db_table = 'user_applications'
+
 
 
 

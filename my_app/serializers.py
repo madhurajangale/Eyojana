@@ -28,28 +28,28 @@ class DocumentSerializer(serializers.Serializer):
         return validated_data
 
 class UserApplicationsSerializer(serializers.ModelSerializer):
-    documents = DocumentSerializer(many=True, write_only=True, required=False)
+    documents = serializers.ListField(
+        child=DocumentSerializer(),
+        write_only=True,
+        required=False
+    )
 
     class Meta:
         model = UserApplications
         fields = ['id', 'user_email', 'scheme_name', 'category', 'status', 'applied_date', 'documents']
 
     def create(self, validated_data):
-        """
-        Create a new application and save documents in GridFS.
-        """
         documents = validated_data.pop('documents', [])
         application = UserApplications.objects.create(**validated_data)
 
         # Handle document uploads
         for document in documents:
-            file = document['file']  # This should be the file from the request
-            filename = document['name']
-            file_id = fs.put(file, filename=filename)  # Save the file to GridFS
+            file = document.get('file')  # Extract file
+            filename = document.get('name')  # Extract filename
+            file_id = fs.put(file, filename=filename)  # Save file in GridFS
             application.add_document(name=filename, file_id=file_id)
 
         return application
-
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:

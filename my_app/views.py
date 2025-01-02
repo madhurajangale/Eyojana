@@ -13,17 +13,64 @@ from django.http import JsonResponse
 from .serializers import UserProfileSerializer  # Add this import statement
 from .serializers import UserApplicationsSerializer
 
+# class UserApplicationsView(APIView):
+#     def post(self, request):
+#         # Parse the nested documents field manually
+#         documents = []
+#         for key, value in request.data.items():
+#             if key.startswith('documents'):
+#                 index = int(key.split('[')[1].split(']')[0])
+#                 field = key.split('[')[2].split(']')[0]
+#                 while len(documents) <= index:
+#                     documents.append({})
+#                 documents[index][field] = value
+
+#         # Add parsed documents back into request data
+#         mutable_data = request.data.dict()
+#         mutable_data['documents'] = documents
+
+#         # Serialize and save
+#         serializer = UserApplicationsSerializer(data=mutable_data)
+#         if serializer.is_valid():
+#             application = serializer.save()
+#             return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class UserApplicationsView(APIView):
     def post(self, request):
-        print(request.data)  # Debugging: Check input data
-        serializer = UserApplicationsSerializer(data=request.data)
-        print("**************************")
-        print("testing")
+        documents = []
+        
+        # Parse documents data from the request
+        for key, value in request.data.items():
+            if key.startswith('documents['):
+                # Extract index and field name
+                index = int(key.split('[')[1].split(']')[0])
+                field = key.split('[')[2].split(']')[0]
+                # Ensure the list has enough space
+                while len(documents) <= index:
+                    documents.append({})
+                # Add field data
+                documents[index][field] = value
+
+        # Attach files to the appropriate documents
+        for key, value in request.FILES.items():
+            if key.startswith('documents['):
+                index = int(key.split('[')[1].split(']')[0])
+                documents[index]['file'] = value
+
+        # Add documents back into request data
+        mutable_data = request.data.dict()
+        mutable_data['documents'] = documents
+
+        # Serialize and save
+        serializer = UserApplicationsSerializer(data=mutable_data)
         if serializer.is_valid():
             application = serializer.save()
             return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
-        print(serializer.errors)  # Debugging: Check validation errors
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SchemeCreateView(APIView):
     def post(self, request):
