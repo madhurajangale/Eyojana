@@ -4,13 +4,18 @@ from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from .models import UserApplications
 from django.core.exceptions import ValidationError
-
-
 from pymongo import MongoClient
 from gridfs import GridFS
 from bson import ObjectId
 
+from rest_framework import serializers
+from .models import UserApplications
+from gridfs import GridFS
+from pymongo import MongoClient
 
+client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client['Cluster0']
+fs = GridFS(db)
 
 class DocumentSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
@@ -22,30 +27,12 @@ class DocumentSerializer(serializers.Serializer):
         """
         return validated_data
 
-
 class UserApplicationsSerializer(serializers.ModelSerializer):
     documents = DocumentSerializer(many=True, write_only=True, required=False)
 
     class Meta:
         model = UserApplications
         fields = ['id', 'user_email', 'scheme_name', 'category', 'status', 'applied_date', 'documents']
-
-    def validate(self, data):
-        """
-        Validate the application data.
-        """
-        user_email = data.get('user_email')
-        scheme_name = data.get('scheme_name')
-
-        # Check if user exists
-        if not User.objects.filter(email=user_email).exists():
-            raise serializers.ValidationError({'user_email': "The user with this email does not exist."})
-
-        # Check if scheme exists
-        if not Scheme.objects.filter(schemename=scheme_name).exists():
-            raise serializers.ValidationError({'scheme_name': "The scheme with this name does not exist."})
-
-        return data
 
     def create(self, validated_data):
         """
@@ -54,18 +41,14 @@ class UserApplicationsSerializer(serializers.ModelSerializer):
         documents = validated_data.pop('documents', [])
         application = UserApplications.objects.create(**validated_data)
 
-        # Connect to MongoDB and GridFS
-        client = MongoClient('mongodb://localhost:27017/')
-        db = client['your_database_name']
-        fs = GridFS(db)
-
+        # Handle document uploads
         for document in documents:
-            file_id = fs.put(document['file'], filename=document['name'])
-            application.add_document(name=document['name'], file_id=file_id)
+            file = document['file']  # This should be the file from the request
+            filename = document['name']
+            file_id = fs.put(file, filename=filename)  # Save the file to GridFS
+            application.add_document(name=filename, file_id=file_id)
 
         return application
-
-
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import SignupView, LoginView, AdminSignupView, AdminLoginView,UserProfileView,UserProfileEditView
-from .views import SchemeCreateView, UserApplicationsView
-
+from .views import SchemeCreateView
+from .views import UserApplicationsView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path('scheme/create/', SchemeCreateView.as_view(), name='scheme-create'),
     path('profile/<str:email>/', UserProfileView.as_view(), name='user-profile'),
     path('profile/<str:email>/edit/', UserProfileEditView.as_view(), name='user-profile-edit'),
-    path('applications/', UserApplicationsView.as_view(), name='user-applications'),
+    path('applications/', UserApplicationsView.as_view(), name='user-application'),
 
 
 

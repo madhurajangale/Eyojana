@@ -11,50 +11,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from .serializers import UserProfileSerializer  # Add this import statement
-from .models import UserApplications
 from .serializers import UserApplicationsSerializer
-
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import UserApplicationsSerializer
-
 
 class UserApplicationsView(APIView):
-  def post(self, request):
-    print(request.data)  # Debugging: Check input data
-    serializer = UserApplicationsSerializer(data=request.data)
-    if serializer.is_valid():
-        application = serializer.save()
-        return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)  # Debugging: Check validation errors
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-    def get(self, request):
-        """
-        Retrieve all applications (optional).
-        """
-        from .models import UserApplications
-        applications = UserApplications.objects.all()
-        serializer = UserApplicationsSerializer(applications, many=True)
-        return Response(serializer.data)
-
-
-    def delete(self, request, pk):
-        """
-        Delete an application by ID.
-        """
-        try:
-            application = UserApplications.objects.get(pk=pk)
-            application.delete()
-            return Response({"message": "Application deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-        except UserApplications.DoesNotExist:
-            return Response({"error": "Application not found"}, status=status.HTTP_404_NOT_FOUND)
-
-
-
+    def post(self, request):
+        print(request.data)  # Debugging: Check input data
+        serializer = UserApplicationsSerializer(data=request.data)
+        if serializer.is_valid():
+            application = serializer.save()
+            return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)  # Debugging: Check validation errors
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SchemeCreateView(APIView):
     def post(self, request):

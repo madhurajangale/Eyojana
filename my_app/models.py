@@ -3,12 +3,6 @@ from django.core.validators import RegexValidator
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.hashers import make_password
 from django.utils.timezone import now 
-
-from bson.objectid import ObjectId
-
-def generate_object_id():
-    return str(ObjectId())
-
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
@@ -16,16 +10,17 @@ from django.conf import settings
 from gridfs import GridFS
 from pymongo import MongoClient
 import os
+from bson import ObjectId
+
+from bson.objectid import ObjectId
+
+def generate_object_id():
+    return str(ObjectId())
 
 # Assuming you are using a MongoDB connection
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
 fs = GridFS(db)
-
-
-from django.db import models
-from bson import ObjectId
-
 
 class UserApplications(models.Model):
     user_email = models.EmailField()
@@ -33,7 +28,7 @@ class UserApplications(models.Model):
     category = models.CharField(max_length=255)
     status = models.CharField(max_length=50, default='Pending')
     applied_date = models.DateTimeField(auto_now_add=True)
-    documents = models.JSONField(default=list)  # Stores document metadata
+    documents = models.JSONField(default=list)  # Store document metadata
 
     def add_document(self, name, file_id):
         """
@@ -47,6 +42,8 @@ class UserApplications(models.Model):
 
     class Meta:
         db_table = 'user_applications'
+
+
 
 
 class User(models.Model):
