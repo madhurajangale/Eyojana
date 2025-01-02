@@ -7,6 +7,55 @@ from django.contrib.auth.hashers import check_password
 from .models import User
 from .models import  Admin
 from .models import Scheme
+from django.core.exceptions import ObjectDoesNotExist
+from .models import UserApplication
+from .serializers import ApplicationCreateSerializer, ApplicationRetrieveSerializer
+from django.shortcuts import get_object_or_404
+
+class UserApplicationView(APIView):
+    def get(self, request):
+        """Fetch all applications"""
+        applications = UserApplication.objects.all()
+        serializer = ApplicationRetrieveSerializer(applications, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        """Submit a new application with document upload"""
+        serializer = ApplicationCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            application = serializer.save()
+            # Optional: Add documents to the application object
+            application.documents = ["Document 1", "Document 2"]  # Replace with actual document processing logic
+            application.save()
+            response_serializer = ApplicationRetrieveSerializer(application)
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserApplicationDetailView(APIView):
+    def get(self, request, pk):
+        """Retrieve a specific application"""
+        application = get_object_or_404(UserApplication, pk=pk)
+        serializer = ApplicationRetrieveSerializer(application)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        """Update an application"""
+        application = get_object_or_404(UserApplication, pk=pk)
+        serializer = ApplicationCreateSerializer(application, data=request.data, partial=True)
+        if serializer.is_valid():
+            application = serializer.save()
+            response_serializer = ApplicationRetrieveSerializer(application)
+            return Response(response_serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        """Delete an application"""
+        application = get_object_or_404(UserApplication, pk=pk)
+        application.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 class SchemeCreateView(APIView):
     def post(self, request):

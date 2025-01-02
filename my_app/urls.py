@@ -1,12 +1,18 @@
 from django.urls import path
 from .views import SignupView, LoginView, AdminSignupView, AdminLoginView
 from .views import SchemeCreateView
+from .views import UserApplicationView
 
+from django.conf import settings
+from django.conf.urls.static import static
+
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = [
     path('signup/', SignupView.as_view(), name='signup'),
     path('login/', LoginView.as_view(), name='login'),
     path('admin/signup/', AdminSignupView.as_view(), name='admin-signup'),
     path('admin/login/', AdminLoginView.as_view(), name='admin-login'),
-     path('scheme/create/', SchemeCreateView.as_view(), name='scheme-create'),
+    path('scheme/create/', SchemeCreateView.as_view(), name='scheme-create'),
+    path('applications/', UserApplicationView.as_view(), name='user-application-list')
 ]
