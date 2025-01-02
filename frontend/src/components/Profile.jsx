@@ -1,30 +1,15 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/profile.module.css";
-import { useContext } from "react";
+import axios from 'axios';
+import { useLanguage } from '../context/LanguageContext';
 import { AuthContext } from "../context/AuthContext";
+
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
-const { login ,user} = useContext(AuthContext);
-const [editMode, setEditMode] = useState(false);
-const [edituser, setUser] = useState({
- age: 1,
- caste: "",
- city: "",
- district: "",
- email: "",
- employment_status: "",
- gender: "",
- income: 0,
- marital_status: "",
- phone_number: "",
- pincode: "",
- state: "",
- username: "",
-});
-console.log(user.email)
-  // Placeholder for user data (Replace with actual data when available)
+  const { login, user } = useContext(AuthContext);
+  const { selectedLang } = useLanguage();
   const [userData, setUserData] = useState({
-    age: 0,
+    age: 1,
     caste: "",
     city: "",
     district: "",
@@ -38,113 +23,129 @@ console.log(user.email)
     state: "",
     username: "",
   });
-  useEffect(() => {
-    if (user) {
-      console.log("User state updated:", userData);
-    }
-  }, [userData]);
-  // Handle input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
+
+  const translateTexts = async (language) => {
+    // Add a small delay before translation to ensure userData is updated
+    setTimeout(async () => {
+      const textMap = {};
+  
+      // Map userData keys to the form fields and their current values
+      Object.entries(userData).forEach(([key, value]) => {
+        const inputKey = `input-${key}`;  // Format as 'input-age', 'input-caste', etc.
+      const labelKey = `label-${key}`;  // Format as 'label-age', 'label-caste', etc.
+
+      // Add the label and input keys to the textMap
+      textMap[labelKey] = key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      textMap[inputKey] = value;
+      });
+      textMap['profileTitle'] = "Profile";
+    textMap['actionButton'] = isEditing ? "Save" : "Edit"; 
+      console.log(textMap)
+      const valuesArray = Object.keys(textMap)
+      
+      .map(key => textMap[key]); 
+      
+      try {
+        const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
+          sentences: valuesArray,  // Send values for translation
+          target_lang: language,
+        });
+        console.log(response);
+        const translations = response.data.translated_sentences;
+  
+        // Replace original text content with the translated values
+        Object.keys(textMap).forEach((key, index) => {
+          const element = document.querySelector(`[data-key="${key}"]`);
+          if (element) {
+            // Check if it's an input element
+            if (element.tagName === "INPUT" || element.tagName === "SELECT") {
+              element.value = translations[index] || textMap[key]; // Update input or select value
+            } else {
+              element.textContent = translations[index] || textMap[key]; // Update label or other text elements
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Error translating texts:", error);
+      }
+    }, 500); // 500ms delay before calling translateTexts
   };
+  
+  
+  
+
+  useEffect(() => {
+    // Translate after selectedLang or userData changes, with a delay
+    translateTexts(selectedLang);
+  }, [selectedLang, userData]); // Trigger translation when selectedLang or userData changes
+
+  // Fetch user data on initial render
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/profile/${user.email}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        console.log("all")
-        console.log(data)
-        if (response.ok) {
-          setUserData({
-            age: data.data.age,
-      city: data.data.city,
-      district: data.data.district,
-      email: data.data.email,
-      caste: data.data.caste,
-      employment_status: data.data.employment_status,
-      gender: data.data.gender,
-      income: data.data.income,
-      marital_status: data.data.marital_status,
-      phone_number: data.data.phone_number,
-      pincode: data.data.pincode,
-      state: data.data.state,
-      username: data.data.username,
-          });
-          console.log("userdata")
-          console.log(userData)
-        } else {
-          console.error(data.message);
+        const response = await axios.get(`http://127.0.0.1:8000/api/profile/${user.email}`);
+        if (response.status === 200) {
+          setUserData(response.data.data); // Populate userData state
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
 
     fetchUserData();
-  }, [user.id]);
-  // Toggle edit mode
-  const toggleEditMode = () => {
-    setIsEditing(!isEditing);
+  }, [user.email]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle save action
   const handleSave = async () => {
     if (isEditing) {
-      console.log("))))))))))")
+      console.log("Updated userData:", userData); // Log updated userData for debugging
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/profile/${user.email}/edit/`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData), // Send the updated user data
-        });
-        console.log("done")
-        console.log(userData)
-        if (response.ok) {
-          console.log('Profile updated successfully');
+        const response = await axios.patch(`http://127.0.0.1:8000/api/profile/${user.email}/edit/`, userData);
+        if (response.status === 200) {
+          console.log("Profile updated successfully");
         } else {
-          console.error('Failed to update profile');
+          console.error("Failed to update profile");
         }
       } catch (error) {
-        console.error('Error updating profile:', error);
+        console.error("Error updating profile:", error);
       }
     }
-    setEditMode(false); // Turn off edit mode after saving
+    setIsEditing(false); // Exit edit mode after saving
   };
 
   return (
     <div className={styles.profilePage}>
       <div className={styles.profileCard}>
-        <h1>Profile</h1>
+        <h1 data-key="profileTitle">Profile</h1>
         <div className={styles.profileDetails}>
           {Object.entries(userData).map(([key, value]) => (
             <div className={styles.profileField} key={key}>
-              <label>{key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}:</label>
+              <label data-key={`label-${key}`}>
+                {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}:
+              </label>
               {key === "gender" || key === "marital_status" ? (
                 <select
                   name={key}
                   value={value}
                   onChange={handleChange}
                   disabled={!isEditing}
+                  data-key={`select-${key}`}
                 >
                   {key === "gender" && (
                     <>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
+                      <option value="Male" data-key="genderMale">Male</option>
+                      <option value="Female" data-key="genderFemale">Female</option>
+                      <option value="Other" data-key="genderOther">Other</option>
                     </>
                   )}
                   {key === "marital_status" && (
                     <>
-                      <option value="Single">Single</option>
-                      <option value="Married">Married</option>
+                      <option value="Single" data-key="statusSingle">Single</option>
+                      <option value="Married" data-key="statusMarried">Married</option>
                     </>
                   )}
                 </select>
@@ -158,9 +159,10 @@ console.log(user.email)
                       : "text"
                   }
                   name={key}
-                  value={value}
+                  value={value} // Ensure the value is coming from userData state
                   onChange={handleChange}
                   disabled={!isEditing}
+                  data-key={`input-${key}`} // Ensure the data-key matches the input name
                 />
               )}
             </div>
@@ -168,7 +170,8 @@ console.log(user.email)
         </div>
         <button
           className={styles.actionButton}
-          onClick={isEditing ? handleSave : toggleEditMode}
+          onClick={isEditing ? handleSave : () => setIsEditing(true)}
+          data-key="actionButton"
         >
           {isEditing ? "Save" : "Edit"}
         </button>

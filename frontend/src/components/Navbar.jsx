@@ -65,6 +65,39 @@ function Navbar() {
 //     setLoading(false);
 //   }
 // };
+const translateTexts = async (language) => {
+  const elements = document.querySelectorAll("[data-key]");
+  const textMap = {};
+
+  // Extract text content by `data-key`
+  elements.forEach((element) => {
+    const key = element.getAttribute("data-key");
+    textMap[key] = element.textContent.trim();
+  });
+
+  try {
+    // Send texts for translation
+    const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
+      sentences: Object.values(textMap),
+      target_lang: language,
+    });
+
+    const translations = response.data.translated_sentences;
+
+    // Apply translations back to the DOM
+    Object.keys(textMap).forEach((key, index) => {
+      const element = document.querySelector(`[data-key="${key}"]`);
+      if (element) {
+        element.textContent = translations[index];
+      }
+    });
+  } catch (error) {
+    console.error("Error translating texts:", error);
+  }
+};
+  useEffect(() => {
+    translateTexts(selectedLang); // Translate texts when language changes
+  }, [selectedLang]);
 const handleLogout = () => {
 // eslint-disable-next-line no-restricted-globals
   if (confirm("Are you sure you want to logout?")) {
@@ -105,12 +138,12 @@ const handleLogout = () => {
 
         <div className="nav-links">
           <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/category">Schemes</Link></li>
-            <li><a href="#about" onClick={() => navigateToSection('about')}>About</a></li>
-            <li><a href="#faq" onClick={() => navigateToSection('faq')}>FAQs</a></li>
-            <li><a href="#contact" onClick={() => navigateToSection('contact')}>Contact Us</a></li>
-            <li><Link to="/myapplications">My Applications</Link></li>
+            <li><Link to="/" data-key="home">Home</Link></li>
+            <li><Link to="/category" data-key="schemes">Schemes</Link></li>
+            <li><a data-key="about" href="#about" onClick={() => navigateToSection('about')} >About</a></li>
+            <li><a data-key="faq" href="#faq" onClick={() => navigateToSection('faq')}>FAQs</a></li>
+            <li><a data-key="contact" href="#contact" onClick={() => navigateToSection('contact')}>Contact Us</a></li>
+            <li><Link data-key="myapplications" to="/myapplications">My Applications</Link></li>
           </ul>
         </div>
 

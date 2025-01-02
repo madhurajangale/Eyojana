@@ -111,23 +111,23 @@ const Home = () => {
         <div className="faq-item">
           <h4 data-key="faqTitle">'Frequently Asked Questions'</h4>
           <div className="faq-question" onClick={() => handleToggle(0)} data-key="faqQuestion1">
-            'What is Eyojana?'
+            'What is E-yojana?'
             <span className={open === 0 ? "arrow down" : "arrow right"}></span>
           </div>
-          {open === 0 && <div className="faq-answer" data-key="faqAnswer1"> 'Eyojana is a platform wherein you can find all the government schemes and apply for it.'</div>}
+          {open === 0 && <div className="faq-answer" data-key="faqAnswer1"> 'E-yojana is a platform wherein you can find all the government schemes and apply for it.'</div>}
         </div>
 
         <div className="faq-item">
           <div className="faq-question" onClick={() => handleToggle(1)} data-key="faqQuestion2">
-            'How will Eyojana help common citizens?'
+            'How will E-yojana help common citizens?'
             <span className={open === 1 ? "arrow down" : "arrow right"}></span>
           </div>
-          {open === 1 && <div className="faq-answer" data-key="faqAnswer2"> 'Eyojana helps by categorizing schemes and provides all the support throughout the process of application.'</div>}
+          {open === 1 && <div className="faq-answer" data-key="faqAnswer2"> 'E-yojana helps by categorizing schemes and provides all the support throughout the process of application.'</div>}
         </div>
 
         <div className="faq-item">
           <div className="faq-question" onClick={() => handleToggle(2)} data-key="faqQuestion3">
-             'Can I apply for the schemes through Eyojana?'
+             'Can I apply for the schemes through E-yojana?'
             <span className={open === 2 ? "arrow down" : "arrow right"}></span>
           </div>
           {open === 2 && <div className="faq-answer" data-key="faqAnswer3">  'Yes, you can apply'</div>}
