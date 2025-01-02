@@ -98,7 +98,7 @@ class AdminSignupView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(APIView):
-    def get(self, request):
+    def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
 

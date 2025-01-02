@@ -12,7 +12,7 @@ const Login = () => {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     setErrorMessage("");
 
@@ -21,18 +21,33 @@ const Login = () => {
       return;
     }
 
-    // Dummy user data for validation
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (storedUser && storedUser.email === email && storedUser.password === password) {
-      login({ id: storedUser.id, email: storedUser.email, username: storedUser.username });
-      setShowPopup(true);
-      setTimeout(() => {
-        setShowPopup(false);
-        navigate("/home");
-      }, 3000);
-    } else {
-      setErrorMessage("Invalid email or password. Please try again.");
+      const data = await response.json();
+
+      if (response.ok) {
+        // Assume the API returns user data and a token
+        login({ id: data.id, email: data.email, username: data.username });
+        localStorage.setItem("authToken", data.authToken); // Save token for future requests
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+          navigate("/home");
+        }, 3000);
+      } else {
+        // Handle error message from API response
+        setErrorMessage(data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      setErrorMessage("An error occurred. Please try again later.");
     }
   };
 
