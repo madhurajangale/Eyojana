@@ -1,7 +1,7 @@
 import json
 import random
 
-# Define scheme categories, schemes, and related attributes
+# Define scheme categories and related attributes
 scheme_names = {
     "Agriculture": [f"Agriculture, Rural & Environment {i+1}" for i in range(20)],
     "Banking": [f"Banking, Financial Services and Insurance {i+1}" for i in range(20)],
@@ -39,11 +39,11 @@ ministries_by_category = {
     "Women and Child": "Ministry of Women and Child Development"
 }
 
+# Other fixed attributes
 age_ranges = {
     category: [f"{random.randint(18, 30)}-{random.randint(31, 60)}" for _ in range(20)]
     for category in scheme_names
 }
-
 genders = ["Male", "Female", "Other"]
 states = ["Maharashtra", "Karnataka", "Tamil Nadu", "Kerala", "Uttar Pradesh", "Gujarat"]
 marital_status = ["Married", "Unmarried", "Widowed", "Divorced"]
@@ -52,6 +52,8 @@ income_ranges_proper_format = [
     "3,00,000 - 6,00,000", "5,00,000 - 10,00,000"
 ]
 available_castes = ["General", "OBC", "SC", "ST", "EWS"]
+
+# Documents specific to each category
 documents_by_category = {
     "Agriculture": [
         "Aadhar Card", "Land Ownership Certificate", "Income Certificate",
@@ -113,41 +115,16 @@ documents_by_category = {
         "Income Certificate", "Caste Certificate", "Ration Card"
     ],
 }
-documents_list = [
-    "Income Certificate", "Ration Card", "Caste Certificate", 
-    "Birth Certificate", "Passport", "Voter ID", "Bank Passbook", "Salary Slip"
-]
 
-# Other scheme attributes
-scheme_names = {
-    category: [f"{category} Scheme {i+1}" for i in range(20)]
-    for category in documents_by_category
-}
-age_ranges = {category: [f"{random.randint(18, 30)}-{random.randint(31, 60)}" for _ in range(20)] for category in scheme_names}
-genders = ["Male", "Female", "Other"]
-states = ["Maharashtra", "Karnataka", "Tamil Nadu", "Kerala", "Uttar Pradesh", "Gujarat"]
-marital_status_options = ["Married", "Unmarried", "Widowed", "Divorced"]
-income_ranges = ["< 2,00,000", "1,00,000 - 3,00,000", "2,00,000 - 5,00,000"]
-available_castes = ["General", "OBC", "SC", "ST", "EWS"]
-ministries = [
-    "Ministry of Agriculture", "Ministry of Finance", "Ministry of Education",
-    "Ministry of Health", "Ministry of Housing", "Ministry of Transport",
-    "Ministry of Women and Child Development", "Ministry of Sports", "Ministry of Science"
-]
-employment_statuses = ["Employed", "Unemployed", "Self-Employed", "Student"]
-
-# Generate dataset
+# Generate the dataset with the new structure
 data = []
 all_documents = set(doc for docs in documents_by_category.values() for doc in docs)
 for category, schemes in scheme_names.items():
     for i, scheme in enumerate(schemes):
-        # Assign attributes to each scheme entry
         gender = genders[i % len(genders)]
-        employment_status = employment_statuses[i % len(employment_statuses)]
-        marital_status = (
-            "Unmarried" if employment_status == "Student" else
-            random.choice(["Unmarried", "Married", "Divorced"])
-        )
+        employment_status = random.choice(["Employed", "Unemployed", "Self-Employed", "Student"])
+        marital_status = random.choice(marital_status)
+        
         if marital_status == "Widowed":
             gender = "Female"
         if marital_status == "Divorced" and gender == "Male":
@@ -158,8 +135,9 @@ for category, schemes in scheme_names.items():
             list(all_documents - set(documents_by_category[category])),
             k=random.randint(2, 4)
         )
+        
 
-        # Create an entry
+        # Create an entry with the required data
         entry = {
             "Scheme Name": scheme,
             "Category": category,
@@ -167,15 +145,19 @@ for category, schemes in scheme_names.items():
             "Age Range": age_ranges[category][i % len(age_ranges[category])],
             "State": states[i % len(states)],
             "Marital Status": marital_status,
-            "Income": income_ranges[i % len(income_ranges)],
+            "Income": random.choice(income_ranges_proper_format),
             "Caste": random.sample(available_castes, k=random.randint(1, len(available_castes))),
             "Ministry": ministries_by_category[category],  # Assign the correct ministry based on category
+            "Ministry": ministries_by_category[category],  # Assign the correct ministry based on category
             "Employment Status": employment_status,
+            "Documents": list(set(documents_by_category[category]).union(random_documents)),
             "Documents": list(set(documents_by_category[category]).union(random_documents)),
         }
         data.append(entry)
 
-# Save dataset to JSON file
+# Save the dataset to JSON
 output_file = "C:\\Docs\\Rujuta\\techathon\\Eyojana\\dataset_updated.json"
 with open(output_file, "w") as json_file:
     json.dump(data, json_file, indent=4)
+
+print(f"Dataset has been saved to {output_file}")

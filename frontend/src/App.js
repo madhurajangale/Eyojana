@@ -9,7 +9,7 @@ import UserSignUp from './pages/sign-up';
 import Navbar from './components/Navbar';
 import Profile from './components/Profile';
 import { LanguageProvider } from './context/LanguageContext';
-
+import { AuthProvider } from "./context/AuthContext";
 function App() {
   return (
     <div className="App">
@@ -25,7 +25,7 @@ function App() {
                 <Route path="/translate" element={<AutoTranslate/>}/>
             </Routes>
         </BrowserRouter> */}
-
+        <AuthProvider>
         <LanguageProvider>
       <BrowserRouter>
         <Navbar />
@@ -39,6 +39,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
+    </AuthProvider>
     </div>
   );
 }

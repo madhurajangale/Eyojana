@@ -11,6 +11,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import UserApplication
 from .serializers import ApplicationCreateSerializer, ApplicationRetrieveSerializer
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from .serializers import UserProfileSerializer  # Add this import statement
 
 class UserApplicationView(APIView):
     def get(self, request):
@@ -106,7 +108,13 @@ class LoginView(APIView):
         user = authenticate(request, username=email, password=password)
 
         if user is not None:
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+            serializer = UserSerializer(user)
+
+            # Return the response with user data
+            return JsonResponse({
+                'message': 'Login successful',
+                'data': user.email  # Include serialized user data
+            }, status=status.HTTP_200_OK)
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class AdminLoginView(APIView):
@@ -120,3 +128,54 @@ class AdminLoginView(APIView):
         if admin is not None:
             return Response({'message': 'Admin login successful'}, status=status.HTTP_200_OK)
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+class UserProfileView(APIView):
+    def get(self, request, email):
+        try:
+            # Query the user from the database using the email
+            user = User.objects.get(email=email)
+            
+            # Return user data as JSON
+            return JsonResponse({
+                'status': 'success',
+                'message': f'Profile found for {email}',
+                'data': {
+                    'username': user.username,
+                    'email': user.email,
+                    'phone_number': user.phone_number,
+                    'income': user.income,
+                    'age': user.age,
+                    'pincode': user.pincode,
+                    'city': user.city,
+                    'district': user.district,
+                    'state': user.state,
+                    'gender': user.gender,
+                    'caste': user.caste,
+                    'employment_status': user.employment_status,
+                    'marital_status': user.marital_status,
+                }
+            })
+        except User.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'User not found.'})
+        
+
+class UserProfileEditView(APIView):
+    def patch(self, request, email):
+        try:
+            # Fetch the user by email
+            user = User.objects.get(email=email)
+            
+            # Use the serializer to validate and update the user's data
+            serializer = UserProfileSerializer(user, data=request.data, partial=True)  # partial=True for partial updates
+            
+            if serializer.is_valid():
+                serializer.save()  # Save the updated data
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Profile updated successfully.',
+                    'data': serializer.data
+                })
+            return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+        except User.DoesNotExist:
+            raise NotFound(detail="User not found.", code=status.HTTP_404_NOT_FOUND)
