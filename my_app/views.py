@@ -17,6 +17,8 @@ class UserApplicationsView(APIView):
     def post(self, request):
         print(request.data)  # Debugging: Check input data
         serializer = UserApplicationsSerializer(data=request.data)
+        print("**************************")
+        print("testing")
         if serializer.is_valid():
             application = serializer.save()
             return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
