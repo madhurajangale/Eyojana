@@ -31,10 +31,14 @@ const Login = () => {
       });
 
       const data = await response.json();
+      console.log("data")
+      console.log(data)
 
       if (response.ok) {
         // Assume the API returns user data and a token
-        login({ id: data.id, email: data.email, username: data.username });
+        login({ email: data.email });
+        console.log("login");
+        console.log(login);
         localStorage.setItem("authToken", data.authToken); // Save token for future requests
         setShowPopup(true);
         setTimeout(() => {

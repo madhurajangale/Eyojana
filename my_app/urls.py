@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SignupView, LoginView, AdminSignupView, AdminLoginView
+from .views import SignupView, LoginView, AdminSignupView, AdminLoginView,UserProfileView,UserProfileEditView
 from .views import SchemeCreateView
 from .views import UserApplicationView
 
@@ -14,5 +14,10 @@ urlpatterns = [
     path('admin/signup/', AdminSignupView.as_view(), name='admin-signup'),
     path('admin/login/', AdminLoginView.as_view(), name='admin-login'),
     path('scheme/create/', SchemeCreateView.as_view(), name='scheme-create'),
-    path('applications/', UserApplicationView.as_view(), name='user-application-list')
+    path('applications/', UserApplicationView.as_view(), name='user-application-list'),
+    path('profile/<str:email>/', UserProfileView.as_view(), name='user-profile'),
+    path('profile/<str:email>/edit/', UserProfileEditView.as_view(), name='user-profile-edit'),
+
+
+
 ]

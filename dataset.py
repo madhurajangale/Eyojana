@@ -135,9 +135,7 @@ for category, schemes in scheme_names.items():
             list(all_documents - set(documents_by_category[category])),
             k=random.randint(2, 4)
         )
-            list(all_documents - set(documents_by_category[category])),
-            k=random.randint(2, 4)
-        )
+        
 
         # Create an entry with the required data
         entry = {

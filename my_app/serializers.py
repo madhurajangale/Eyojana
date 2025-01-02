@@ -45,7 +45,12 @@ class ApplicationCreateSerializer(serializers.ModelSerializer):
         
         return application
 
-
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'phone_number', 'income', 'age', 'pincode', 'city', 'district', 'state', 'gender', 'caste', 'employment_status', 'marital_status']
+        # You can add the 'read_only_fields' option if you want to restrict certain fields from being updated
+        read_only_fields = ['email']  # Prevent updating email since it is unique
 
 # class ApplicationCreateSerializer(serializers.ModelSerializer):
 #     documents = serializers.ListField(
