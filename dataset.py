@@ -39,28 +39,137 @@ ministries = [
     "Ministry of Women and Child Development", "Ministry of Sports", "Ministry of Science"
 ]
 employment_statuses = ["Employed", "Unemployed", "Self-Employed", "Student"]
+import json
+import random
+
+# Define unique documents for each category
+documents_by_category = {
+    "Agriculture": [
+        "Aadhar Card", "Land Ownership Certificate", "Income Certificate",
+        "Agricultural Credit Card", "Bank Passbook", "Soil Health Card"
+    ],
+    "Banking": [
+        "Aadhar Card", "PAN Card", "Bank Statement", "Income Certificate", "Voter ID"
+    ],
+    "Business Entrepreneurship": [
+        "Aadhar Card", "Business Registration Certificate", "Income Certificate",
+        "GST Certificate", "Bank Passbook", "PAN Card"
+    ],
+    "Education": [
+        "Aadhar Card", "Birth Certificate", "School/College ID", "Income Certificate",
+        "Caste Certificate", "Admission Receipt"
+    ],
+    "Health": [
+        "Aadhar Card", "Health Insurance Card", "Doctor's Prescription",
+        "Birth Certificate", "Medical Certificate", "Income Certificate"
+    ],
+    "Housing": [
+        "Aadhar Card", "Land Ownership Certificate", "Income Certificate",
+        "Bank Passbook", "Ration Card", "Electricity Bill"
+    ],
+    "Public Safety": [
+        "Aadhar Card", "Voter ID", "Police Clearance Certificate", "Income Certificate",
+        "Birth Certificate", "PAN Card"
+    ],
+    "Science": [
+        "Aadhar Card", "Academic Certificates", "Research Proposal",
+        "Caste Certificate", "Income Certificate"
+    ],
+    "Skills": [
+        "Aadhar Card", "Training Completion Certificate", "Bank Passbook",
+        "Income Certificate", "Birth Certificate"
+    ],
+    "Social Welfare": [
+        "Aadhar Card", "Income Certificate", "Caste Certificate", "Bank Passbook",
+        "Ration Card", "Disability Certificate (if applicable)"
+    ],
+    "Sports": [
+        "Aadhar Card", "Sports Achievement Certificates", "Income Certificate",
+        "Birth Certificate", "School ID (if student)", "Bank Passbook"
+    ],
+    "Transport": [
+        "Aadhar Card", "Driving License", "Vehicle Registration Certificate",
+        "Income Certificate", "PAN Card", "Insurance Certificate"
+    ],
+    "Travel": [
+        "Aadhar Card", "Passport", "Bank Passbook", "Income Certificate",
+        "Travel Itinerary", "Voter ID"
+    ],
+    "Utility and Sanitation": [
+        "Aadhar Card", "Income Certificate", "Electricity Bill", "Water Bill",
+        "Ration Card", "Caste Certificate"
+    ],
+    "Women and Child": [
+        "Aadhar Card", "Birth Certificate", "Marriage Certificate (if applicable)",
+        "Income Certificate", "Caste Certificate", "Ration Card"
+    ],
+}
+documents_list = [
+     "Income Certificate", "Ration Card", "Caste Certificate", 
+    "Birth Certificate", "Passport", "Voter ID", "Bank Passbook", "Salary Slip"
+]
+# Other scheme attributes
+scheme_names = {
+    category: [f"{category} Scheme {i+1}" for i in range(20)]
+    for category in documents_by_category
+}
+age_ranges = {category: [f"{random.randint(18, 30)}-{random.randint(31, 60)}" for _ in range(20)] for category in scheme_names}
+genders = ["Male", "Female", "Other"]
+states = ["Maharashtra", "Karnataka", "Tamil Nadu", "Kerala", "Uttar Pradesh", "Gujarat"]
+marital_status_options = ["Married", "Unmarried", "Widowed", "Divorced"]
+income_ranges = ["< 2,00,000", "1,00,000 - 3,00,000", "2,00,000 - 5,00,000"]
+available_castes = ["General", "OBC", "SC", "ST", "EWS"]
+ministries = [
+    "Ministry of Agriculture", "Ministry of Finance", "Ministry of Education",
+    "Ministry of Health", "Ministry of Housing", "Ministry of Transport",
+    "Ministry of Women and Child Development", "Ministry of Sports", "Ministry of Science"
+]
+employment_statuses = ["Employed", "Unemployed", "Self-Employed", "Student"]
 
 # Generate dataset
-data_final_proper_income = []
+data = []
+all_documents = set(doc for docs in documents_by_category.values() for doc in docs)
 for category, schemes in scheme_names.items():
     for i, scheme in enumerate(schemes):
+        # Assign attributes to each scheme entry
+        gender = genders[i % len(genders)]
+        employment_status = employment_statuses[i % len(employment_statuses)]
+        marital_status = (
+            "Unmarried" if employment_status == "Student" else
+            random.choice(["Unmarried", "Married", "Divorced"])
+        )
+        if marital_status == "Widowed":
+            gender = "Female"
+        if marital_status == "Divorced" and gender == "Male":
+            marital_status = random.choice(["Unmarried", "Married"])
+        
+        # Assign documents specific to category
+        
+        random_documents = random.sample(
+    list(all_documents - set(documents_by_category[category])),
+    k=random.randint(2, 4)
+)
+
+        # Create an entry
         entry = {
             "Scheme Name": scheme,
             "Category": category,
-            "Gender": genders[i % len(genders)],
+            "Gender": gender,
             "Age Range": age_ranges[category][i % len(age_ranges[category])],
             "State": states[i % len(states)],
-            "Marital Status": marital_status[i % len(marital_status)],
-            "Income": income_ranges_proper_format[i % len(income_ranges_proper_format)],
+            "Marital Status": marital_status,
+            "Income": income_ranges[i % len(income_ranges)],
             "Caste": random.sample(available_castes, k=random.randint(1, len(available_castes))),
             "Ministry": ministries[i % len(ministries)],
-            "Employment Status": employment_statuses[i % len(employment_statuses)]
+            "Employment Status": employment_status,
+           "Documents": list(set(documents_by_category[category]).union(random_documents)),
+
         }
-        data_final_proper_income.append(entry)
+        data.append(entry)
 
-# Save to JSON file
-file_path_proper_income = "C:\\Docs\\Rujuta\\techathon\\dataset.json"
-with open(file_path_proper_income, "w") as json_file:
-    json.dump(data_final_proper_income, json_file, indent=4)
+# Save dataset to JSON file
+output_file = "C:\\Docs\\Rujuta\\techathon\\Eyojana\\dataset_updated.json"
+with open(output_file, "w") as json_file:
+    json.dump(data, json_file, indent=4)
 
-file_path_proper_income
+

@@ -21,17 +21,13 @@ const Home = () => {
 
   // Function to fetch text from various elements (h1, p, etc.)
   const fetchTextFromTags = () => {
-    const tags = ['h1', 'p','div'];  // Add more if necessary
+    const tags = ['h1', 'p', 'span', 'div', 'button', 'a'];  // Add more if necessary
     let texts = [];
-    let i=0;
     tags.forEach((tag) => {
       const elements = document.querySelectorAll(tag);
       elements.forEach((element) => {
-        const id = i; // Use ID or partial text as key
-        i=i+1;
-        if (element.textContent !== "") {
+        const id = element.id || element.textContent.slice(0, 20); // Use ID or partial text as key
         texts.push({ id, text: element.textContent });
-        }
       });
     });
     return texts;
@@ -39,19 +35,13 @@ const Home = () => {
 
   // Function to translate texts using backend API
   const translateTexts = async (texts, language) => {
-    console.log("enter")
     setLoading(true);
     try {
-      const sentences = texts
-  .map((item) => item.text)    // Extract the 'text' property
-  .filter((text) => text !== ""); 
-      console.log(sentences)
       const response = await axios.post('http://127.0.0.1:8000/api/translate/', {
-        sentences,
+        sentences: texts.map((item) => item.text),
         target_lang: language,
       });
-      console.log("response")
-console.log(response)
+
       const translations = response.data.translated_sentences;
 
       // Map translations back to elements
@@ -61,8 +51,6 @@ console.log(response)
       });
 
       setTranslatedTexts(mappedTranslations);
-      console.log("translated")
-      console.log(translatedTexts)
     } catch (error) {
       console.error('Error translating texts:', error);
     } finally {
@@ -77,7 +65,7 @@ console.log(response)
     }
   }, [selectedLang]);  // Re-trigger translation when selected language changes
 
-  return  (
+  return (
     <div className='entire'>
       <div id="carouselExampleCaptions" className="carousel slide">
         <div className="carousel-indicators">
@@ -101,18 +89,18 @@ console.log(response)
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-  
+
       <section id="about">
         <div className='scheme1' align='center'>
-          <p>{translatedTexts[0] || 'Welcome to E-yojana, your one-stop destination for discovering and applying for government schemes tailored to your needs.'}</p>
-          <p>{translatedTexts[1] || 'E-Yojana is here to help you take full advantage of the resources and support available to you, enhancing your well-being and contributing to national progress.'}</p>
+          <p>{translatedTexts['about_text'] || 'Welcome to E-yojana, your one-stop destination for discovering and applying for government schemes tailored to your needs.'}</p>
+          <p>{translatedTexts['about_info'] || 'E-Yojana is here to help you take full advantage of the resources and support available to you, enhancing your well-being and contributing to national progress.'}</p>
           <Link to="/category">
-            <button className='schbtn'>{translatedTexts[2] || 'Find Schemes'}</button>
+            <button className='schbtn'>{translatedTexts['find_schemes'] || 'Find Schemes'}</button>
           </Link>
-          <Link to={"/adminhome"}>{translatedTexts[3] || 'Admin'}</Link>
+          <Link to={"/adminhome"}>{translatedTexts['admin'] || 'Admin'}</Link>
         </div>
       </section>
-  
+
       <section>
         <div>
           <img src={applysteps} className="d-block w-100" alt="..." />
@@ -124,68 +112,68 @@ console.log(response)
           </video>
         </div>
       </section>
-  
+
       <section id="faq">
         <div className="faq-container">
           <div className="faq-image-container">
             <img src={faq} className="faq-image" />
           </div>
-  
+
           <div className="faq-questions">
             <div className="faq-item">
-              <h4>{translatedTexts[1] || 'Frequently Asked Questions'}</h4>
+              <h4>{translatedTexts['faq_title'] || 'Frequently Asked Questions'}</h4>
               <div className="faq-question" onClick={() => handleToggle(0)}>
-                {translatedTexts[5] || 'What is Eyojana?'}
+                {translatedTexts['faq_q1'] || 'What is Eyojana?'}
                 <span className={open === 0 ? "arrow down" : "arrow right"}></span>
               </div>
-              {open === 0 && <div className="faq-answer">{translatedTexts[6] || 'Eyojana is a platform wherein you can find all the government schemes and apply for it.'}</div>}
+              {open === 0 && <div className="faq-answer">{translatedTexts['faq_a1'] || 'Eyojana is a platform wherein you can find all the government schemes and apply for it.'}</div>}
             </div>
-  
+
             <div className="faq-item">
               <div className="faq-question" onClick={() => handleToggle(1)}>
-                {translatedTexts[2] || 'How will Eyojana help common citizens?'}
+                {translatedTexts['faq_q2'] || 'How will Eyojana help common citizens?'}
                 <span className={open === 1 ? "arrow down" : "arrow right"}></span>
               </div>
-              {open === 1 && <div className="faq-answer">{translatedTexts[8] || 'Eyojana helps by categorizing schemes and provides all the support throughout the process of application.'}</div>}
+              {open === 1 && <div className="faq-answer">{translatedTexts['faq_a2'] || 'Eyojana helps by categorizing schemes and provides all the support throughout the process of application.'}</div>}
             </div>
-  
+
             <div className="faq-item">
               <div className="faq-question" onClick={() => handleToggle(2)}>
-                {translatedTexts[9] || 'Can I apply for the schemes through Eyojana?'}
+                {translatedTexts['faq_q3'] || 'Can I apply for the schemes through Eyojana?'}
                 <span className={open === 2 ? "arrow down" : "arrow right"}></span>
               </div>
-              {open === 2 && <div className="faq-answer">{translatedTexts[10] || 'Yes, you can apply'}</div>}
+              {open === 2 && <div className="faq-answer">{translatedTexts['faq_a3'] || 'Yes, you can apply'}</div>}
             </div>
           </div>
         </div>
       </section>
-  
+
       <footer className="footer-container" id="contact">
         <div className="footer-content">
           <div className="footer-section">
-            <h4>{translatedTexts[2] || 'Powered By'}</h4>
-            <p>{translatedTexts[2] || 'Government Of India'}</p>
+            <h4>{translatedTexts['powered_by'] || 'Powered By'}</h4>
+            <p>{translatedTexts['gov_of_india'] || 'Government Of India'}</p>
           </div>
-  
+
           <div className="footer-section">
-            <h4>{translatedTexts[3] || 'Quick Links'}</h4>
-            <p><Link to="/">{translatedTexts[3] || 'Home'}</Link></p>
-            <p><Link to="/category">{translatedTexts[4] || 'Schemes'}</Link></p>
-            <p><a href="#about">{translatedTexts[5] || 'About'}</a></p>
-            <p><a href="#faq">{translatedTexts[6] || 'FAQs'}</a></p>
-            <p><a href="#contact">{translatedTexts[7] || 'Contact Us'}</a></p>
-            <p><Link to="/ApprovedSchemes">{translatedTexts[8] || 'Approved Schemes'}</Link></p>
+            <h4>{translatedTexts['quick_links'] || 'Quick Links'}</h4>
+            <p><Link to="/">{translatedTexts['home'] || 'Home'}</Link></p>
+            <p><Link to="/category">{translatedTexts['schemes'] || 'Schemes'}</Link></p>
+            <p><a href="#about">{translatedTexts['about'] || 'About'}</a></p>
+            <p><a href="#faq">{translatedTexts['faq'] || 'FAQs'}</a></p>
+            <p><a href="#contact">{translatedTexts['contact_us'] || 'Contact Us'}</a></p>
+            <p><Link to="/ApprovedSchemes">{translatedTexts['approved_schemes'] || 'Approved Schemes'}</Link></p>
           </div>
-  
+
           <div className="footer-section">
-            <h4>{translatedTexts[4] || 'Contact Us'}</h4>
-            <p>{translatedTexts[9] || 'Email: info@eyojana.gov'}</p>
-            <p>{translatedTexts[10] || 'Phone: +123 456 7890'}</p>
-            <p>{translatedTexts[11] || 'Address: 123 Government Building, Mumbai'}</p>
+            <h4>{translatedTexts['contact_us'] || 'Contact Us'}</h4>
+            <p>{translatedTexts['email'] || 'Email: info@eyojana.gov'}</p>
+            <p>{translatedTexts['phone'] || 'Phone: +123 456 7890'}</p>
+            <p>{translatedTexts['address'] || 'Address: 123 Government Building, Mumbai'}</p>
           </div>
-  
+
           <div className="footer-section social-media">
-            <h4>{translatedTexts[5] || 'Follow Us'}</h4>
+            <h4>{translatedTexts['follow_us'] || 'Follow Us'}</h4>
             <div className="social-icons">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                 <i className="fab fa-facebook-f"></i><p>FaceBook</p>
@@ -199,14 +187,13 @@ console.log(response)
             </div>
           </div>
         </div>
-  
+
         <div className="footer-bottom">
-          <p>{translatedTexts[15] || '© 2025 E-Yojana. All rights reserved.'}</p>
+          <p>{translatedTexts['footer_text'] || '© 2025 E-Yojana. All rights reserved.'}</p>
         </div>
       </footer>
     </div>
   );
-  
 };
 
 export default Home;
