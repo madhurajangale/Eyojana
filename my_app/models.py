@@ -2,6 +2,45 @@ from djongo import models
 from django.core.validators import RegexValidator
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.hashers import make_password
+from django.utils.timezone import now 
+
+from bson.objectid import ObjectId
+
+def generate_object_id():
+    return str(ObjectId())
+
+class UserApplication(models.Model):
+    id = models.CharField(max_length=24, primary_key=True, default=generate_object_id)
+    user_email = models.EmailField(max_length=100)
+    schemename = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, default='Pending')
+    applied_on = models.DateTimeField(default=now)
+    documents = models.JSONField(default=list, blank=True)
+    uploaded_files = models.FileField(
+        upload_to='documents/',
+        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'png', 'jpeg', 'jpg'])],
+        null=True, blank=True
+    )
+
+    def clean(self):
+        from .models import User, Scheme
+        if not User.objects.filter(email=self.user_email).exists():
+            raise ValidationError(f"User with email {self.user_email} does not exist.")
+        if not Scheme.objects.filter(schemename=self.schemename).exists():
+            raise ValidationError(f"Scheme with name {self.schemename} does not exist.")
+def save(self, *args, **kwargs):
+    print(f"Uploaded file: {self.uploaded_files}")  # Debug print
+    self.full_clean()  # Run custom validations
+    super().save(*args, **kwargs)
+
+
+    def __str__(self):
+        return f"{self.user_email} applied for {self.schemename}"
+
+    class Meta:
+        db_table = 'user_application'
+
+
 
 class User(models.Model):
     username = models.CharField(max_length=50, unique=True)
@@ -49,7 +88,7 @@ class Admin(models.Model):
         db_table = 'admin'
 
 class Scheme(models.Model):
-    schemename = models.CharField(max_length=100)
+    schemename = models.CharField(max_length=100,unique=True)
     category = models.CharField(max_length=255)
     gender = models.CharField(max_length=20, null=True, blank=True)
     age_range = models.CharField(max_length=50, default='0')
@@ -66,4 +105,6 @@ class Scheme(models.Model):
     
     class Meta:
         db_table = 'scheme'
+
+
 
