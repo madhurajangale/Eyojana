@@ -135,6 +135,9 @@ for category, schemes in scheme_names.items():
             list(all_documents - set(documents_by_category[category])),
             k=random.randint(2, 4)
         )
+            list(all_documents - set(documents_by_category[category])),
+            k=random.randint(2, 4)
+        )
 
         # Create an entry with the required data
         entry = {
@@ -147,7 +150,9 @@ for category, schemes in scheme_names.items():
             "Income": random.choice(income_ranges_proper_format),
             "Caste": random.sample(available_castes, k=random.randint(1, len(available_castes))),
             "Ministry": ministries_by_category[category],  # Assign the correct ministry based on category
+            "Ministry": ministries_by_category[category],  # Assign the correct ministry based on category
             "Employment Status": employment_status,
+            "Documents": list(set(documents_by_category[category]).union(random_documents)),
             "Documents": list(set(documents_by_category[category]).union(random_documents)),
         }
         data.append(entry)

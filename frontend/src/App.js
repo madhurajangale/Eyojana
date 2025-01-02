@@ -7,6 +7,7 @@ import AutoTranslate from './components/test';
 import Login from './pages/Login';
 import UserSignUp from './pages/sign-up';
 import Navbar from './components/Navbar';
+import Profile from './components/Profile';
 import { LanguageProvider } from './context/LanguageContext';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/Category" element={<Category />} />
                 <Route path="/signup" element={<UserSignUp />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/translate" element={<AutoTranslate/>}/>
         </Routes>
       </BrowserRouter>

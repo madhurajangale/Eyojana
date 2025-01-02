@@ -230,6 +230,7 @@
             "General"
         ],
         "Ministry": "Ministry of Agriculture",
+        "Ministry": "Ministry of Agriculture",
         "Employment Status": "Employed",
         "Documents": [
             "Agricultural Credit Card",
@@ -310,6 +311,7 @@
             "OBC"
         ],
         "Ministry": "Ministry of Agriculture",
+        "Ministry": "Ministry of Agriculture",
         "Employment Status": "Student",
         "Documents": [
             "Birth Certificate",
@@ -388,6 +390,7 @@
             "EWS"
         ],
         "Ministry": "Ministry of Agriculture",
+        "Ministry": "Ministry of Agriculture",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Agricultural Credit Card",
@@ -412,6 +415,7 @@
         "Caste": [
             "General"
         ],
+        "Ministry": "Ministry of Agriculture",
         "Ministry": "Ministry of Agriculture",
         "Employment Status": "Student",
         "Documents": [
@@ -439,6 +443,7 @@
             "EWS",
             "OBC"
         ],
+        "Ministry": "Ministry of Agriculture",
         "Ministry": "Ministry of Agriculture",
         "Employment Status": "Employed",
         "Documents": [
@@ -595,12 +600,14 @@
             "SC"
         ],
         "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry of Finance",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Voter ID",
             "Water Bill",
             "Doctor's Prescription",
             "Income Certificate",
+            "Voter ID",
             "Bank Statement",
             "Aadhar Card",
             "Soil Health Card",
@@ -671,6 +678,7 @@
             "SC"
         ],
         "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry of Finance",
         "Employment Status": "Unemployed",
         "Documents": [
             "Voter ID",
@@ -722,8 +730,12 @@
         "Marital Status": "i",
         "Income": "5,00,000 - 10,00,000",
         "Caste": [
-            "OBC"
+            "OBC",
+            "ST",
+            "EWS",
+            "SC"
         ],
+        "Ministry": "Ministry of Finance",
         "Ministry": "Ministry of Finance",
         "Employment Status": "Student",
         "Documents": [
@@ -731,6 +743,7 @@
             "Voter ID",
             "Training Completion Certificate",
             "Income Certificate",
+            "Voter ID",
             "Bank Statement",
             "Aadhar Card",
             "PAN Card",
@@ -833,6 +846,7 @@
             "ST",
             "General"
         ],
+        "Ministry": "Ministry of Finance",
         "Ministry": "Ministry of Finance",
         "Employment Status": "Student",
         "Documents": [
@@ -994,6 +1008,7 @@
             "SC"
         ],
         "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry of Finance",
         "Employment Status": "Unemployed",
         "Documents": [
             "Voter ID",
@@ -1001,6 +1016,7 @@
             "School/College ID",
             "PAN Card",
             "Income Certificate",
+            "Voter ID",
             "Bank Statement",
             "Caste Certificate"
         ]
@@ -1017,6 +1033,7 @@
             "SC",
             "ST"
         ],
+        "Ministry": "Ministry of Finance",
         "Ministry": "Ministry of Finance",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -1072,6 +1089,7 @@
             "OBC",
             "SC"
         ],
+        "Ministry": "Ministry of Finance",
         "Ministry": "Ministry of Finance",
         "Employment Status": "Employed",
         "Documents": [
@@ -1156,7 +1174,7 @@
         "Caste": [
             "SC",
             "General",
-            "EWS"
+            "ST"
         ],
         "Ministry": "Ministry of Finance",
         "Employment Status": "Employed",
@@ -1184,6 +1202,7 @@
             "General",
             "OBC"
         ],
+        "Ministry": "Ministry of Finance",
         "Ministry": "Ministry of Finance",
         "Employment Status": "Employed",
         "Documents": [
@@ -1400,6 +1419,7 @@
             "General"
         ],
         "Ministry": "Ministry of Finance",
+        "Ministry": "Ministry of Finance",
         "Employment Status": "Employed",
         "Documents": [
             "GST Certificate",
@@ -1424,7 +1444,9 @@
         "Income": "< 2,00,000",
         "Caste": [
             "General"
+            "General"
         ],
+        "Ministry": "Ministry of Finance",
         "Ministry": "Ministry of Finance",
         "Employment Status": "Unemployed",
         "Documents": [
@@ -1433,6 +1455,7 @@
             "GST Certificate",
             "Admission Receipt",
             "PAN Card",
+            "Ration Card",
             "Income Certificate",
             "Business Registration Certificate",
             "Bank Passbook"
@@ -1449,6 +1472,7 @@
         "Caste": [
             "ST"
         ],
+        "Ministry": "Ministry of Finance",
         "Ministry": "Ministry of Finance",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -1512,6 +1536,7 @@
             "GST Certificate",
             "School/College ID",
             "PAN Card",
+            "Electricity Bill",
             "Income Certificate",
             "Business Registration Certificate",
             "Bank Passbook"
@@ -1750,6 +1775,7 @@
             "General"
         ],
         "Ministry": "Ministry of Education",
+        "Ministry": "Ministry of Education",
         "Employment Status": "Unemployed",
         "Documents": [
             "School ID (if student)",
@@ -1804,6 +1830,7 @@
             "EWS",
             "General"
         ],
+        "Ministry": "Ministry of Education",
         "Ministry": "Ministry of Education",
         "Employment Status": "Student",
         "Documents": [
@@ -2052,6 +2079,7 @@
             "OBC"
         ],
         "Ministry": "Ministry of Education",
+        "Ministry": "Ministry of Education",
         "Employment Status": "Employed",
         "Documents": [
             "Birth Certificate",
@@ -2079,6 +2107,7 @@
             "ST",
             "EWS"
         ],
+        "Ministry": "Ministry of Education",
         "Ministry": "Ministry of Education",
         "Employment Status": "Unemployed",
         "Documents": [
@@ -2189,6 +2218,7 @@
             "ST"
         ],
         "Ministry": "Ministry of Health",
+        "Ministry": "Ministry of Health",
         "Employment Status": "Unemployed",
         "Documents": [
             "Aadhar Card",
@@ -2272,6 +2302,7 @@
             "OBC"
         ],
         "Ministry": "Ministry of Health",
+        "Ministry": "Ministry of Health",
         "Employment Status": "Employed",
         "Documents": [
             "Water Bill",
@@ -2350,8 +2381,12 @@
         "Marital Status": "i",
         "Income": "1,00,000 - 3,00,000",
         "Caste": [
-            "EWS"
+            "OBC",
+            "General",
+            "EWS",
+            "SC"
         ],
+        "Ministry": "Ministry of Health",
         "Ministry": "Ministry of Health",
         "Employment Status": "Student",
         "Documents": [
@@ -2650,6 +2685,7 @@
             "ST"
         ],
         "Ministry": "Ministry of Health",
+        "Ministry": "Ministry of Health",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Birth Certificate",
@@ -2756,6 +2792,7 @@
             "SC"
         ],
         "Ministry": "Ministry of Housing",
+        "Ministry": "Ministry of Housing",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Medical Certificate",
@@ -2839,6 +2876,7 @@
             "SC",
             "EWS"
         ],
+        "Ministry": "Ministry of Housing",
         "Ministry": "Ministry of Housing",
         "Employment Status": "Unemployed",
         "Documents": [
@@ -2944,7 +2982,6 @@
         "Marital Status": "i",
         "Income": "3,00,000 - 6,00,000",
         "Caste": [
-            "EWS",
             "SC",
             "OBC"
         ],
@@ -3168,6 +3205,7 @@
             "EWS"
         ],
         "Ministry": "Ministry of Housing",
+        "Ministry": "Ministry of Housing",
         "Employment Status": "Unemployed",
         "Documents": [
             "Water Bill",
@@ -3303,6 +3341,7 @@
             "ST"
         ],
         "Ministry": "Ministry of Home Affairs",
+        "Ministry": "Ministry of Home Affairs",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Birth Certificate",
@@ -3327,6 +3366,7 @@
         "Caste": [
             "EWS"
         ],
+        "Ministry": "Ministry of Home Affairs",
         "Ministry": "Ministry of Home Affairs",
         "Employment Status": "Student",
         "Documents": [
@@ -3380,6 +3420,7 @@
             "General",
             "SC"
         ],
+        "Ministry": "Ministry of Home Affairs",
         "Ministry": "Ministry of Home Affairs",
         "Employment Status": "Unemployed",
         "Documents": [
@@ -3510,6 +3551,7 @@
             "ST"
         ],
         "Ministry": "Ministry of Home Affairs",
+        "Ministry": "Ministry of Home Affairs",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Birth Certificate",
@@ -3586,6 +3628,7 @@
             "SC",
             "General"
         ],
+        "Ministry": "Ministry of Home Affairs",
         "Ministry": "Ministry of Home Affairs",
         "Employment Status": "Unemployed",
         "Documents": [
@@ -3778,9 +3821,12 @@
             "OBC",
             "General",
             "EWS",
+            "EWS",
             "SC",
             "ST"
+            "ST"
         ],
+        "Ministry": "Ministry of Science",
         "Ministry": "Ministry of Science",
         "Employment Status": "Employed",
         "Documents": [
@@ -3886,7 +3932,8 @@
             "SC",
             "OBC",
             "ST",
-            "General"
+            "EWS",
+            "SC"
         ],
         "Ministry": "Ministry of Science",
         "Employment Status": "Student",
@@ -3972,6 +4019,7 @@
             "General",
             "ST"
         ],
+        "Ministry": "Ministry of Science",
         "Ministry": "Ministry of Science",
         "Employment Status": "Student",
         "Documents": [
@@ -4284,6 +4332,7 @@
         "Marital Status": "i",
         "Income": "5,00,000 - 10,00,000",
         "Caste": [
+            "SC",
             "General",
             "EWS",
             "OBC",
@@ -4317,6 +4366,7 @@
             "ST",
             "SC"
         ],
+        "Ministry": "Ministry of Skill Development",
         "Ministry": "Ministry of Skill Development",
         "Employment Status": "Employed",
         "Documents": [
@@ -4429,6 +4479,10 @@
             "Water Bill",
             "Training Completion Certificate",
             "Income Certificate",
+            "Passport",
+            "Birth Certificate",
+            "Electricity Bill",
+            "Insurance Certificate",
             "Aadhar Card",
             "Marriage Certificate (if applicable)",
             "Police Clearance Certificate",
@@ -4524,6 +4578,7 @@
             "EWS",
             "OBC"
         ],
+        "Ministry": "Ministry of Skill Development",
         "Ministry": "Ministry of Skill Development",
         "Employment Status": "Employed",
         "Documents": [
@@ -4663,6 +4718,10 @@
             "Training Completion Certificate",
             "Medical Certificate",
             "Income Certificate",
+            "Medical Certificate",
+            "Birth Certificate",
+            "GST Certificate",
+            "School/College ID",
             "Aadhar Card",
             "Electricity Bill",
             "Health Insurance Card",
@@ -4789,6 +4848,7 @@
             "EWS"
         ],
         "Ministry": "Ministry of Skill Development",
+        "Ministry": "Ministry of Skill Development",
         "Employment Status": "Self-Employed",
         "Documents": [
             "GST Certificate",
@@ -4816,6 +4876,7 @@
             "ST",
             "EWS"
         ],
+        "Ministry": "Ministry of Skill Development",
         "Ministry": "Ministry of Skill Development",
         "Employment Status": "Student",
         "Documents": [
@@ -4900,6 +4961,7 @@
             "SC"
         ],
         "Ministry": "Ministry of Social Justice and Empowerment",
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Income Certificate",
@@ -4922,7 +4984,6 @@
         "Marital Status": "i",
         "Income": "1,00,000 - 3,00,000",
         "Caste": [
-            "ST",
             "General",
             "EWS",
             "SC"
@@ -4952,10 +5013,12 @@
         "Caste": [
             "ST",
             "General",
+            "General",
             "EWS",
             "OBC",
             "SC"
         ],
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Employed",
         "Documents": [
@@ -4987,6 +5050,7 @@
             "EWS"
         ],
         "Ministry": "Ministry of Social Justice and Empowerment",
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Unemployed",
         "Documents": [
             "Voter ID",
@@ -5014,6 +5078,7 @@
             "EWS"
         ],
         "Ministry": "Ministry of Social Justice and Empowerment",
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Voter ID",
@@ -5038,6 +5103,7 @@
             "OBC",
             "SC"
         ],
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Student",
         "Documents": [
@@ -5148,6 +5214,7 @@
             "General"
         ],
         "Ministry": "Ministry of Social Justice and Empowerment",
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Student",
         "Documents": [
             "Aadhar Card",
@@ -5227,6 +5294,7 @@
             "SC",
             "ST"
         ],
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -5310,6 +5378,7 @@
             "ST"
         ],
         "Ministry": "Ministry of Social Justice and Empowerment",
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Unemployed",
         "Documents": [
             "Doctor's Prescription",
@@ -5367,6 +5436,7 @@
             "EWS"
         ],
         "Ministry": "Ministry of Social Justice and Empowerment",
+        "Ministry": "Ministry of Social Justice and Empowerment",
         "Employment Status": "Student",
         "Documents": [
             "Aadhar Card",
@@ -5417,6 +5487,7 @@
             "General",
             "ST"
         ],
+        "Ministry": "Ministry of Sports",
         "Ministry": "Ministry of Sports",
         "Employment Status": "Unemployed",
         "Documents": [
@@ -5525,6 +5596,7 @@
             "ST"
         ],
         "Ministry": "Ministry of Sports",
+        "Ministry": "Ministry of Sports",
         "Employment Status": "Unemployed",
         "Documents": [
             "School ID (if student)",
@@ -5552,6 +5624,7 @@
             "General",
             "OBC"
         ],
+        "Ministry": "Ministry of Sports",
         "Ministry": "Ministry of Sports",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -5763,6 +5836,7 @@
         "Category": "Sports",
         "Gender": "Other",
         "Age Range": "25-52",
+        "Age Range": "25-52",
         "State": "Tamil Nadu",
         "Marital Status": "i",
         "Income": "2,00,000 - 5,00,000",
@@ -5801,6 +5875,7 @@
             "SC",
             "General"
         ],
+        "Ministry": "Ministry of Sports",
         "Ministry": "Ministry of Sports",
         "Employment Status": "Student",
         "Documents": [
@@ -5906,6 +5981,7 @@
             "SC"
         ],
         "Ministry": "Ministry of Sports",
+        "Ministry": "Ministry of Sports",
         "Employment Status": "Student",
         "Documents": [
             "School ID (if student)",
@@ -5987,6 +6063,7 @@
             "SC",
             "ST"
         ],
+        "Ministry": "Ministry of Transport",
         "Ministry": "Ministry of Transport",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -6254,6 +6331,7 @@
             "SC"
         ],
         "Ministry": "Ministry of Transport",
+        "Ministry": "Ministry of Transport",
         "Employment Status": "Employed",
         "Documents": [
             "Water Bill",
@@ -6280,6 +6358,7 @@
             "EWS",
             "General"
         ],
+        "Ministry": "Ministry of Transport",
         "Ministry": "Ministry of Transport",
         "Employment Status": "Unemployed",
         "Documents": [
@@ -6335,6 +6414,7 @@
             "SC"
         ],
         "Ministry": "Ministry of Transport",
+        "Ministry": "Ministry of Transport",
         "Employment Status": "Student",
         "Documents": [
             "Admission Receipt",
@@ -6358,6 +6438,7 @@
         "Marital Status": "i",
         "Income": "2,00,000 - 5,00,000",
         "Caste": [
+            "EWS",
             "OBC",
             "General",
             "SC",
@@ -6390,8 +6471,10 @@
             "ST"
         ],
         "Ministry": "Ministry of Transport",
+        "Ministry": "Ministry of Transport",
         "Employment Status": "Unemployed",
         "Documents": [
+            "Agricultural Credit Card",
             "Income Certificate",
             "Insurance Certificate",
             "School ID (if student)",
@@ -6412,6 +6495,7 @@
         "Marital Status": "i",
         "Income": "5,00,000 - 10,00,000",
         "Caste": [
+            "ST",
             "OBC",
             "General",
             "ST",
@@ -6465,6 +6549,10 @@
         "Marital Status": "i",
         "Income": "3,00,000 - 6,00,000",
         "Caste": [
+            "ST",
+            "EWS",
+            "General",
+            "SC",
             "OBC"
         ],
         "Ministry": "Ministry of Tourism",
@@ -6634,10 +6722,15 @@
             "SC"
         ],
         "Ministry": "Ministry of Tourism",
+        "Ministry": "Ministry of Tourism",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Voter ID",
             "Income Certificate",
+            "Voter ID",
+            "Bank Statement",
+            "Passport",
+            "Insurance Certificate",
             "Aadhar Card",
             "Soil Health Card",
             "Passport",
@@ -6804,6 +6897,10 @@
             "Agricultural Credit Card",
             "Voter ID",
             "Income Certificate",
+            "Voter ID",
+            "Driving License",
+            "Passport",
+            "Ration Card",
             "Aadhar Card",
             "Driving License",
             "Passport",
@@ -6831,6 +6928,7 @@
         "Employment Status": "Self-Employed",
         "Documents": [
             "Voter ID",
+            "School/College ID",
             "Aadhar Card",
             "Water Bill",
             "Land Ownership Certificate",
@@ -6910,6 +7008,7 @@
             "ST"
         ],
         "Ministry": "Ministry of Tourism",
+        "Ministry": "Ministry of Tourism",
         "Employment Status": "Employed",
         "Documents": [
             "Voter ID",
@@ -6965,6 +7064,7 @@
             "SC",
             "OBC"
         ],
+        "Ministry": "Ministry of Tourism",
         "Ministry": "Ministry of Tourism",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -7062,6 +7162,7 @@
         "Category": "Utility and Sanitation",
         "Gender": "Other",
         "Age Range": "29-34",
+        "Age Range": "29-34",
         "State": "Tamil Nadu",
         "Marital Status": "i",
         "Income": "2,00,000 - 5,00,000",
@@ -7096,6 +7197,7 @@
         "Caste": [
             "SC"
         ],
+        "Ministry": "Ministry of Urban Development",
         "Ministry": "Ministry of Urban Development",
         "Employment Status": "Student",
         "Documents": [
@@ -7148,6 +7250,8 @@
         "Income": "2,00,000 - 5,00,000",
         "Caste": [
             "ST",
+            "EWS",
+            "SC"
             "EWS",
             "SC"
         ],
@@ -7259,6 +7363,7 @@
             "EWS"
         ],
         "Ministry": "Ministry of Urban Development",
+        "Ministry": "Ministry of Urban Development",
         "Employment Status": "Unemployed",
         "Documents": [
             "Water Bill",
@@ -7367,6 +7472,8 @@
         "Caste": [
             "General",
             "EWS"
+            "General",
+            "EWS"
         ],
         "Ministry": "Ministry of Urban Development",
         "Employment Status": "Student",
@@ -7451,6 +7558,7 @@
             "General"
         ],
         "Ministry": "Ministry of Urban Development",
+        "Ministry": "Ministry of Urban Development",
         "Employment Status": "Employed",
         "Documents": [
             "Water Bill",
@@ -7529,7 +7637,9 @@
         "Income": "3,00,000 - 6,00,000",
         "Caste": [
             "SC"
+            "SC"
         ],
+        "Ministry": "Ministry of Urban Development",
         "Ministry": "Ministry of Urban Development",
         "Employment Status": "Student",
         "Documents": [
@@ -7556,6 +7666,7 @@
         "Caste": [
             "ST",
             "SC",
+            "EWS",
             "General",
             "OBC",
             "EWS"
@@ -7613,6 +7724,7 @@
         "Caste": [
             "OBC"
         ],
+        "Ministry": "Ministry of Women and Child Development",
         "Ministry": "Ministry of Women and Child Development",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -7745,6 +7857,7 @@
         "Marital Status": "i",
         "Income": "1,00,000 - 3,00,000",
         "Caste": [
+            "OBC",
             "General",
             "SC"
         ],
@@ -7830,6 +7943,7 @@
             "General",
             "ST"
         ],
+        "Ministry": "Ministry of Women and Child Development",
         "Ministry": "Ministry of Women and Child Development",
         "Employment Status": "Self-Employed",
         "Documents": [
@@ -7932,6 +8046,7 @@
             "General"
         ],
         "Ministry": "Ministry of Women and Child Development",
+        "Ministry": "Ministry of Women and Child Development",
         "Employment Status": "Self-Employed",
         "Documents": [
             "Birth Certificate",
@@ -8013,6 +8128,7 @@
             "SC",
             "EWS"
         ],
+        "Ministry": "Ministry of Women and Child Development",
         "Ministry": "Ministry of Women and Child Development",
         "Employment Status": "Unemployed",
         "Documents": [
