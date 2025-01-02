@@ -1,58 +1,60 @@
 .profilePage {
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #f0f2f5; /* Light background for the page */
-  padding: 20px; /* Some padding around the card */
 }
 
 .profileCard {
-  width: 100%; /* Set to full width initially */
-  max-width: 600px; /* Limit the maximum width */
-  background: #ffffff; /* Card background color */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  padding: 20px; /* Padding inside the card */
-  text-align: left; /* Align text to the left */
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 900px;
+  margin-top: 4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profileDetails label {
-  display: block;
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profileDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.profileField {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileField label {
   font-weight: bold;
-  margin-bottom: 5px; /* Space between label and input */
+  margin-bottom: 5px;
 }
 
-.profileDetails input,
-.profileDetails select {
-  width: 100%;
+.profileField input,
+.profileField select {
   padding: 8px;
-  margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  border-radius: 4px;
   font-size: 14px;
-}
-
-.profileDetails input:disabled,
-.profileDetails select:disabled {
-  background-color: #e9ecef;
 }
 
 .actionButton {
   display: block;
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #007bff; /* Primary button color */
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #779307;
+  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
-  text-align: center;
 }
 
 .actionButton:hover {
-  background-color: #0056b3; /* Darker on hover */
+  background-color: #719a10;;
 }
