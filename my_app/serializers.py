@@ -8,14 +8,26 @@ from pymongo import MongoClient
 from gridfs import GridFS
 from bson import ObjectId
 
-from rest_framework import serializers
-from .models import UserApplications
-from gridfs import GridFS
-from pymongo import MongoClient
-
 client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['Cluster0']
 fs = GridFS(db)
+class DocumentSerializer(serializers.Serializer):
+    document_id = serializers.CharField()
+    filename = serializers.CharField()
+    content_type = serializers.CharField()
+    size = serializers.IntegerField()
+
+    def to_representation(self, instance):
+        # Fetch file metadata from GridFS
+        file = fs.get(instance)
+        return {
+            'document_id': str(file._id),
+            'filename': file.filename,
+            'content_type': file.content_type,
+            'size': file.length
+        }
+
+
 
 class DocumentSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)

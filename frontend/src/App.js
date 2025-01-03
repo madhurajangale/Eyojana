@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Profile from './components/Profile';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from "./context/AuthContext";
+import SchemeApplicationForm from './pages/SchemeApplicationForm';
 function App() {
   return (
     <div className="App">
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/signup" element={<UserSignUp />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/translate" element={<AutoTranslate/>}/>
+                <Route path="/schemeform" element={<SchemeApplicationForm/>}/>
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
