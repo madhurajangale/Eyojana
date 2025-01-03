@@ -10,33 +10,36 @@ from .models import Scheme
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from .serializers import UserProfileSerializer  # Add this import statement
+from .serializers import UserProfileSerializer 
 from .serializers import UserApplicationsSerializer
+from django.http import FileResponse, Http404
+from gridfs import GridFS
+from django.http import HttpResponse
+from bson.objectid import ObjectId
+from pymongo import MongoClient
+from gridfs import GridFS
 
-# class UserApplicationsView(APIView):
-#     def post(self, request):
-#         # Parse the nested documents field manually
-#         documents = []
-#         for key, value in request.data.items():
-#             if key.startswith('documents'):
-#                 index = int(key.split('[')[1].split(']')[0])
-#                 field = key.split('[')[2].split(']')[0]
-#                 while len(documents) <= index:
-#                     documents.append({})
-#                 documents[index][field] = value
+mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = mongo_client['Cluster0']
+fs = GridFS(db)  
 
-#         # Add parsed documents back into request data
-#         mutable_data = request.data.dict()
-#         mutable_data['documents'] = documents
-
-#         # Serialize and save
-#         serializer = UserApplicationsSerializer(data=mutable_data)
-#         if serializer.is_valid():
-#             application = serializer.save()
-#             return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+class FileDownloadView(APIView):
+    def get(self, request, file_id):
+        try:
+            file = fs.get(ObjectId(file_id))
+            if file.filename.endswith(".png"):
+                content_type = "image/png"
+            elif file.filename.endswith(".jpeg") or file.filename.endswith(".jpg"):
+                content_type = "image/jpeg"
+            elif file.filename.endswith(".pdf"):
+                content_type = "application/pdf"
+            else:
+                content_type = "application/octet-stream"  
+            response = HttpResponse(file.read(), content_type=content_type)
+            response['Content-Disposition'] = f'inline; filename="{file.filename}"' 
+            return response
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
 class UserApplicationsView(APIView):
     def post(self, request):
         documents = []
