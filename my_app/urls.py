@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import SignupView, LoginView, AdminSignupView, AdminLoginView,UserProfileView,UserProfileEditView
 from .views import SchemeCreateView
-from .views import UserApplicationsView
+from .views import UserApplicationsView, FileDownloadView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('profile/<str:email>/', UserProfileView.as_view(), name='user-profile'),
     path('profile/<str:email>/edit/', UserProfileEditView.as_view(), name='user-profile-edit'),
     path('applications/', UserApplicationsView.as_view(), name='user-application'),
+    path('download/<str:file_id>/', FileDownloadView.as_view(), name='file_download'),
 
 
 
