@@ -1,0 +1,112 @@
+[
+    {
+        "user_id": 1,
+        "scheme_name": "Scheme A",
+        "interaction": 1
+    },
+    {
+        "user_id": 1,
+        "scheme_name": "Scheme B",
+        "interaction": 0
+    },
+    {
+        "user_id": 1,
+        "scheme_name": "Scheme C",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 2,
+        "scheme_name": "Scheme A",
+        "interaction": 1
+    },
+    {
+        "user_id": 2,
+        "scheme_name": "Scheme B",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 2,
+        "scheme_name": "Scheme C",
+        "interaction": 0
+    },
+    {
+        "user_id": 3,
+        "scheme_name": "Scheme A",
+        "interaction": 0
+    },
+    {
+        "user_id": 3,
+        "scheme_name": "Scheme D",
+        "interaction": 1
+    },
+    {
+        "user_id": 4,
+        "scheme_name": "Scheme E",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 5,
+        "scheme_name": "Scheme A",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 5,
+        "scheme_name": "Scheme B",
+        "interaction": 1
+    },
+    {
+        "user_id": 5,
+        "scheme_name": "Scheme D",
+        "interaction": 0
+    },
+    {
+        "user_id": 6,
+        "scheme_name": "Scheme C",
+        "interaction": 1
+    },
+    {
+        "user_id": 6,
+        "scheme_name": "Scheme E",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 7,
+        "scheme_name": "Scheme A",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 7,
+        "scheme_name": "Scheme B",
+        "interaction": 1
+    },
+    {
+        "user_id": 8,
+        "scheme_name": "Scheme C",
+        "interaction": 0
+    },
+    {
+        "user_id": 8,
+        "scheme_name": "Scheme E",
+        "interaction": 1
+    },
+    {
+        "user_id": 9,
+        "scheme_name": "Scheme D",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 9,
+        "scheme_name": "Scheme A",
+        "interaction": 1
+    },
+    {
+        "user_id": 10,
+        "scheme_name": "Scheme B",
+        "interaction": 0.5
+    },
+    {
+        "user_id": 10,
+        "scheme_name": "Scheme C",
+        "interaction": 1
+    }
+]
