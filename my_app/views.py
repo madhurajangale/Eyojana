@@ -21,7 +21,45 @@ from gridfs import GridFS
 
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
-fs = GridFS(db)  
+fs = GridFS(db)
+
+
+from .serializers import UserApplicationsSerializer
+
+class FetchApplicationDocumentsView(APIView):
+    def get(self, request, application_id):
+        try:
+            application = UserApplications.objects.get(id=application_id)
+            documents = []
+
+            for doc_meta in application.documents:
+                file_id = doc_meta.get("file_id")
+                file = fs.get(ObjectId(file_id))
+                documents.append({
+                    "name": doc_meta.get("name"),
+                    "filename": file.filename,
+                    "size": file.length,
+                    "content_type": file.content_type,
+                })
+
+            return Response({"documents": documents}, status=status.HTTP_200_OK)
+
+        except UserApplications.DoesNotExist:
+            return Response({"error": "Application not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class FetchUserApplicationsView(APIView):
+    def get(self, request, user_email):
+        try:
+            applications = UserApplications.objects.filter(user_email=user_email)
+            if not applications.exists():
+                return Response({"error": "No applications found for this user."}, status=status.HTTP_404_NOT_FOUND)
+
+            serialized_apps = ApplicationSerializer(applications, many=True).data
+            return Response({"applications": serialized_apps}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class FileDownloadView(APIView):
     def get(self, request, file_id):
