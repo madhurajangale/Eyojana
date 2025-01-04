@@ -10,19 +10,14 @@ const Chat = () => {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const storedMessages = JSON.parse(localStorage.getItem('messages')) || [];
-    setMessages(storedMessages);
-
+    // Fetch messages from the server
     fetch('http://localhost:5000/messages')
       .then(res => res.json())
       .then(data => setMessages(data));
 
+    // Listen for new messages
     socket.on('message', (message) => {
-      setMessages(prevMessages => {
-        const updatedMessages = [...prevMessages, message];
-        localStorage.setItem('messages', JSON.stringify(updatedMessages));
-        return updatedMessages;
-      });
+      setMessages(prevMessages => [...prevMessages, message]);
     });
 
     return () => socket.disconnect();
@@ -30,7 +25,7 @@ const Chat = () => {
 
   const sendMessage = () => {
     if (!username || !input) return;
-    const message = { username, text: input };
+    const message = { username, text: input, timestamp: new Date().toISOString() };
     fetch('http://localhost:5000/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -49,6 +44,7 @@ const Chat = () => {
           <div key={index} className="message">
             <div className="message-box">
               <strong>{msg.username}:</strong> {msg.text}
+              <small>{new Date(msg.timestamp).toLocaleString()}</small>
             </div>
           </div>
         ))}
