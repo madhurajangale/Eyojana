@@ -11,7 +11,6 @@ from gridfs import GridFS
 from pymongo import MongoClient
 import os
 from bson import ObjectId
-from djongo import models
 
 from bson.objectid import ObjectId
 
@@ -25,7 +24,7 @@ fs = GridFS(db)
 from bson import ObjectId
 
 class UserApplications(models.Model):
-    id = models.ObjectIdField()
+    id = models.CharField(primary_key=True, max_length=24, default=lambda: str(ObjectId()))
     user_email = models.EmailField()
     scheme_name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)

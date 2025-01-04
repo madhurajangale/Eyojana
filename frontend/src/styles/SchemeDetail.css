@@ -1,0 +1,48 @@
+/* SchemeDetail.css */
+
+.scheme-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .scheme-title {
+    text-align: center;
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .scheme-detail-container p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #555;
+  }
+  
+  .scheme-detail-container strong {
+    color: #333;
+  }
+  
+  .scheme-detail-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+  
+  .scheme-detail-container li {
+    font-size: 18px;
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .error-message {
+    text-align: center;
+    color: red;
+    font-size: 20px;
+    margin-top: 50px;
+  }
+  

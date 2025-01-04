@@ -23,9 +23,104 @@ mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.
 db = mongo_client['Cluster0']
 fs = GridFS(db)
 
+import gridfs
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+import mimetypes
 
-from .serializers import UserApplicationsSerializer
+from PIL import Image
+from io import BytesIO
+from django.http import HttpResponse
 
+class FileDownloadView(APIView):
+    def get(self, request, file_id):
+        try:
+            # Fetch file metadata and chunks from GridFS
+            file = fs.get(ObjectId(file_id))
+
+            # Convert to PNG if the file does not already have a .png extension
+            filename = file.filename.lower()
+            if not filename.endswith('.png'):
+                # Open the file as an image
+                image = Image.open(file)
+
+                # Convert the image to PNG format
+                converted_image = BytesIO()
+                image.save(converted_image, format='PNG')
+                converted_image.seek(0)
+
+                # Return the converted image for rendering in the frontend
+                return HttpResponse(
+                    converted_image,
+                    content_type="image/png"
+                )
+
+            # If the file is already a PNG, return it directly
+            return HttpResponse(file, content_type="image/png")
+
+        except gridfs.errors.NoFile:
+            # Handle missing file error
+            return Response({"error": "File not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            # Handle any unexpected errors
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# class FileDownloadView(APIView):
+#     def get(self, request, file_id):
+#         try:
+#             # Fetch file metadata and chunks from GridFS
+#             file = fs.get(ObjectId(file_id))
+
+#             # Guess content type based on file extension or default to binary stream
+#             content_type, _ = mimetypes.guess_type(file.filename)
+#             content_type = content_type or "application/octet-stream"
+
+#             # Return the file as an HTTP response
+#             response = HttpResponse(file, content_type=content_type)
+#             response['Content-Disposition'] = f'inline; filename="{file.filename}"'
+#             return response
+
+#         except gridfs.errors.NoFile:
+#             # Handle missing file error
+#             return Response({"error": "File not found."}, status=status.HTTP_404_NOT_FOUND)
+       
+# class FileDownloadView(APIView):
+#     def get(self, request, file_id):
+#         try:
+#             # Fetch file metadata and chunks from GridFS
+#             file = fs.get(ObjectId(file_id))
+
+#             # Check file extension for allowed types
+#             allowed_extensions = {'.png', '.jpeg', '.jpg'}
+#             filename = file.filename.lower()
+
+#             # Validate if the file has an allowed extension
+#             if not any(filename.endswith(ext) for ext in allowed_extensions):
+#                 return Response(
+#                     {"error": "File type not allowed. Only .png, .jpeg, and .jpg are supported."},
+#                     status=status.HTTP_400_BAD_REQUEST,
+#                 )
+
+#             # Guess content type based on file extension or default to binary stream
+#             content_type, _ = mimetypes.guess_type(file.filename)
+#             content_type = content_type or "application/octet-stream"
+
+#             # Return the file as an HTTP response
+#             response = HttpResponse(file, content_type=content_type)
+#             response['Content-Disposition'] = f'inline; filename="{file.filename}"'
+#             return response
+
+#         except gridfs.errors.NoFile:
+#             # Handle missing file error
+#             return Response({"error": "File not found."}, status=status.HTTP_404_NOT_FOUND)
+#         except Exception as e:
+#             # Handle any unexpected errors
+#             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class FetchApplicationDocumentsView(APIView):
     def get(self, request, application_id):
         try:
@@ -61,23 +156,30 @@ class FetchUserApplicationsView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class FileDownloadView(APIView):
-    def get(self, request, file_id):
-        try:
-            file = fs.get(ObjectId(file_id))
-            if file.filename.endswith(".png"):
-                content_type = "image/png"
-            elif file.filename.endswith(".jpeg") or file.filename.endswith(".jpg"):
-                content_type = "image/jpeg"
-            elif file.filename.endswith(".pdf"):
-                content_type = "application/pdf"
-            else:
-                content_type = "application/octet-stream"  
-            response = HttpResponse(file.read(), content_type=content_type)
-            response['Content-Disposition'] = f'inline; filename="{file.filename}"' 
-            return response
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+# class FileDownloadView(APIView):
+#     def get(self, request, file_id):
+#         try:
+#             # Fetch file from GridFS
+#             file = fs.get(ObjectId(file_id))
+            
+#             # Determine content type based on file extension
+#             if file.filename.endswith(".png"):
+#                 content_type = "image/png"
+#             elif file.filename.endswith(".jpeg") or file.filename.endswith(".jpg"):
+#                 content_type = "image/jpeg"
+#             elif file.filename.endswith(".pdf"):
+#                 content_type = "application/pdf"
+#             else:
+#                 content_type = "application/octet-stream"  
+
+#             # Prepare the response with inline disposition
+#             response = HttpResponse(file.read(), content_type=content_type)
+#             response['Content-Disposition'] = f'inline; filename="{file.filename}"'  # Inline ensures it's viewable
+#             return response
+
+#         except Exception as e:
+#             # Handle file not found or other exceptions
+#             return Response({"error": "File not found or cannot be retrieved."}, status=status.HTTP_404_NOT_FOUND)
 class UserApplicationsView(APIView):
     def post(self, request):
         documents = []
@@ -232,4 +334,4 @@ class UserProfileEditView(APIView):
             return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         
         except User.DoesNotExist:
-            raise NotFound(detail="User not found.", code=status.HTTP_404_NOT_FOUND)
+            raise NotFound(detail="User not found.", code=status.HTTP_404_NOT_FOUND) 
