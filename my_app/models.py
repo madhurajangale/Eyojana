@@ -116,3 +116,13 @@ class Admin(models.Model):
         db_table = 'admin'
 
 
+class UserRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    scheme = models.ForeignKey(Scheme, on_delete=models.CASCADE)
+    rating = models.FloatField(default=0.0)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.user
+    
+    class Meta:
+        db_table = 'scheme_rating'
