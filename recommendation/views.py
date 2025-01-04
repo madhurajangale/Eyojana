@@ -4,7 +4,18 @@ from django.http import JsonResponse
 from my_app.models import User
 import requests
 from rest_framework.views import APIView
-
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from my_app.models import User, UserRating,Scheme
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import JsonResponse
+from bson import ObjectId
+from my_app.models import UserRating
+from .serializers import UserRatingSerializer
+from rest_framework.exceptions import NotFound
+import logging
 class GetRecommendation(APIView):
 # Eligibility-based recommendation
  def get(self,request, email):
@@ -50,3 +61,90 @@ class GetRecommendation(APIView):
         eligible_schemes.append("Scheme C")
 
     return eligible_schemes
+
+
+
+logger = logging.getLogger(__name__)
+
+class UpdateRatingView(APIView):
+    # def patch(self, request, user_email, scheme_name):
+    #     try:
+    #         # Fetch the UserRating entry by user email and scheme name
+    #         user_rating = UserRating.objects.get(user=user_email, scheme=scheme_name)
+
+    #         # Log the fetched UserRating
+    #         logger.debug(f'Fetched UserRating: {user_rating}')
+            
+    #         # Extract the MongoDB ObjectId
+            
+
+    #         # Use the serializer to validate and update the rating data
+    #         serializer = UserRatingSerializer(user_rating, data=request.data, partial=True)  # partial=True allows partial updates
+            
+    #         if serializer.is_valid():
+    #             # Ensure we are updating the correct entry
+    #             UserRating.objects.get(user=user_email, scheme=scheme_name).update(**serializer.validated_data)
+    #             return JsonResponse({
+    #                 'status': 'success',
+    #                 'message': 'Rating updated successfully.',
+    #                 'data': serializer.data
+    #             })
+    #         return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+    #     except UserRating.DoesNotExist:
+    #         raise NotFound(detail="UserRating entry not found.", code=status.HTTP_404_NOT_FOUND)
+    
+    def patch(self, request, email,scheme):
+        try:
+            print("Incoming Request Data:", request.data)
+
+            # Fetch the user using email
+            user = get_object_or_404(User, email=email)
+            print(f"User Found: {user}")
+
+            # Fetch the UserRating object for this user and scheme
+            scheme_name = request.data.get("scheme")  # Extract scheme name from request
+            if not scheme_name:
+                return JsonResponse({"error": "Scheme name is required."}, status=400)
+
+            rating = get_object_or_404(UserRating, user=user, scheme=scheme_name)
+            print(f"Existing Rating Found: {rating}")
+
+            # Update rating using serializer
+            serializer = UserRatingSerializer(rating, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                print("Serializer Validated Data:", serializer.validated_data)
+                serializer.save()  # Save the updated data
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Rating updated successfully.',
+                    'data': serializer.data
+                })
+
+            print("Serializer Errors:", serializer.errors)
+            return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': serializer.errors}, status=400)
+
+        except UserRating.DoesNotExist:
+            print("UserRating Entry Not Found")
+            return JsonResponse({'status': 'error', 'message': 'User rating not found.'}, status=404)
+
+        except User.DoesNotExist:
+            print("User Not Found")
+            return JsonResponse({'status': 'error', 'message': 'User not found.'}, status=404)
+
+class CreateRatingView(APIView):
+    def post(self, request):
+        # Use the serializer to validate and create a new rating entry
+        print(request.data)
+        serializer = UserRatingSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()  # Save the new rating entry
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Rating created successfully.',
+                'data': serializer.data
+            }, status=status.HTTP_201_CREATED)
+        
+        return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
