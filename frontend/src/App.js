@@ -43,7 +43,7 @@ function App() {
                 <Route path="/schemeform" element={<SchemeApplicationForm/>}/>
                 <Route path="/users" element={<UserApplications/>}/>     
                 <Route path="/application-documents" element={<ApplicationDocuments />} />
-                        <Route path="/scheme" element={<Scheme/>}/>
+                <Route path="/scheme" element={<Scheme/>}/>
                 <Route path="/scheme-details" element={<SchemeDetail/>}/>
         </Routes>
       </BrowserRouter>
