@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from pymongo import MongoClient
 from gridfs import GridFS
 from bson import ObjectId
-
+from my_app.models import UserRating
 client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['Cluster0']
 fs = GridFS(db)

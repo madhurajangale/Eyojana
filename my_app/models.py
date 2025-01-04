@@ -116,13 +116,20 @@ class Admin(models.Model):
         db_table = 'admin'
 
 
+
+
+
+
 class UserRating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    scheme = models.ForeignKey(Scheme, on_delete=models.CASCADE)
-    rating = models.FloatField(default=0.0)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.EmailField()
+    scheme = models.CharField(max_length=255)
+    rating = models.IntegerField()
+    # _id = models.ObjectIdField(primary_key=True, default=ObjectId, editable=False)
+
     def __str__(self):
-        return self.user
-    
+        return f"{self.user} - {self.scheme}"
+        
     class Meta:
         db_table = 'scheme_rating'
+        unique_together = ('user', 'scheme')
+

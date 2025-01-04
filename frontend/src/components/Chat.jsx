@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import io from 'socket.io-client';
 import '../styles/Chat.css';
-
+import { AuthContext } from "../context/AuthContext";
 const socket = io('http://localhost:5000'); // Ensure this URL matches your server's
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [username, setUsername] = useState('');
-
+  const { login, user } = useContext
+  (AuthContext);
+  console.log(login);
   useEffect(() => {
     // Fetch messages from the server
     fetch('http://localhost:5000/messages')
