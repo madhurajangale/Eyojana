@@ -10,50 +10,107 @@ from .models import Scheme
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from .serializers import UserProfileSerializer  # Add this import statement
-from .models import UserApplications
+from .serializers import UserProfileSerializer 
+from .serializers import UserApplicationsSerializer
+from django.http import FileResponse, Http404
+from gridfs import GridFS
+from django.http import HttpResponse
+from bson.objectid import ObjectId
+from pymongo import MongoClient
+from gridfs import GridFS
+
+mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = mongo_client['Cluster0']
+fs = GridFS(db)
+
+
 from .serializers import UserApplicationsSerializer
 
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import UserApplicationsSerializer
-
-
-class UserApplicationsView(APIView):
-  def post(self, request):
-    print(request.data)  # Debugging: Check input data
-    serializer = UserApplicationsSerializer(data=request.data)
-    if serializer.is_valid():
-        application = serializer.save()
-        return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)  # Debugging: Check validation errors
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-    def get(self, request):
-        """
-        Retrieve all applications (optional).
-        """
-        from .models import UserApplications
-        applications = UserApplications.objects.all()
-        serializer = UserApplicationsSerializer(applications, many=True)
-        return Response(serializer.data)
-
-
-    def delete(self, request, pk):
-        """
-        Delete an application by ID.
-        """
+class FetchApplicationDocumentsView(APIView):
+    def get(self, request, application_id):
         try:
-            application = UserApplications.objects.get(pk=pk)
-            application.delete()
-            return Response({"message": "Application deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            application = UserApplications.objects.get(id=application_id)
+            documents = []
+
+            for doc_meta in application.documents:
+                file_id = doc_meta.get("file_id")
+                file = fs.get(ObjectId(file_id))
+                documents.append({
+                    "name": doc_meta.get("name"),
+                    "filename": file.filename,
+                    "size": file.length,
+                    "content_type": file.content_type,
+                })
+
+            return Response({"documents": documents}, status=status.HTTP_200_OK)
+
         except UserApplications.DoesNotExist:
-            return Response({"error": "Application not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Application not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class FetchUserApplicationsView(APIView):
+    def get(self, request, user_email):
+        try:
+            applications = UserApplications.objects.filter(user_email=user_email)
+            if not applications.exists():
+                return Response({"error": "No applications found for this user."}, status=status.HTTP_404_NOT_FOUND)
 
+            serialized_apps = ApplicationSerializer(applications, many=True).data
+            return Response({"applications": serialized_apps}, status=status.HTTP_200_OK)
 
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class FileDownloadView(APIView):
+    def get(self, request, file_id):
+        try:
+            file = fs.get(ObjectId(file_id))
+            if file.filename.endswith(".png"):
+                content_type = "image/png"
+            elif file.filename.endswith(".jpeg") or file.filename.endswith(".jpg"):
+                content_type = "image/jpeg"
+            elif file.filename.endswith(".pdf"):
+                content_type = "application/pdf"
+            else:
+                content_type = "application/octet-stream"  
+            response = HttpResponse(file.read(), content_type=content_type)
+            response['Content-Disposition'] = f'inline; filename="{file.filename}"' 
+            return response
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+class UserApplicationsView(APIView):
+    def post(self, request):
+        documents = []
+        
+        # Parse documents data from the request
+        for key, value in request.data.items():
+            if key.startswith('documents['):
+                # Extract index and field name
+                index = int(key.split('[')[1].split(']')[0])
+                field = key.split('[')[2].split(']')[0]
+                # Ensure the list has enough space
+                while len(documents) <= index:
+                    documents.append({})
+                # Add field data
+                documents[index][field] = value
+
+        # Attach files to the appropriate documents
+        for key, value in request.FILES.items():
+            if key.startswith('documents['):
+                index = int(key.split('[')[1].split(']')[0])
+                documents[index]['file'] = value
+
+        # Add documents back into request data
+        mutable_data = request.data.dict()
+        mutable_data['documents'] = documents
+
+        # Serialize and save
+        serializer = UserApplicationsSerializer(data=mutable_data)
+        if serializer.is_valid():
+            application = serializer.save()
+            return Response(UserApplicationsSerializer(application).data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SchemeCreateView(APIView):

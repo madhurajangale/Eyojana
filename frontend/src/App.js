@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home';
 import Category from './components/Category';
@@ -10,6 +9,11 @@ import Navbar from './components/Navbar';
 import Profile from './components/Profile';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from "./context/AuthContext";
+import SchemeApplicationForm from './pages/SchemeApplicationForm';
+import ApplicationDocuments from './components/ApplicationDocuments';
+import UserApplications from './components/UserApplications';
+import Scheme from './pages/Scheme';
+import SchemeDetail from './pages/SchemeDetail';
 function App() {
   return (
     <div className="App">
@@ -36,6 +40,11 @@ function App() {
                 <Route path="/signup" element={<UserSignUp />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/translate" element={<AutoTranslate/>}/>
+                <Route path="/schemeform" element={<SchemeApplicationForm/>}/>
+                <Route path="/users" element={<UserApplications/>}/>     
+                <Route path="/application-documents" element={<ApplicationDocuments />} />
+                        <Route path="/scheme" element={<Scheme/>}/>
+                <Route path="/scheme-details" element={<SchemeDetail/>}/>
         </Routes>
       </BrowserRouter>
     </LanguageProvider>

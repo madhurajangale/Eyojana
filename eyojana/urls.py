@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('my_app.urls')), 
     path('api/', include('translator.urls')), 
+    path('api/', include('recommendation.urls')),
 ]
 
 # Append static files handling during development

@@ -4,11 +4,28 @@ from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from .models import UserApplications
 from django.core.exceptions import ValidationError
-
-
 from pymongo import MongoClient
 from gridfs import GridFS
 from bson import ObjectId
+
+client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client['Cluster0']
+fs = GridFS(db)
+class DocumentSerializer(serializers.Serializer):
+    document_id = serializers.CharField()
+    filename = serializers.CharField()
+    content_type = serializers.CharField()
+    size = serializers.IntegerField()
+
+    def to_representation(self, instance):
+        # Fetch file metadata from GridFS
+        file = fs.get(instance)
+        return {
+            'document_id': str(file._id),
+            'filename': file.filename,
+            'content_type': file.content_type,
+            'size': file.length
+        }
 
 
 
@@ -22,51 +39,29 @@ class DocumentSerializer(serializers.Serializer):
         """
         return validated_data
 
-
 class UserApplicationsSerializer(serializers.ModelSerializer):
-    documents = DocumentSerializer(many=True, write_only=True, required=False)
+    documents = serializers.ListField(
+        child=DocumentSerializer(),
+        write_only=True,
+        required=False
+    )
 
     class Meta:
         model = UserApplications
         fields = ['id', 'user_email', 'scheme_name', 'category', 'status', 'applied_date', 'documents']
 
-    def validate(self, data):
-        """
-        Validate the application data.
-        """
-        user_email = data.get('user_email')
-        scheme_name = data.get('scheme_name')
-
-        # Check if user exists
-        if not User.objects.filter(email=user_email).exists():
-            raise serializers.ValidationError({'user_email': "The user with this email does not exist."})
-
-        # Check if scheme exists
-        if not Scheme.objects.filter(schemename=scheme_name).exists():
-            raise serializers.ValidationError({'scheme_name': "The scheme with this name does not exist."})
-
-        return data
-
     def create(self, validated_data):
-        """
-        Create a new application and save documents in GridFS.
-        """
         documents = validated_data.pop('documents', [])
         application = UserApplications.objects.create(**validated_data)
 
-        # Connect to MongoDB and GridFS
-        client = MongoClient('mongodb://localhost:27017/')
-        db = client['your_database_name']
-        fs = GridFS(db)
-
+        # Handle document uploads
         for document in documents:
-            file_id = fs.put(document['file'], filename=document['name'])
-            application.add_document(name=document['name'], file_id=file_id)
+            file = document.get('file')  # Extract file
+            filename = document.get('name')  # Extract filename
+            file_id = fs.put(file, filename=filename)  # Save file in GridFS
+            application.add_document(name=filename, file_id=file_id)
 
         return application
-
-
-
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -79,8 +74,7 @@ class SchemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scheme
         fields = [
-            'schemename', 'category', 'gender', 'age_range', 'state',
-            'marital_status', 'income', 'caste', 'ministry', 'employment_status', 'documents','benefits','details'
+            'schemename', 'category', 'gender', 'age_range', 'marital_status', 'income', 'caste', 'ministry', 'employment_status', 'documents','benefits','details'
         ]
 
     def create(self, validated_data):

@@ -3,10 +3,6 @@ import random
 
 # Define scheme categories and related attributes
 scheme_names = {
-    "Agriculture": [f"Agriculture, Rural & Environment {i+1}" for i in range(20)],
-    "Banking": [f"Banking, Financial Services and Insurance {i+1}" for i in range(20)],
-    "Business Entrepreneurship": [f"Business & Entrepreneurship {i+1}" for i in range(20)],
-    "Education": [f"Education & Learning {i+1}" for i in range(20)],
     "Health": [f"Health & Wellness {i+1}" for i in range(20)],
     "Housing": [f"Housing & Shelter {i+1}" for i in range(20)],
     "Public Safety": [f"Public Safety, Law & Justice {i+1}" for i in range(20)],
@@ -104,11 +100,11 @@ scheme_details_and_benefits = {
 
 # Other fixed attributes
 age_ranges = {
-    category: [f"{random.randint(18, 30)}-{random.randint(31, 60)}" for _ in range(20)]
+    category: [f"{random.randint(18, 30)}-{random.randint(31, 70)}" for _ in range(20)]
     for category in scheme_names
 }
-genders = ["Male", "Female", "Other"]
-states = ["Maharashtra", "Karnataka", "Tamil Nadu", "Kerala", "Uttar Pradesh", "Gujarat"]
+genders = ["Male", "Female", "Other","All"]
+
 marital_status = ["Married", "Unmarried", "Widowed", "Divorced"]
 income_ranges_proper_format = [
     "< 2,00,000", "1,00,000 - 3,00,000", "2,00,000 - 5,00,000",
@@ -211,10 +207,9 @@ for category, schemes in scheme_names.items():
         # Create an entry with the required data
         entry = {
             "Scheme Name": scheme,
-            "Category": category,
+            "Category": scheme_names[category][i][:-2],
             "Gender": gender,
             "Age Range": age_ranges[category][i % len(age_ranges[category])],
-            "State": states[i % len(states)],
             "Marital Status": marital_status_value,
             "Income": random.choice(income_ranges_proper_format),
             "Caste": random.sample(available_castes, k=random.randint(1, len(available_castes))),
@@ -229,7 +224,7 @@ for category, schemes in scheme_names.items():
         data.append(entry)
 
 # Save the dataset to JSON
-output_file = "C:\\Docs\\Rujuta\\techathon\\Eyojana\\dataset_with_benefits_details.json"
+output_file = "C:\\Docs\\Rujuta\\techathon\\Eyojana\\dataset_final.json"
 with open(output_file, "w") as json_file:
     json.dump(data, json_file, indent=4)
 
