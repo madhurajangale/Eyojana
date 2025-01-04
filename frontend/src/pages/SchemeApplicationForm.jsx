@@ -59,11 +59,14 @@ const SchemeApplicationForm = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+      
       });
+      
       setMessage("Application submitted successfully!");
     } catch (error) {
       setMessage("Failed to submit application. Please try again.");
       console.error(error);
+      
     }
   };
 

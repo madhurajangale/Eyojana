@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home';
 import Category from './components/Category';
@@ -11,6 +10,8 @@ import Profile from './components/Profile';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from "./context/AuthContext";
 import SchemeApplicationForm from './pages/SchemeApplicationForm';
+import ApplicationDocuments from './components/ApplicationDocuments';
+import UserApplications from './components/UserApplications';
 function App() {
   return (
     <div className="App">
@@ -38,7 +39,9 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/translate" element={<AutoTranslate/>}/>
                 <Route path="/schemeform" element={<SchemeApplicationForm/>}/>
-        </Routes>
+                <Route path="/users" element={<UserApplications/>}/>     
+                <Route path="/application-documents" element={<ApplicationDocuments />} />
+                </Routes>
       </BrowserRouter>
     </LanguageProvider>
     </AuthProvider>
