@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../styles/Category.css";
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
+import { useNavigate } from "react-router-dom";
+
 const categories = [
   { icon: "🌱", title: "Agriculture, Rural & Environment" },
   { icon: "🏦", title: "Banking, Financial Services and Insurance" },
@@ -20,6 +22,7 @@ const categories = [
   { icon: "💑", title: "Women and Child" },
 ];
 const Category = () => {
+  const navigate = useNavigate();
   const { selectedLang } = useLanguage();
     const [translatedTexts, setTranslatedTexts] = useState({});
 const translateTexts = async (language) => {
@@ -55,7 +58,10 @@ const translateTexts = async (language) => {
   useEffect(() => {
     translateTexts(selectedLang); // Translate texts when language changes
   }, [selectedLang]);
-
+  const handleViewCategory = (category) => {
+    console.log(category)
+    navigate(`/scheme`, { state: { category } });
+  };
   return (
     <div className="category-page">
   <h1 data-key="pageTitle">schemes based on categories</h1>
@@ -64,7 +70,8 @@ const translateTexts = async (language) => {
       <div key={index} className="category-card">
         <div className="icon">{cat.icon}</div>
         <h3 data-key={`title-${index}`} className="title">{cat.title}</h3>
-        <button data-key={`view-${index}`} className="view-button">View</button>
+        <button data-key={`view-${index}`} className="view-button"
+        onClick={() => handleViewCategory(cat.title)}>View</button>
       </div>
     ))}
   </div>

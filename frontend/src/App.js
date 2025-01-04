@@ -12,6 +12,8 @@ import { AuthProvider } from "./context/AuthContext";
 import SchemeApplicationForm from './pages/SchemeApplicationForm';
 import ApplicationDocuments from './components/ApplicationDocuments';
 import UserApplications from './components/UserApplications';
+import Scheme from './pages/Scheme';
+import SchemeDetail from './pages/SchemeDetail';
 function App() {
   return (
     <div className="App">
@@ -41,7 +43,9 @@ function App() {
                 <Route path="/schemeform" element={<SchemeApplicationForm/>}/>
                 <Route path="/users" element={<UserApplications/>}/>     
                 <Route path="/application-documents" element={<ApplicationDocuments />} />
-                </Routes>
+                        <Route path="/scheme" element={<Scheme/>}/>
+                <Route path="/scheme-details" element={<SchemeDetail/>}/>
+        </Routes>
       </BrowserRouter>
     </LanguageProvider>
     </AuthProvider>
