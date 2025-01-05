@@ -24,7 +24,7 @@ fs = GridFS(db)
 from bson import ObjectId
 
 class UserApplications(models.Model):
-    id = models.CharField(primary_key=True, max_length=24, default=lambda: str(ObjectId()))
+    # id = models.CharField(primary_key=True, max_length=24, default=lambda: str(ObjectId()))
     user_email = models.EmailField()
     scheme_name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
@@ -120,16 +120,33 @@ class Admin(models.Model):
 
 
 
+from django.db import models
+from django.core.exceptions import ValidationError
+
 class UserRating(models.Model):
     user = models.EmailField()
     scheme = models.CharField(max_length=255)
     rating = models.IntegerField()
-    # _id = models.ObjectIdField(primary_key=True, default=ObjectId, editable=False)
+
+    # Custom primary key by combining user and scheme
+    custom_id = models.CharField(max_length=255, unique=True, blank=True,primary_key=True)
+
+    def save(self, *args, **kwargs):
+        # Generate a unique custom ID based on user and scheme
+        if not self.custom_id:
+            self.custom_id = f"{self.user}_{self.scheme}"
+            print(f"Saving UserRating: {self.custom_id} with rating {self.rating}")
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user} - {self.scheme}"
-        
+
     class Meta:
         db_table = 'scheme_rating'
-        unique_together = ('user', 'scheme')
-
+        indexes = [
+            models.Index(fields=['user', 'scheme']),  # Index for faster lookup
+        ]
+        # Uncomment this if you want a unique compound constraint
+        # constraints = [
+        #     models.UniqueConstraint(fields=['user', 'scheme'], name='unique_user_scheme')
+        # ]

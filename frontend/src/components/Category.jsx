@@ -34,7 +34,16 @@ const translateTexts = async (language) => {
     const key = element.getAttribute("data-key");
     textMap[key] = element.textContent.trim();
   });
-
+  if (language === "en") {
+    // Revert to original text written in the code
+    Object.keys(textMap).forEach((key) => {
+      const element = document.querySelector(`[data-key="${key}"]`);
+      if (element) {
+        element.textContent = textMap[key]; // Use the `data-key` as the original English text
+      }
+    });
+    return; // Exit the function for English
+  }
   try {
     // Send texts for translation
     const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
