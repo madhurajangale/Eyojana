@@ -11,23 +11,34 @@ from my_app.models import UserRating
 client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['Cluster0']
 fs = GridFS(db)
-class DocumentSerializer(serializers.Serializer):
-    document_id = serializers.CharField()
-    filename = serializers.CharField()
-    content_type = serializers.CharField()
-    size = serializers.IntegerField()
-
-    def to_representation(self, instance):
-        # Fetch file metadata from GridFS
-        file = fs.get(instance)
-        return {
-            'document_id': str(file._id),
-            'filename': file.filename,
-            'content_type': file.content_type,
-            'size': file.length
-        }
 
 
+class DocumentSerializer1(serializers.Serializer):
+    name = serializers.CharField(max_length=255)
+    content = serializers.CharField()  # Base64 encoded file content
+
+class UserApplicationsDocumentSerializer(serializers.ModelSerializer):
+    documents = DocumentSerializer1(many=True, read_only=True)
+
+    class Meta:
+        model = UserApplications
+        fields = ['id', 'user_email', 'scheme_name', 'category', 'status', 'applied_date', 'documents']
+
+# class DocumentSerializer(serializers.Serializer):
+#     document_id = serializers.CharField()
+#     filename = serializers.CharField()
+#     content_type = serializers.CharField()
+#     size = serializers.IntegerField()
+
+#     def to_representation(self, instance):
+#         # Fetch file metadata from GridFS
+#         file = fs.get(instance)
+#         return {
+#             'document_id': str(file._id),
+#             'filename': file.filename,
+#             'content_type': file.content_type,
+#             'size': file.length
+#         }
 
 class DocumentSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
