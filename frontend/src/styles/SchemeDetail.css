@@ -1,48 +1,94 @@
-/* SchemeDetail.css */
-
 .scheme-detail-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
-  }
   
-  .scheme-title {
-    text-align: center;
-    color: #333;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-  
-  .scheme-detail-container p {
-    font-size: 18px;
-    margin: 10px 0;
-    color: #555;
-  }
-  
-  .scheme-detail-container strong {
-    color: #333;
-  }
-  
-  .scheme-detail-container ul {
-    list-style-type: disc;
-    padding-left: 20px;
-    margin-top: 10px;
-  }
-  
-  .scheme-detail-container li {
-    font-size: 18px;
-    margin: 5px 0;
-    color: #555;
-  }
-  
-  .error-message {
-    text-align: center;
-    color: red;
-    font-size: 20px;
-    margin-top: 50px;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  margin: 20px auto;
+  margin-top: 5rem;
+  padding: 20px;
+  max-width: 1000px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scheme-header {
+  text-align: center;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.scheme-title {
+  font-size: 2rem;
+  color: #779307;
+  margin: 0;
+  text-align: left;
+}
+
+.scheme-category {
+  font-size: 1rem;
+  color: #666;
+}
+
+.scheme-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.info-section {
+  flex: 1;
+  margin: 10px;
+  min-width: 200px;
+}
+
+.scheme-benefits,
+.scheme-details,
+.scheme-documents {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.scheme-benefits h3,
+.scheme-details h3,
+.scheme-documents h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.scheme-documents ul {
+  padding-left: 20px;
+  text-align: left;
+}
+
+.scheme-documents li {
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  color: #d9534f;
+  text-align: center;
+  padding: 20px;
+  background: #f2dede;
+  border: 1px solid #ebccd1;
+  border-radius: 5px;
+}
+
+.applybtn{
+  background-color: #8BC34A;
+    color: white;
+    font-size: 1rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.applybtn:hover {
+    background-color: #72a347;
+}
