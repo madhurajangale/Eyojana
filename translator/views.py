@@ -13,7 +13,7 @@ def translate_text(request):
             # Parse the JSON request
             data = json.loads(request.body)
             sentences = data.get('sentences', [])  # Expecting a list of sentences
-            target_lang = data.get('target_lang', 'hi')  # Default to Hindi
+            target_lang = data.get('target_lang', 'en')  # Default to Hindi
             sentences = [str(sentence) for sentence in sentences]
             # Translate sentences
             translated_sentences = [
