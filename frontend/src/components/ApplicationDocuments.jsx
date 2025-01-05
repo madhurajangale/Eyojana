@@ -7,21 +7,32 @@ const ApplicationDocuments = ({ applicationId }) => {
 
   const fetchDocument = async () => {
     try {
-      // Replace hardcoded ID with dynamic applicationId if needed
-      const response = axios.get('http://127.0.0.1:8000/api/download/6778f24cc05d8e8a6762cf07/', { timeout: 60000 })
-      .then(response => console.log(response.data))
-      .catch(error => console.error(error));
-    
-      if (response.data && response.data.filename) {
-        // Set the document details
-        setDocument({
-          filename: response.data.filename,
-          size: response.data.size || "Unknown",
-          documentUrl: `http://127.0.0.1:8000/api/download/6778f24cc05d8e8a6762cf07/`, // Use dynamic URL
-        });
-        setMessage(""); // Clear error message
-      } else {
-        setMessage("No document found.");
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/download/6778f24cc05d8e8a6762cf07/`,
+        { responseType: "blob", timeout: 60000 }
+      );
+
+      if (response.status === 200) {
+        const imageBlob = response.data;
+        const imageUrl = URL.createObjectURL(imageBlob); // Create a URL for the Blob
+        
+        // If it's an image, display it as an image
+        if (imageBlob.type.startsWith("image")) {
+          setDocument({
+            filename: "image.png", // Or derive filename if necessary
+            documentUrl: imageUrl,
+            isImage: true,
+          });
+        } else {
+          // If it's a different document type, display it using an iframe
+          setDocument({
+            filename: "document.pdf", // Or derive filename if necessary
+            documentUrl: imageUrl,
+            isImage: false,
+          });
+        }
+
+        setMessage(""); // Clear any previous error message
       }
     } catch (error) {
       setMessage("Failed to fetch document.");
@@ -50,15 +61,19 @@ const ApplicationDocuments = ({ applicationId }) => {
         <div className="document-preview">
           <h3>{document.filename}</h3>
           <p>
-            <strong>Size:</strong> {document.size} bytes
+            <strong>Size:</strong> {document.size || "Unknown"} bytes
           </p>
-          <iframe
-            src={document.documentUrl}
-            title="Document Preview"
-            width="100%"
-            height="600px"
-            frameBorder="0"
-          ></iframe>
+          {document.isImage ? (
+            <img src={document.documentUrl} alt={document.filename} width="100%" />
+          ) : (
+            <iframe
+              src={document.documentUrl}
+              title="Document Preview"
+              width="100%"
+              height="600px"
+              frameBorder="0"
+            ></iframe>
+          )}
         </div>
       )}
     </div>
