@@ -12,7 +12,7 @@ socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*")
 # MongoDB Atlas connection
 mongo_uri = os.getenv('MONGO_URI', 'mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')  # Use environment variable for security
 client = MongoClient(mongo_uri)
-db = client['chat_database']
+db = client['Cluster0']
 messages_collection = db['messages']
 
 # Get all messages

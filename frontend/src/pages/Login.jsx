@@ -43,7 +43,7 @@ const Login = () => {
         setShowPopup(true);
         setTimeout(() => {
           setShowPopup(false);
-          navigate("/home");
+          navigate("/");
         }, 3000);
       } else {
         // Handle error message from API response

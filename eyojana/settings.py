@@ -44,10 +44,11 @@ INSTALLED_APPS = [
     
     
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3001',  # React app URL
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', 

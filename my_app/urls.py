@@ -4,12 +4,7 @@ from .views import SchemeCreateView
 from .views import UserApplicationsView, FileDownloadView
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import FetchUserApplicationsView, FetchApplicationDocumentsView
-
-
-
-
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+from .views import FetchDocumentsView, UserSchemeApplicationsView
 
 urlpatterns = [
     path('signup/', SignupView.as_view(), name='signup'),
@@ -21,10 +16,6 @@ urlpatterns = [
     path('profile/<str:email>/edit/', UserProfileEditView.as_view(), name='user-profile-edit'),
     path('applications/', UserApplicationsView.as_view(), name='user-application'),
     path('download/<str:file_id>/', FileDownloadView.as_view(), name='file_download'),
-    path('applications/<str:user_email>/', FetchUserApplicationsView.as_view(), name='fetch_user_applications'),
-    path('application-documents/<str:application_id>/', FetchApplicationDocumentsView.as_view(), name='fetch_application_documents'),
-
-
-
-
+    path('application-documents/<str:application_id>/', FetchDocumentsView.as_view(), name='fetch_application_documents'),
+    path('applications/<str:user_email>/', UserSchemeApplicationsView.as_view(), name='user-applications'),
 ]
