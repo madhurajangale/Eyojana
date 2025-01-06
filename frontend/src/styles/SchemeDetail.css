@@ -47,6 +47,7 @@
 .scheme-documents {
   margin-bottom: 20px;
   text-align: left;
+  
 }
 
 .scheme-benefits h3,
@@ -60,13 +61,19 @@
 
 .scheme-documents ul {
   padding-left: 20px;
+  
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  
+  align-items: flex-start;
 }
 
-.scheme-documents li {
+.scheme-documents p {
   margin-bottom: 5px;
   text-align: left;
 }
+
 
 .error-message {
   font-size: 1.2rem;

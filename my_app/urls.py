@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SignupView, LoginView, AdminSignupView, AdminLoginView,UserProfileView,UserProfileEditView
+from .views import SignupView, LoginView, AdminSignupView, AdminLoginView,UserProfileView,UserProfileEditView,GetSchemesView
 from .views import SchemeCreateView
 from .views import UserApplicationsView, FileDownloadView
 from django.conf import settings

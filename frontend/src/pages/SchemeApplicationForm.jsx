@@ -172,13 +172,15 @@
 
 
 
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/applicationForm.module.css";
 import formImage from "../images/signup.png";
-
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 const SchemeApplicationForm = () => {
   const [step, setStep] = useState(1); // Tracks the current step
+  const {login, user} = useContext(AuthContext);
   const [formData, setFormData] = useState({
     user_email: "",
     scheme_name: "",
@@ -265,7 +267,36 @@ const SchemeApplicationForm = () => {
       console.error(error);
       setMessage("An error occurred while submitting the application.");
     }
+    email()
   };
+  const email = () => {
+    const email = "user@example.com"; // Replace with dynamic email
+    const taskTitle = "Sample Task"; // Replace with dynamic task title
+
+    fetch('/send_email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: user.email,
+            schemename: "abc",
+        }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Failed to send email');
+        })
+        .then((data) => {
+            alert(data.message); // Success message
+        })
+        .catch((error) => {
+            console.error(error);
+            alert('Error sending email');
+        });
+};
 
   return (
     <div className={styles.applicationPage}>
@@ -358,7 +389,7 @@ const SchemeApplicationForm = () => {
               {step < 4 ? (
                 <button type="button" onClick={handleNext}>Next</button>
               ) : (
-                <button type="submit">Submit</button>
+                <button type="submit" onClick={handleSubmit}>Submit</button>
               )}
             </div>
           </form>

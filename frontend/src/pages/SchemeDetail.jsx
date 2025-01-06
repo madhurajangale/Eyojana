@@ -96,7 +96,9 @@ const SchemeDetail = () => {
     <h3 data-key="documents-header">Required Documents</h3>
     <ul>
       {schemedetail.Documents.map((doc, index) => (
-        <li key={index} data-key={`document-${index}`}>{doc}</li>
+       
+        
+        <p key={index} data-key={`document-${index}`}>{doc}</p>
       ))}
     </ul>
   </div>
