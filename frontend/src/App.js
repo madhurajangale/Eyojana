@@ -16,6 +16,7 @@ import Scheme from './pages/Scheme';
 import SchemeDetail from './pages/SchemeDetail';
 import Chat from './components/Chat';
 import AdminHome from './pages/AdminHome';
+import Contact from './components/Contact';
 function App() {
   return (
     <div className="App">
@@ -48,6 +49,7 @@ function App() {
                 <Route path="/scheme" element={<Scheme />}/>
                 <Route path="/scheme-details" element={<SchemeDetail />}/>
                 <Route path="/chat" element={<Chat />}/>
+                <Route path="/contact" element={<Contact />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
         </Routes>
       </BrowserRouter>
