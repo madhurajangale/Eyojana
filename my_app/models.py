@@ -24,7 +24,7 @@ fs = GridFS(db)
 from bson import ObjectId
 
 class UserApplications(models.Model):
-    # id = models.CharField(primary_key=True, max_length=24, default=lambda: str(ObjectId()))
+    id = models.CharField(primary_key=True, max_length=24, default=lambda: str(ObjectId()))
     user_email = models.EmailField()
     scheme_name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
