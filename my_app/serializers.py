@@ -87,12 +87,7 @@ class SchemeSerializer(serializers.ModelSerializer):
         fields = [
             'schemename', 'category', 'gender', 'age_range', 'marital_status', 'income', 'caste', 'ministry', 'employment_status', 'documents','benefits','details'
         ]
-
-    def create(self, validated_data):
-        scheme = Scheme.objects.create(**validated_data)        
-        return scheme
-
-
+        
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

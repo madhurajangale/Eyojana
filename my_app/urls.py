@@ -4,7 +4,7 @@ from .views import SchemeCreateView
 from .views import UserApplicationsView, FileDownloadView
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import FetchDocumentsView, UserSchemeApplicationsView
+from .views import FetchDocumentsView, UserSchemeApplicationsView, SchemeListView, GetPincode
 
 urlpatterns = [
     path('signup/', SignupView.as_view(), name='signup'),
@@ -18,4 +18,6 @@ urlpatterns = [
     path('download/<str:file_id>/', FileDownloadView.as_view(), name='file_download'),
     path('application-documents/<str:application_id>/', FetchDocumentsView.as_view(), name='fetch_application_documents'),
     path('applications/<str:user_email>/', UserSchemeApplicationsView.as_view(), name='user-applications'),
+    path('schemes/', SchemeListView.as_view(), name='scheme-list'),
+    path('get_user_count/', GetPincode.as_view(), name='get_user_count'),
 ]

@@ -20,27 +20,58 @@ from bson.objectid import ObjectId
 from pymongo import MongoClient
 from gridfs import GridFS
 import gridfs
-from pymongo import MongoClient
 import mimetypes
 from PIL import Image
 from io import BytesIO
 from base64 import b64encode
+import json 
+from django.core.serializers import serialize
+from bson.json_util import dumps
+import logging
 
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
 fs = GridFS(db)
 
+logger = logging.getLogger(__name__)
 
+class SchemeListView(APIView):
+    def get(self, request):
+        try:
+            schemes = Scheme.objects.all()
+
+            if not schemes:
+                return Response({"message": "No schemes found."}, status=status.HTTP_404_NOT_FOUND)
+            logger.debug("Schemes QuerySet: %s", schemes)
+
+            serializer = SchemeSerializer(schemes, many=True)
+
+            logger.debug("Serialized Data: %s", serializer.data)
+
+            return Response({"schemes": serializer.data}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            logger.error("Error: %s", str(e))
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class GetPincode(APIView):
+    def get(self, request):
+        pincode = request.GET.get('pincode') 
+        if pincode:
+            user_count = User.objects.filter(pincode=pincode).count()  
+            return Response({'pincode': pincode, 'user_count': user_count}, status=status.HTTP_200_OK)
+        return Response({'error': 'Pincode is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        
 class UserSchemeApplicationsView(APIView):
     def get(self, request, user_email):
         try:
-            # Fetch all applications for the user by email
             applications = UserApplications.objects.filter(user_email=user_email)
 
             if not applications:
                 return Response({"message": "No applications found for this user."}, status=status.HTTP_404_NOT_FOUND)
 
-            # Prepare the list of applications to be returned
+           
             application_data = []
             for app in applications:
                 application_data.append({
@@ -49,7 +80,7 @@ class UserSchemeApplicationsView(APIView):
                     "category": app.category,
                     "status": app.status,
                     "user_email": app.user_email,
-                    "documents": app.documents,  # Assuming 'documents' field exists in UserApplications model
+                    "documents": app.documents,  
                 })
 
             return Response({"applications": application_data}, status=status.HTTP_200_OK)
@@ -60,7 +91,6 @@ class UserSchemeApplicationsView(APIView):
 class FileDownloadView(APIView):
     def get(self, request, file_id):
         try:
-            # Fetch file metadata and chunks from GridFS
             file = fs.get(ObjectId(file_id))
 
             # Convert to PNG if the file does not already have a .png extension
@@ -89,15 +119,6 @@ class FileDownloadView(APIView):
         except Exception as e:
             # Handle any unexpected errors
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
-
-from base64 import b64encode
-from bson.objectid import ObjectId
-from rest_framework.response import Response
-from rest_framework.views import APIView
-import gridfs
 
 class FetchDocumentsView(APIView):
     def get(self, request, application_id):
@@ -201,9 +222,6 @@ class SignupView(APIView):
         else:
             print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-            
-        
 
 class AdminSignupView(APIView):
     def post(self, request):
