@@ -290,3 +290,37 @@ class UserProfileEditView(APIView):
         
         except User.DoesNotExist:
             raise NotFound(detail="User not found.", code=status.HTTP_404_NOT_FOUND) 
+        
+# class GetSchemesView(APIView):
+#     def get(self, request):
+#         print("Getting schemes")
+#         schemes = Scheme.objects.all()
+#         print("Schemes:", schemes)
+#         serializer = SchemeSerializer(schemes, many=True)
+#         return Response(serializer.data)
+    
+class GetSchemesView(APIView):
+    from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Scheme
+from .serializers import SchemeSerializer
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+
+class GetSchemesView(APIView):
+    def get(self, request):
+        try:
+            print("Fetching schemes...")
+            schemes = Scheme.objects.all()
+            print("Serializing data...")
+            serializer = SchemeSerializer(schemes, many=True)
+            print(type(serializer.data))  # Should be <class 'rest_framework.utils.serializer_helpers.ReturnList'>
+            print(serializer.data)  # Check the actual data
+
+            print("Returning response...")
+            # Explicitly serialize data to JSON if required
+            response_data = json.dumps(serializer.data, cls=DjangoJSONEncoder)
+            return Response(json.loads(response_data), status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

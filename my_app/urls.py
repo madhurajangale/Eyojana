@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SignupView, LoginView, AdminSignupView, AdminLoginView,UserProfileView,UserProfileEditView
+from .views import SignupView, LoginView, AdminSignupView, AdminLoginView,UserProfileView,UserProfileEditView,GetSchemesView
 from .views import SchemeCreateView
 from .views import UserApplicationsView, FileDownloadView
 from django.conf import settings
@@ -18,4 +18,5 @@ urlpatterns = [
     path('download/<str:file_id>/', FileDownloadView.as_view(), name='file_download'),
     path('application-documents/<str:application_id>/', FetchDocumentsView.as_view(), name='fetch_application_documents'),
     path('applications/<str:user_email>/', UserSchemeApplicationsView.as_view(), name='user-applications'),
+    path('scheme/', GetSchemesView.as_view(), name='get-schemes'),
 ]
