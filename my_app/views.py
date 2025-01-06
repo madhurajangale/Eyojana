@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import check_password
 from .models import User
 from .models import  Admin
 from .models import Scheme
-from .models import UserApplications
+from .models import UserApplications, UserRating
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
@@ -20,29 +20,95 @@ from bson.objectid import ObjectId
 from pymongo import MongoClient
 from gridfs import GridFS
 import gridfs
-from pymongo import MongoClient
 import mimetypes
 from PIL import Image
 from io import BytesIO
 from base64 import b64encode
-from django.http import JsonResponse
-from .models import User
+import json 
+from django.core.serializers import serialize
+from bson.json_util import dumps
+import logging
 
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
 fs = GridFS(db)
 
+logger = logging.getLogger(__name__)
+
+
+class UpdateRatingView(APIView):
+    def post(self, request):
+        try:
+            user_email = request.data.get("user")
+            scheme_name = request.data.get("scheme")
+            new_rating = request.data.get("rating")
+
+            if not user_email or not scheme_name or new_rating is None:
+                return Response(
+                    {"error": "Missing user, scheme, or rating field."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            custom_id = f"{user_email}_{scheme_name}"
+            try:
+                user_rating = UserRating.objects.get(custom_id=custom_id)
+                user_rating.rating = new_rating  
+                user_rating.save()
+                return Response(
+                    {"message": "Rating updated successfully.", "rating": new_rating},
+                    status=status.HTTP_200_OK,
+                )
+            except UserRating.DoesNotExist:
+                user_rating = UserRating.objects.create(
+                    user=user_email,
+                    scheme=scheme_name,
+                    rating=new_rating,
+                )
+                return Response(
+                    {"message": "New rating created successfully.", "rating": new_rating},
+                    status=status.HTTP_201_CREATED,
+                )
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class SchemeListView(APIView):
+    def get(self, request):
+        try:
+            schemes = Scheme.objects.all()
+
+            if not schemes:
+                return Response({"message": "No schemes found."}, status=status.HTTP_404_NOT_FOUND)
+            logger.debug("Schemes QuerySet: %s", schemes)
+
+            serializer = SchemeSerializer(schemes, many=True)
+
+            logger.debug("Serialized Data: %s", serializer.data)
+
+            return Response({"schemes": serializer.data}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            logger.error("Error: %s", str(e))
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class GetPincode(APIView):
+    def get(self, request):
+        pincode = request.GET.get('pincode') 
+        if pincode:
+            user_count = User.objects.filter(pincode=pincode).count()  
+            return Response({'pincode': pincode, 'user_count': user_count}, status=status.HTTP_200_OK)
+        return Response({'error': 'Pincode is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class UserSchemeApplicationsView(APIView):
     def get(self, request, user_email):
         try:
-            # Fetch all applications for the user by email
             applications = UserApplications.objects.filter(user_email=user_email)
 
             if not applications:
                 return Response({"message": "No applications found for this user."}, status=status.HTTP_404_NOT_FOUND)
 
-            # Prepare the list of applications to be returned
+           
             application_data = []
             for app in applications:
                 application_data.append({
@@ -51,7 +117,7 @@ class UserSchemeApplicationsView(APIView):
                     "category": app.category,
                     "status": app.status,
                     "user_email": app.user_email,
-                    "documents": app.documents,  # Assuming 'documents' field exists in UserApplications model
+                    "documents": app.documents,  
                 })
 
             return Response({"applications": application_data}, status=status.HTTP_200_OK)
@@ -62,7 +128,6 @@ class UserSchemeApplicationsView(APIView):
 class FileDownloadView(APIView):
     def get(self, request, file_id):
         try:
-            # Fetch file metadata and chunks from GridFS
             file = fs.get(ObjectId(file_id))
 
             # Convert to PNG if the file does not already have a .png extension
@@ -91,15 +156,6 @@ class FileDownloadView(APIView):
         except Exception as e:
             # Handle any unexpected errors
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
-
-from base64 import b64encode
-from bson.objectid import ObjectId
-from rest_framework.response import Response
-from rest_framework.views import APIView
-import gridfs
 
 class FetchDocumentsView(APIView):
     def get(self, request, application_id):
@@ -204,9 +260,6 @@ class SignupView(APIView):
             print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            
-        
-
 class AdminSignupView(APIView):
     def post(self, request):
         serializer=AdminSerializer(data=request.data)
@@ -293,45 +346,5 @@ class UserProfileEditView(APIView):
         except User.DoesNotExist:
             raise NotFound(detail="User not found.", code=status.HTTP_404_NOT_FOUND) 
         
-# class GetSchemesView(APIView):
-#     def get(self, request):
-#         print("Getting schemes")
-#         schemes = Scheme.objects.all()
-#         print("Schemes:", schemes)
-#         serializer = SchemeSerializer(schemes, many=True)
-#         return Response(serializer.data)
-    
-class GetSchemesView(APIView):
-    from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Scheme
-from .serializers import SchemeSerializer
-from django.core.serializers.json import DjangoJSONEncoder
-import json
 
-class GetSchemesView(APIView):
-    def get(self, request):
-        try:
-            print("Fetching schemes...")
-            schemes = Scheme.objects.all()
-            print("Serializing data...")
-            serializer = SchemeSerializer(schemes, many=True)
-            print(type(serializer.data))  # Should be <class 'rest_framework.utils.serializer_helpers.ReturnList'>
-            print(serializer.data)  # Check the actual data
 
-            print("Returning response...")
-            # Explicitly serialize data to JSON if required
-            response_data = json.dumps(serializer.data, cls=DjangoJSONEncoder)
-            return Response(json.loads(response_data), status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-     
-class GetPincode(APIView):   
-    def get(self, request):
-        pincode = request.GET.get('pincode')
-        if pincode:
-            user_count = User.objects.filter(pincode=pincode).count()
-            return Response({'pincode': pincode, 'user_count': user_count}, status=status.HTTP_200_OK)
-        return Response({'error': 'Pincode is required'}, status=status.HTTP_400_BAD_REQUEST)
