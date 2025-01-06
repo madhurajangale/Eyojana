@@ -152,7 +152,7 @@ const handleLogout = () => {
             <li><Link to="/category" data-key="schemes">Schemes</Link></li>
             <li><a data-key="about" href="#about" onClick={() => navigateToSection('about')} >About</a></li>
             <li><a data-key="faq" href="#faq" onClick={() => navigateToSection('faq')}>FAQs</a></li>
-            <li><Link data-key="contact" to="/contact">Contact Us</Link></li>
+            <li><Link data-key="Agent Support" to="/contact">Agent Support</Link></li>
             <li><Link data-key="myapplications" to="/myapplications">My Applications</Link></li>
           </ul>
         </div>

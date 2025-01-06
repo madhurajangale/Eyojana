@@ -17,6 +17,7 @@ import SchemeDetail from './pages/SchemeDetail';
 import Chat from './components/Chat';
 import AdminHome from './pages/AdminHome';
 import Contact from './components/Contact';
+
 function App() {
   return (
     <div className="App">
@@ -51,7 +52,7 @@ function App() {
                 <Route path="/chat" element={<Chat />}/>
                 <Route path="/contact" element={<Contact />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
-                <Route path='/map' element={<IndiaMap />} />
+                
         </Routes>
       </BrowserRouter>
     </LanguageProvider>

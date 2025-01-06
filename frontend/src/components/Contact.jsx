@@ -39,7 +39,7 @@ const ContactUsForm = () => {
 
   return (
     <div className="contact-form-container">
-      <h2>Contact Us</h2>
+      <h1>Get Support from Agent</h1>
       <form onSubmit={handleSubmit} className="contact-form">
         <div className="input-group">
           <label htmlFor="name">Name</label>
