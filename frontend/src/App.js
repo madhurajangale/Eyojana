@@ -16,6 +16,7 @@ import Scheme from './pages/Scheme';
 import SchemeDetail from './pages/SchemeDetail';
 import Chat from './components/Chat';
 import AdminHome from './pages/AdminHome';
+import IndiaMap from './pages/map';
 function App() {
   return (
     <div className="App">
@@ -49,6 +50,7 @@ function App() {
                 <Route path="/scheme-details" element={<SchemeDetail />}/>
                 <Route path="/chat" element={<Chat />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
+                <Route path='/map' element={<IndiaMap />} />
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
