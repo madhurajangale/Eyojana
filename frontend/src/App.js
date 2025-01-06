@@ -15,7 +15,7 @@ import UserApplications from './components/UserApplications';
 import Scheme from './pages/Scheme';
 import SchemeDetail from './pages/SchemeDetail';
 import Chat from './components/Chat';
-import Map from './components/Map';
+import AdminHome from './pages/AdminHome';
 function App() {
   return (
     <div className="App">
@@ -45,10 +45,10 @@ function App() {
                 <Route path="/schemeform" element={<SchemeApplicationForm/>}/>
                 <Route path="/users" element={<UserApplications/>}/>     
                 <Route path="/application-documents" element={<ApplicationDocuments />} />
-                        <Route path="/scheme" element={<Scheme />}/>
+                <Route path="/scheme" element={<Scheme />}/>
                 <Route path="/scheme-details" element={<SchemeDetail />}/>
                 <Route path="/chat" element={<Chat />}/>
-                <Route path="/map" element={<Map />}/>
+                <Route path='/adminhome' element={<AdminHome />} />
         </Routes>
       </BrowserRouter>
     </LanguageProvider>

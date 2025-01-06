@@ -44,7 +44,16 @@ const ProfilePage = () => {
       const valuesArray = Object.keys(textMap)
       
       .map(key => textMap[key]); 
-      
+      if (language === "en") {
+        // Revert to original text written in the code
+        Object.keys(textMap).forEach((key) => {
+          const element = document.querySelector(`[data-key="${key}"]`);
+          if (element) {
+            element.textContent = textMap[key]; // Use the `data-key` as the original English text
+          }
+        });
+        return; // Exit the function for English
+      }
       try {
         const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
           sentences: valuesArray,  // Send values for translation

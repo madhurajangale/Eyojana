@@ -8,7 +8,7 @@ export const useLanguage = () => {
 };
 
 export const LanguageProvider = ({ children }) => {
-  const [selectedLang, setSelectedLang] = useState('hi'); // Default language: Hindi
+  const [selectedLang, setSelectedLang] = useState('en'); // Default language: Hindi
 
   return (
     <LanguageContext.Provider value={{ selectedLang, setSelectedLang }}>
