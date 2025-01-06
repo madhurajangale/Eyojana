@@ -25,6 +25,8 @@ import mimetypes
 from PIL import Image
 from io import BytesIO
 from base64 import b64encode
+from django.http import JsonResponse
+from .models import User
 
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
@@ -324,3 +326,12 @@ class GetSchemesView(APIView):
             return Response(json.loads(response_data), status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+     
+class GetPincode(APIView):   
+    def get(self, request):
+        pincode = request.GET.get('pincode')
+        if pincode:
+            user_count = User.objects.filter(pincode=pincode).count()
+            return Response({'pincode': pincode, 'user_count': user_count}, status=status.HTTP_200_OK)
+        return Response({'error': 'Pincode is required'}, status=status.HTTP_400_BAD_REQUEST)

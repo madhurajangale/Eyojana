@@ -1,62 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const IndiaMap = () => {
-  const [geoData, setGeoData] = useState(null);
+const PincodeUserCount = () => {
+  const [pincode, setPincode] = useState('');
+  const [userCount, setUserCount] = useState(null);
+  const [error, setError] = useState('');
 
-  // Fetch GeoJSON data for India
-  useEffect(() => {
-    fetch("http://localhost:6000/usermap") // Replace with the actual path
-      .then((response) => response.json())
-      .then((data) => setGeoData(data));
-  }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setUserCount(null);
 
-  // Styling for the GeoJSON layers
-  const geoJsonStyle = {
-    color: "#4a83ec", // Border color
-    weight: 2,
-    fillColor: "#1a1d62", // Fill color
-    fillOpacity: 0.5,
-  };
+    if (!pincode) {
+      setError('Pincode is required');
+      return;
+    }
 
-  // Highlight interaction
-  const onEachFeature = (feature, layer) => {
-    layer.on({
-      mouseover: (e) => {
-        const layer = e.target;
-        layer.setStyle({
-          fillColor: "#ffcc00",
-          fillOpacity: 0.7,
-        });
-      },
-      mouseout: (e) => {
-        const layer = e.target;
-        layer.setStyle(geoJsonStyle);
-      },
-      click: (e) => {
-        alert(`Pincode: ${feature.properties.pincode}\nUsers: ${feature.properties.user_count}`);
-      },
-    });
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/get_user_count/', {
+        params: { pincode },  // This will append ?pincode=410206 to the URL
+      });
+      
+      setUserCount(response.data.user_count);
+    } catch (err) {
+      console.error('Error fetching data', err);
+      if (err.response) {
+        setError(err.response.data.error || 'Failed to fetch user count');
+      } else if (err.request) {
+        setError('No response from server');
+      } else {
+        setError('Error fetching data');
+      }
+    }
   };
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <MapContainer center={[22.5937, 78.9629]} zoom={5} style={{ height: "100%", width: "100%" }}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="&copy; OpenStreetMap contributors"
+    <div>
+      <h2>User Count by Pincode</h2>
+      <h2>User Count by Pincode</h2>
+      <h2>User Count by Pincode</h2>
+      <h2>User Count by Pincode</h2>
+      <h2>User Count by Pincode</h2>
+      <h2>User Count by Pincode</h2>
+      <h2>User Count by Pincode</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="number"
+          placeholder="Enter Pincode"
+          value={pincode}
+          onChange={(e) => setPincode(e.target.value)}
         />
-        {geoData && (
-          <GeoJSON
-            data={geoData}
-            style={geoJsonStyle}
-            onEachFeature={onEachFeature}
-          />
-        )}
-      </MapContainer>
+        <button type="submit">Get User Count</button>
+      </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {userCount !== null && (
+        <p>
+          Total users in pincode {pincode}: {userCount}
+        </p>
+      )}
     </div>
   );
 };
 
-export default IndiaMap;
+export default PincodeUserCount;
