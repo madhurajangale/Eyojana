@@ -1,0 +1,161 @@
+/* Container for the entire application page */
+.applicationPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+  
+  /* Card styling for the form container */
+  .applicationCard {
+    display: flex;
+    width: 80%;
+    max-width: 1000px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  /* Left section styling */
+  .leftSection {
+    flex: 1;
+    background: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .leftSection h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .leftSection p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .leftSection img {
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  /* Right section styling */
+  .rightSection {
+    flex: 2;
+    padding: 30px;
+  }
+  
+  .rightSection form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .formColumn label {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  
+  .formColumn input,
+  .formColumn select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .formColumn input:focus,
+  .formColumn select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Document row for file upload */
+  .documentRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .documentRow input[type="file"] {
+    flex: 1;
+  }
+  
+  .documentRow input[type="text"] {
+    flex: 2;
+  }
+  
+  .documentRow button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .documentRow button:hover {
+    background: #c82333;
+  }
+  
+  /* Button group for navigation buttons */
+  .buttonGroup {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .buttonGroup button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buttonGroup button:hover {
+    opacity: 0.9;
+  }
+  
+  .buttonGroup button[type="button"] {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .buttonGroup button[type="submit"] {
+    background: #28a745;
+    color: white;
+  }
+  
+  .message {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: red;
+    text-align: center;
+  }
+  
+  .successMessage {
+    color: green;
+  }
+  
+  .errorMessage {
+    color: red;
+  }
+  
