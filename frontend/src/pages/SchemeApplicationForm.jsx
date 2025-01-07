@@ -204,19 +204,58 @@ const SchemeApplicationForm = () => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
-
-  const handleDocumentChange = (index, e) => {
-    const { name, value } = e.target;
+// ----------------------------------------------------------------------------------------------------------------
+const handleDocumentChange = (index, e) => {
+    const { name, value, files } = e.target;
     const updatedDocuments = [...formData.documents];
-
+  
     if (name === "file") {
-      updatedDocuments[index].file = e.target.files[0];
-    } else if (name === "name") {
-      updatedDocuments[index].name = value;
-    }
+      // Update file in the document
+      updatedDocuments[index].file = files[0];
+      // After file is uploaded, call the verification API
+      verifyDocument(files[0], updatedDocuments[index].name);
 
-    setFormData((prev) => ({ ...prev, documents: updatedDocuments }));
+    } else if (name === "name") {
+      // Update document name
+      updatedDocuments[index].name = value;
+    } 
+  
+    // Update the state to reflect the changes
+    setFormData({ ...formData, documents: updatedDocuments });
   };
+  
+  // Function to call the backend API for document verification
+  const verifyDocument = async (file, docName, docType) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('docName', docName);
+    // formData.append('docType', docType);
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+  
+    try {
+      const response = await fetch('http://localhost:5500/upload-documents', {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+      console.log(result);
+      if (result.success) {
+        alert('Document verified successfully!');
+      } else {
+        alert('Document verification failed!');
+      }
+    } catch (error) {
+      console.error('Error verifying document:', error);
+      alert('An error occurred during verification!');
+    }
+  };
+  
+
+
+// ------------------------------------------------------------------------------------------------------------------
 
   const handleAddDocument = () => {
     setFormData((prev) => ({
@@ -335,14 +374,19 @@ const SchemeApplicationForm = () => {
                       onChange={(e) => handleDocumentChange(index, e)}
                       required
                     />
-                    <input
-                      type="text"
+                    <select
                       name="name"
-                      placeholder="Document Name"
                       value={doc.name}
                       onChange={(e) => handleDocumentChange(index, e)}
                       required
-                    />
+                    >
+                      <option value="" disabled>Select Document Type</option>
+                      <option value="Aadhaar">Aadhaar</option>
+                      <option value="PAN">PAN</option>
+                      <option value="Driving License">Driving License</option>
+                      <option value="Voter ID">Voter ID</option>
+                    </select>
+
                     <button type="button" onClick={() => handleRemoveDocument(index)}>
                       Remove
                     </button>

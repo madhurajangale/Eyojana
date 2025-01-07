@@ -51,7 +51,7 @@ function App() {
                 <Route path="/chat" element={<Chat />}/>
                 <Route path="/contact" element={<Contact />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
-                <Route path='/map' element={<IndiaMap />} />
+                
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
