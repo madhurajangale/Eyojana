@@ -62,7 +62,7 @@ const SchemeList = () => {
     }, [selectedLang]);
     const handleViewScheme = async (schemeName) => { 
       try { 
-        const response = await axios.patch('http://127.0.0.1:8000/api/update-rating/', 
+        const response = await axios.post('http://127.0.0.1:8000/api/update-rating/', 
         { user: user.email, scheme: schemeName,rating: 5 }); 
         
         console.log(response.data); 

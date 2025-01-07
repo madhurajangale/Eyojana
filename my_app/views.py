@@ -300,7 +300,6 @@ class FetchDocumentsView(APIView):
 class UserApplicationsView(APIView):
     def post(self, request):
         documents = []
-        
         for key, value in request.data.items():
             if key.startswith('documents['):
                 index = int(key.split('[')[1].split(']')[0])
@@ -308,7 +307,6 @@ class UserApplicationsView(APIView):
                 while len(documents) <= index:
                     documents.append({})
                 documents[index][field] = value
-
         for key, value in request.FILES.items():
             if key.startswith('documents['):
                 index = int(key.split('[')[1].split(']')[0])
@@ -316,7 +314,6 @@ class UserApplicationsView(APIView):
 
         mutable_data = request.data.dict()
         mutable_data['documents'] = documents
-
         serializer = UserApplicationsSerializer(data=mutable_data)
         if serializer.is_valid():
             application = serializer.save()
