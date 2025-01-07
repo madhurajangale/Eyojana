@@ -192,10 +192,68 @@ class EligibilityCheckView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
     def is_eligible(self, user, scheme):
-        """
-        Checks if the user meets the eligibility criteria for the given scheme.
-        """
-        return user.gender == scheme.gender 
+    
+     try:
+        # Check gender
+        if user.gender.lower() != scheme.gender.lower():
+            print("Ineligible due to gender mismatch")
+            return False
+
+        # Check age range
+        age_range = scheme.age_range.split("-")  # Assuming "22-47"
+        min_age, max_age = int(age_range[0]), int(age_range[1])
+        if not (min_age <= user.age <= max_age):
+            print("Ineligible due to age not in range")
+            return False
+
+        # Check marital status
+        if scheme.marital_status.lower() != "any" and user.marital_status.lower() != scheme.marital_status.lower():
+            print("Ineligible due to marital status mismatch")
+            return False
+
+        # Check caste
+        
+
+# Safely parse the caste field
+        if isinstance(scheme.caste, str):
+            try:
+                eligible_castes = [caste.strip().lower() for caste in json.loads(scheme.caste)]
+            except json.JSONDecodeError:
+                print("Error: Invalid caste format")
+                return False
+        elif isinstance(scheme.caste, list):
+            eligible_castes = [caste.strip().lower() for caste in scheme.caste]
+        else:
+            print("Error: Unsupported caste type")
+            return False
+
+        if user.caste.lower() not in eligible_castes:
+            print("Ineligible due to caste mismatch")
+            return False
+
+        # Check income
+        if "<" in scheme.income:
+            max_income = int(scheme.income.replace("<", "").replace(",", "").strip())
+            if user.income >= max_income:
+                print("Ineligible due to income exceeding maximum limit")
+                return False
+        elif ">" in scheme.income:
+            min_income = int(scheme.income.replace(">", "").replace(",", "").strip())
+            if user.income <= min_income:
+                print("Ineligible due to income below minimum limit")
+                return False
+
+        # Check employment status
+        if scheme.employment_status.lower() != "any" and user.employment_status.lower() != scheme.employment_status.lower():
+            print("Ineligible due to employment status mismatch")
+            return False
+
+        # If all checks pass, user is eligible
+        return True
+     except Exception as e:
+        print(f"Error in eligibility check: {e}")
+        return False
+
         
 
     def serialize_list(self, input_list):
