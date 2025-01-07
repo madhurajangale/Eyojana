@@ -30,7 +30,7 @@ class UserApplications(models.Model):
     category = models.CharField(max_length=255)
     status = models.CharField(max_length=50, default='Pending')
     applied_date = models.DateTimeField(auto_now_add=True)
-    documents = models.JSONField(default=list)  # Store document metadata
+    documents = models.JSONField(default=list) 
 
     def add_document(self, name, file_id):
         self.documents.append({"name": name, "file_id": str(file_id)})
@@ -41,9 +41,6 @@ class UserApplications(models.Model):
 
     class Meta:
         db_table = 'user_applications'
-
-
-
 
 
 class User(models.Model):
@@ -74,13 +71,11 @@ class User(models.Model):
     class Meta:
         db_table = 'user'
 
-
 class Scheme(models.Model):
     schemename = models.CharField(max_length=100,unique=True)
     category = models.CharField(max_length=255)
     gender = models.CharField(max_length=20, null=True, blank=True)
     age_range = models.CharField(max_length=50, default='0')
-    # state = models.CharField(max_length=50, default='Maharashtra')
     marital_status = models.CharField(max_length=20, null=True, blank=True)
     income = models.CharField(max_length=50, default='0')
     caste = models.JSONField(default=list) 
@@ -96,9 +91,9 @@ class Scheme(models.Model):
     class Meta:
         db_table = 'scheme'
 
-
 class Admin(models.Model):
     adminname = models.CharField(max_length=50, unique=True)
+    pincode=models.IntegerField(default=0)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=255)
     phone_number = models.CharField(
@@ -115,24 +110,13 @@ class Admin(models.Model):
     class Meta:
         db_table = 'admin'
 
-
-
-
-
-
-from django.db import models
-from django.core.exceptions import ValidationError
-
 class UserRating(models.Model):
     user = models.EmailField()
     scheme = models.CharField(max_length=255)
     rating = models.IntegerField()
-
-    # Custom primary key by combining user and scheme
     custom_id = models.CharField(max_length=255, unique=True, blank=True,primary_key=True)
 
     def save(self, *args, **kwargs):
-        # Generate a unique custom ID based on user and scheme
         if not self.custom_id:
             self.custom_id = f"{self.user}_{self.scheme}"
             print(f"Saving UserRating: {self.custom_id} with rating {self.rating}")
@@ -144,9 +128,5 @@ class UserRating(models.Model):
     class Meta:
         db_table = 'scheme_rating'
         indexes = [
-            models.Index(fields=['user', 'scheme']),  # Index for faster lookup
+            models.Index(fields=['user', 'scheme']), 
         ]
-        # Uncomment this if you want a unique compound constraint
-        # constraints = [
-        #     models.UniqueConstraint(fields=['user', 'scheme'], name='unique_user_scheme')
-        # ]

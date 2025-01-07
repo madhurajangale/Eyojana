@@ -35,6 +35,24 @@ fs = GridFS(db)
 
 logger = logging.getLogger(__name__)
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import User, Admin
+from .serializers import UserSerializer
+
+class FetchUsersByPincodeView(APIView):
+    def get(self, request, admin_email):
+        try:
+            admin = Admin.objects.get(email=admin_email)
+            users = User.objects.filter(pincode=admin.pincode)
+            serializer = UserSerializer(users, many=True)
+            return Response({"users": serializer.data}, status=status.HTTP_200_OK)
+        
+        except Admin.DoesNotExist:
+            return Response({"error": "Admin with the given email does not exist."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UpdateRatingView(APIView):
     def post(self, request):
