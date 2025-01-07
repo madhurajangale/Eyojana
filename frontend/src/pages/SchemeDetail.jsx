@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from 'react';
-import { Link , useLocation } from 'react-router-dom';
+import { Link , useLocation,useNavigate } from 'react-router-dom';
 import schemeData from '../dataset/dataset_final.json';
 import '../styles/SchemeDetail.css'; // Updated CSS file
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
 const SchemeDetail = () => {
+  const navigate = useNavigate();
   const location = useLocation();
     const { selectedLang } = useLanguage();
       const [translatedTexts, setTranslatedTexts] = useState({});
@@ -57,7 +58,11 @@ const SchemeDetail = () => {
   if (!schemedetail) {
     return <div className="error-message">Scheme not found</div>;
   }
-
+const handleViewDetail = () => {
+  const scheme=schemedetail['Scheme Name']
+  const category=schemedetail.Category
+  navigate('/schemeform', { state: { scheme, category } });
+}
   return (
 <div className="scheme-detail-container">
   <div className="scheme-header">
@@ -102,11 +107,11 @@ const SchemeDetail = () => {
   </div>
 
   <div>
-    <Link to="/schemeform">
-      <button type="submit" className="applybtn" data-key="apply-now">
+    
+      <button onClick={handleViewDetail} type="submit" className="applybtn" data-key="apply-now">
         Apply Now
       </button>
-    </Link>
+    
   </div>
 </div>
 
