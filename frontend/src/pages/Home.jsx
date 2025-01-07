@@ -8,6 +8,11 @@ import carousel2 from '../images/carousel2.png';
 import about from '../images/video.mp4';
 import applysteps from '../images/Steps.png';
 import faq from '../images/faq3.png';
+import Stepsup from '../images/Steps-up.png';
+import Stepsdown from '../images/Steps-down.png';
+import Step1 from '../images/Steps-1st.png';
+import Step2 from '../images/Steps-2nd.png';
+import Step3 from '../images/Steps-3rd.png';
 const Home = () => {
   const [open, setOpen] = useState(null);
   
@@ -73,6 +78,7 @@ const Home = () => {
       <div className="carousel-item active">
         <img src={carousel1} className="d-block w-100" alt="..." />
       </div>
+
       <div className="carousel-item">
         <img src={carousel2} className="d-block w-100" alt="..." />
       </div>
@@ -89,10 +95,10 @@ const Home = () => {
 
   <section id="about">
     <div className='scheme1' align='center'>
-      <p data-key="welcomeText"> 'Welcome to E-yojana, your one-stop destination for discovering and applying for government schemes tailored to your needs.'</p>
-      <p data-key="benefitsText">'E-Yojana is here to help you take full advantage of the resources and support available to you, enhancing your well-being and contributing to national progress.'</p>
+      <h2 data-key="welcomeText"> Welcome to E-yojana, your one-stop destination for discovering and applying for government schemes tailored to your needs.</h2>
+      <h2 data-key="benefitsText">E-Yojana is here to help you take full advantage of the resources and support available to you, enhancing your well-being and contributing to national progress.</h2>
       <Link to="/category">
-        <button className='schbtn' data-key="findSchemesText"> 'Find Schemes'</button>
+        <button className='schbtn' data-key="findSchemesText"> Find Schemes</button>
       </Link>
       <Link to={"/adminhome"} data-key="adminText">'Admin'</Link>
     </div>
@@ -100,7 +106,25 @@ const Home = () => {
 
   <section>
     <div>
-      <img src={applysteps} className="d-block w-100" alt="..." />
+      <img src={Stepsup} className="d-block w-100" alt="..." />
+    </div>
+    <div className='applysteps'>
+      <div className='stepscard'>
+      <img src={Step1} className="stepimg" alt="..." />
+      <h2 data-key="step1Text"> Discover schemes that suit your requirements.</h2>
+      </div>
+      <div className='stepscard'>
+      <img src={Step2} className="stepimg" alt="..." />
+      <h2 data-key="step2Text"> Check your Eligibility.</h2>
+      </div>
+      <div className='stepscard'>
+      <img src={Step3} className="stepimg" alt="..." />
+      <h2 data-key="step3Text"> Review and Submit your scheme application.</h2>
+      </div>
+      
+    </div>
+    <div>
+      <img src={Stepsdown} className="d-block w-100" alt="..." />
     </div>
     <div className="video-container">
       <video className="styled-video" width="800" height="400" controls>
@@ -118,28 +142,28 @@ const Home = () => {
 
       <div className="faq-questions">
         <div className="faq-item">
-          <h4 data-key="faqTitle">'Frequently Asked Questions'</h4>
+          <h4 data-key="faqTitle">Frequently Asked Questions</h4>
           <div className="faq-question" onClick={() => handleToggle(0)} data-key="faqQuestion1">
-            'What is E-yojana?'
+            What is E-yojana?
             <span className={open === 0 ? "arrow down" : "arrow right"}></span>
           </div>
-          {open === 0 && <div className="faq-answer" data-key="faqAnswer1"> 'E-yojana is a platform wherein you can find all the government schemes and apply for it.'</div>}
+          {open === 0 && <div className="faq-answer" data-key="faqAnswer1"> E-yojana is a platform wherein you can find all the government schemes and apply for it.</div>}
         </div>
 
         <div className="faq-item">
           <div className="faq-question" onClick={() => handleToggle(1)} data-key="faqQuestion2">
-            'How will E-yojana help common citizens?'
+            How will E-yojana help common citizens?
             <span className={open === 1 ? "arrow down" : "arrow right"}></span>
           </div>
-          {open === 1 && <div className="faq-answer" data-key="faqAnswer2"> 'E-yojana helps by categorizing schemes and provides all the support throughout the process of application.'</div>}
+          {open === 1 && <div className="faq-answer" data-key="faqAnswer2"> E-yojana helps by categorizing schemes and provides all the support throughout the process of application.'</div>}
         </div>
 
         <div className="faq-item">
           <div className="faq-question" onClick={() => handleToggle(2)} data-key="faqQuestion3">
-             'Can I apply for the schemes through E-yojana?'
+             Can I apply for the schemes through E-yojana?
             <span className={open === 2 ? "arrow down" : "arrow right"}></span>
           </div>
-          {open === 2 && <div className="faq-answer" data-key="faqAnswer3">  'Yes, you can apply'</div>}
+          {open === 2 && <div className="faq-answer" data-key="faqAnswer3">  Yes, you can apply</div>}
         </div>
       </div>
     </div>
