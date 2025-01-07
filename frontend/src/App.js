@@ -17,6 +17,7 @@ import SchemeDetail from './pages/SchemeDetail';
 import Chat from './components/Chat';
 import AdminHome from './pages/AdminHome';
 import Contact from './components/Contact';
+import Map from './components/Map';
 function App() {
   return (
     <div className="App">
@@ -44,14 +45,18 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/translate" element={<AutoTranslate/>}/>
                 <Route path="/schemeform" element={<SchemeApplicationForm/>}/>
-                <Route path="/users" element={<UserApplications/>}/>     
+                <Route path="/myapplications" element={<UserApplications/>}/>     
                 <Route path="/application-documents" element={<ApplicationDocuments />} />
                 <Route path="/scheme" element={<Scheme />}/>
                 <Route path="/scheme-details" element={<SchemeDetail />}/>
                 <Route path="/chat" element={<Chat />}/>
                 <Route path="/contact" element={<Contact />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
+<<<<<<< HEAD
                 
+=======
+                <Route path='/map' element={<Map />} />
+>>>>>>> d98c9e42de074e2b4116c2cdb6e22ea1d15c0fb6
         </Routes>
       </BrowserRouter>
     </LanguageProvider>

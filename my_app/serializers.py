@@ -24,21 +24,6 @@ class UserApplicationsDocumentSerializer(serializers.ModelSerializer):
         model = UserApplications
         fields = ['id', 'user_email', 'scheme_name', 'category', 'status', 'applied_date', 'documents']
 
-# class DocumentSerializer(serializers.Serializer):
-#     document_id = serializers.CharField()
-#     filename = serializers.CharField()
-#     content_type = serializers.CharField()
-#     size = serializers.IntegerField()
-
-#     def to_representation(self, instance):
-#         # Fetch file metadata from GridFS
-#         file = fs.get(instance)
-#         return {
-#             'document_id': str(file._id),
-#             'filename': file.filename,
-#             'content_type': file.content_type,
-#             'size': file.length
-#         }
 
 class DocumentSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
@@ -78,8 +63,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'phone_number', 'income', 'age', 'pincode', 'city', 'district', 'state', 'gender', 'caste', 'employment_status', 'marital_status']
-        # You can add the 'read_only_fields' option if you want to restrict certain fields from being updated
-        read_only_fields = ['email']  # Prevent updating email since it is unique
+        read_only_fields = ['email']  
 
 class SchemeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -87,12 +71,7 @@ class SchemeSerializer(serializers.ModelSerializer):
         fields = [
             'schemename', 'category', 'gender', 'age_range', 'marital_status', 'income', 'caste', 'ministry', 'employment_status', 'documents','benefits','details'
         ]
-
-    def create(self, validated_data):
-        scheme = Scheme.objects.create(**validated_data)        
-        return scheme
-
-
+        
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -110,7 +89,7 @@ class UserSerializer(serializers.ModelSerializer):
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admin
-        fields = ['adminname', 'email', 'password', 'phone_number']
+        fields = ['adminname', 'email', 'password', 'phone_number', 'pincode']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):

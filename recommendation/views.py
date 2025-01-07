@@ -16,6 +16,7 @@ from my_app.models import UserRating
 from .serializers import UserRatingSerializer
 from rest_framework.exceptions import NotFound
 import logging
+
 class GetRecommendation(APIView):
 # Eligibility-based recommendation
  def get(self,request, email):
@@ -79,6 +80,71 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 import json
+class UpdateRatingView(APIView):
+    def post(self, request):
+        try:
+            print("**********")
+            user_email = request.data.get("user")
+            scheme_name = request.data.get("scheme")
+
+            if not user_email or not scheme_name:
+                return Response(
+                    {"error": "Missing user or scheme field."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Create custom_id
+            custom_id = f"{user_email}_{scheme_name}"
+
+            # Try to get the user rating using the custom_id
+            try:
+                user_rating = UserRating.objects.get(custom_id=custom_id)
+                # If found, increment the rating by 0.5
+                user_rating.rating += 0.5
+
+                # Ensure rating doesn't exceed the maximum value of 5
+                if user_rating.rating > 5:
+                    user_rating.rating = 5
+
+                user_rating.save()
+                print("rating")
+                print(user_rating.rating)
+            except UserRating.DoesNotExist:
+                # If not found, create a new entry with 0 rating
+                user_rating = UserRating.objects.create(
+                    custom_id=custom_id,
+                    user=user_email,
+                    scheme=scheme_name,
+                    rating=0  # Set initial rating to 0
+                )
+
+            # Call eligibility check and include the response
+            eligibility_response = self.call_eligibility_check(user_email, scheme_name)
+
+            # Add eligibility data to the final response
+            return Response(
+                {
+                    "message": "Rating updated successfully.",
+                    "rating": user_rating.rating,
+                    "eligibility": eligibility_response,  # Add eligibility details
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def call_eligibility_check(self, user_email, scheme_name):
+        try:
+            print("testing")
+            eligibility_view = EligibilityCheckView()
+            request_mock = RequestFactory().get(f"/eligibility-check/{user_email}/{scheme_name}") 
+            response = eligibility_view.get(request_mock, user_email, scheme_name)  # Expecting user_email and scheme to be passed
+            return response.data  # Return the response data from the eligibility check
+        except Exception as e:
+            logger.error(f"Error calling eligibility check: {e}")
+            return {"error": str(e), "message": "Failed to fetch eligibility"}
+
 
 class EligibilityCheckView(APIView):
     def get(self, request, user_email, scheme_name):
@@ -104,14 +170,14 @@ class EligibilityCheckView(APIView):
 
             # Convert list fields to strings (you can choose how you want to format the list)
             documents = self.serialize_list(scheme.documents)
-            eligibility_criteria = self.serialize_list(scheme.eligibility_criteria)
+            
 
             return Response({
                 'user': user.email,
                 'scheme': scheme.schemename,
                 'eligibility': eligibility_status,
                 'documents': documents,  # Send documents as a string
-                'eligibility_criteria': eligibility_criteria  # Send eligibility_criteria as a string
+               
             }, status=status.HTTP_200_OK)
         
         except User.DoesNotExist:
@@ -126,11 +192,69 @@ class EligibilityCheckView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
     def is_eligible(self, user, scheme):
-        """
-        Checks if the user meets the eligibility criteria for the given scheme.
-        """
-        return user.age >= scheme.eligibility_criteria.get('min_age', 0) and \
-               user.age <= scheme.eligibility_criteria.get('max_age', 100)
+    
+     try:
+        # Check gender
+        if user.gender.lower() != scheme.gender.lower():
+            print("Ineligible due to gender mismatch")
+            return False
+
+        # Check age range
+        age_range = scheme.age_range.split("-")  # Assuming "22-47"
+        min_age, max_age = int(age_range[0]), int(age_range[1])
+        if not (min_age <= user.age <= max_age):
+            print("Ineligible due to age not in range")
+            return False
+
+        # Check marital status
+        if scheme.marital_status.lower() != "any" and user.marital_status.lower() != scheme.marital_status.lower():
+            print("Ineligible due to marital status mismatch")
+            return False
+
+        # Check caste
+        
+
+# Safely parse the caste field
+        if isinstance(scheme.caste, str):
+            try:
+                eligible_castes = [caste.strip().lower() for caste in json.loads(scheme.caste)]
+            except json.JSONDecodeError:
+                print("Error: Invalid caste format")
+                return False
+        elif isinstance(scheme.caste, list):
+            eligible_castes = [caste.strip().lower() for caste in scheme.caste]
+        else:
+            print("Error: Unsupported caste type")
+            return False
+
+        if user.caste.lower() not in eligible_castes:
+            print("Ineligible due to caste mismatch")
+            return False
+
+        # Check income
+        if "<" in scheme.income:
+            max_income = int(scheme.income.replace("<", "").replace(",", "").strip())
+            if user.income >= max_income:
+                print("Ineligible due to income exceeding maximum limit")
+                return False
+        elif ">" in scheme.income:
+            min_income = int(scheme.income.replace(">", "").replace(",", "").strip())
+            if user.income <= min_income:
+                print("Ineligible due to income below minimum limit")
+                return False
+
+        # Check employment status
+        if scheme.employment_status.lower() != "any" and user.employment_status.lower() != scheme.employment_status.lower():
+            print("Ineligible due to employment status mismatch")
+            return False
+
+        # If all checks pass, user is eligible
+        return True
+     except Exception as e:
+        print(f"Error in eligibility check: {e}")
+        return False
+
+        
 
     def serialize_list(self, input_list):
         """
@@ -237,79 +361,79 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import RequestFactory
 
-class UpdateRatingView(APIView):
-    def patch(self, request, *args, **kwargs):
-        try:
-            # Parse the JSON data from the request body
-            data = json.loads(request.body.decode('utf-8'))
-            user = data.get('user')
-            scheme = data.get('scheme')
+# class UpdateRatingView(APIView):
+#     def patch(self, request, *args, **kwargs):
+#         try:
+#             # Parse the JSON data from the request body
+#             data = json.loads(request.body.decode('utf-8'))
+#             user = data.get('user')
+#             scheme = data.get('scheme')
             
-            logger.info(f"Received data: user={user}, scheme={scheme}")
+#             logger.info(f"Received data: user={user}, scheme={scheme}")
 
-            try:
-                # Find the unique combination in the database
-                rating_obj = UserRating.objects.get(user=user, scheme=scheme)
-                logger.info(f"Found rating object: {rating_obj}")
-                logger.info(f"Current rating: {rating_obj.rating}")
+#             try:
+#                 # Find the unique combination in the database
+#                 rating_obj = UserRating.objects.get(user=user, scheme=scheme)
+#                 logger.info(f"Found rating object: {rating_obj}")
+#                 logger.info(f"Current rating: {rating_obj.rating}")
 
-                # Increment the rating by 0.5
-                rating_obj.rating += 0.5
-                rating_obj.save()
+#                 # Increment the rating by 0.5
+#                 rating_obj.rating += 0.5
+#                 rating_obj.save()
 
-                logger.info(f"Updated rating: {rating_obj.rating}")
+#                 logger.info(f"Updated rating: {rating_obj.rating}")
 
-                # Call EligibilityCheckView after saving
-                eligibility_response = self.call_eligibility_check(user,scheme)
+#                 # Call EligibilityCheckView after saving
+#                 eligibility_response = self.call_eligibility_check(user,scheme)
 
-                response_data = {
-                    'user': rating_obj.user,
-                    'scheme': rating_obj.scheme,
-                    'rating': rating_obj.rating,
-                    'message': 'Rating updated successfully.',
-                    'eligibility_response': eligibility_response
-                }
-                return Response(response_data, status=200)
+#                 response_data = {
+#                     'user': rating_obj.user,
+#                     'scheme': rating_obj.scheme,
+#                     'rating': rating_obj.rating,
+#                     'message': 'Rating updated successfully.',
+#                     'eligibility_response': eligibility_response
+#                 }
+#                 return Response(response_data, status=200)
 
-            except ObjectDoesNotExist:
-                # Create a new entry with a rating of 0
-                new_rating = UserRating(user=user, scheme=scheme, rating=0)
-                new_rating.save()
+#             except ObjectDoesNotExist:
+#                 # Create a new entry with a rating of 0
+#                 new_rating = UserRating(user=user, scheme=scheme, rating=0)
+#                 new_rating.save()
 
-                logger.info(f"Created new rating object: {new_rating}")
+#                 logger.info(f"Created new rating object: {new_rating}")
 
-                # Call EligibilityCheckView after saving
-                eligibility_response = self.call_eligibility_check(user)
+#                 # Call EligibilityCheckView after saving
+#                 eligibility_response = self.call_eligibility_check(user)
 
-                response_data = {
-                    'user': new_rating.user,
-                    'scheme': new_rating.scheme,
-                    'rating': new_rating.rating,
-                    'message': 'New rating entry created with rating 0.',
-                    'eligibility_response': eligibility_response
-                }
-                return Response(response_data, status=201)
+#                 response_data = {
+#                     'user': new_rating.user,
+#                     'scheme': new_rating.scheme,
+#                     'rating': new_rating.rating,
+#                     'message': 'New rating entry created with rating 0.',
+#                     'eligibility_response': eligibility_response
+#                 }
+#                 return Response(response_data, status=201)
 
-        except Exception as e:
-            logger.error(f"Error updating rating: {e}")
-            response_data = {
-                'error': str(e),
-                'message': 'Failed to update the rating.'
-            }
-            return Response(response_data, status=400)
+#         except Exception as e:
+#             logger.error(f"Error updating rating: {e}")
+#             response_data = {
+#                 'error': str(e),
+#                 'message': 'Failed to update the rating.'
+#             }
+#             return Response(response_data, status=400)
 
-    def call_eligibility_check(self, user_email,scheme):
-        """
-        Calls the eligibility check view logic.
-        """
-        try:
-            eligibility_view = EligibilityCheckView()
-            request_mock = RequestFactory().get(f"/eligibility-check/{user_email}/{scheme}") 
-            response = eligibility_view.get(request_mock, user_email, scheme)  # Expecting user_email and scheme to be passed
-            return response.data 
-        except Exception as e:
-            logger.error(f"Error calling eligibility check: {e}")
-            return {"error": str(e), "message": "Failed to fetch eligibility"}
+#     def call_eligibility_check(self, user_email,scheme):
+#         """
+#         Calls the eligibility check view logic.
+#         """
+#         try:
+#             eligibility_view = EligibilityCheckView()
+#             request_mock = RequestFactory().get(f"/eligibility-check/{user_email}/{scheme}") 
+#             response = eligibility_view.get(request_mock, user_email, scheme)  # Expecting user_email and scheme to be passed
+#             return response.data 
+#         except Exception as e:
+#             logger.error(f"Error calling eligibility check: {e}")
+#             return {"error": str(e), "message": "Failed to fetch eligibility"}
 
     
 # class UpdateRatingView(APIView):
@@ -379,3 +503,4 @@ class CreateRatingView(APIView):
             }, status=status.HTTP_201_CREATED)
         
         return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
