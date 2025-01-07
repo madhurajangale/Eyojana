@@ -46,19 +46,15 @@ def applications_by_category(request):
             return JsonResponse({"error": "Both category and admin_email are required."}, status=400)
 
         try:
-            # Fetch the admin
             admin = Admin.objects.get(email=admin_email)
 
-            # Get all users matching the admin's pincode
             matching_users = User.objects.filter(pincode=admin.pincode)
 
-            # Get all user applications in the specified category
             matching_applications = UserApplications.objects.filter(
                 category=category,
                 user_email__in=matching_users.values_list('email', flat=True)
             )
 
-            # Serialize data
             applications_data = [
                 {
                     "id": app.id,
@@ -83,18 +79,14 @@ def applications_by_category(request):
 def applications_by_pincode(request, admin_email):
     if request.method == 'GET':
         try:
-            # Fetch the admin object by email
             admin = Admin.objects.get(email=admin_email)
 
-            # Get all users whose pincode matches the admin's pincode
             matching_users = User.objects.filter(pincode=admin.pincode)
 
-            # Get all user applications for these matching users
             matching_applications = UserApplications.objects.filter(
                 user_email__in=matching_users.values_list('email', flat=True)
             )
 
-            # Serialize the matching applications
             applications_data = [
                 {
                     "id": app.id,
@@ -108,7 +100,6 @@ def applications_by_pincode(request, admin_email):
                 for app in matching_applications
             ]
 
-            # Return the matching applications as a JSON response
             return JsonResponse({"applications": applications_data}, status=200)
 
         except Admin.DoesNotExist:
@@ -141,28 +132,51 @@ class UpdateRatingView(APIView):
                     {"error": "Missing user, scheme, or rating field."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+
             custom_id = f"{user_email}_{scheme_name}"
             try:
                 user_rating = UserRating.objects.get(custom_id=custom_id)
-                user_rating.rating = new_rating  
-                user_rating.save()
-                return Response(
-                    {"message": "Rating updated successfully.", "rating": new_rating},
-                    status=status.HTTP_200_OK,
-                )
+                if user_rating.rating < 5.0:
+                    new_rating = user_rating.rating + 0.5
+                    if new_rating > 5.0:
+                        new_rating = 5.0
+                    
+                    user_rating.rating = new_rating
+                    user_rating.save()  
+                    return Response(
+                        {
+                            "message": "Rating updated successfully.",
+                            "rating": user_rating.rating,
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+                else:
+                    return Response(
+                        {
+                            "message": "Rating is already at maximum (5.0).",
+                            "rating": user_rating.rating,
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+
             except UserRating.DoesNotExist:
+                adjusted_rating = min(new_rating, 5.0)  
                 user_rating = UserRating.objects.create(
                     user=user_email,
                     scheme=scheme_name,
-                    rating=new_rating,
+                    rating=adjusted_rating,
                 )
                 return Response(
-                    {"message": "New rating created successfully.", "rating": new_rating},
+                    {
+                        "message": "New rating created successfully.",
+                        "rating": user_rating.rating,
+                    },
                     status=status.HTTP_201_CREATED,
                 )
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class SchemeListView(APIView):
     def get(self, request):
@@ -300,6 +314,7 @@ class FetchDocumentsView(APIView):
 class UserApplicationsView(APIView):
     def post(self, request):
         documents = []
+        
         for key, value in request.data.items():
             if key.startswith('documents['):
                 index = int(key.split('[')[1].split(']')[0])
@@ -307,6 +322,7 @@ class UserApplicationsView(APIView):
                 while len(documents) <= index:
                     documents.append({})
                 documents[index][field] = value
+
         for key, value in request.FILES.items():
             if key.startswith('documents['):
                 index = int(key.split('[')[1].split(']')[0])
@@ -314,6 +330,7 @@ class UserApplicationsView(APIView):
 
         mutable_data = request.data.dict()
         mutable_data['documents'] = documents
+
         serializer = UserApplicationsSerializer(data=mutable_data)
         if serializer.is_valid():
             application = serializer.save()

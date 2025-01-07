@@ -113,7 +113,7 @@ class Admin(models.Model):
 class UserRating(models.Model):
     user = models.EmailField()
     scheme = models.CharField(max_length=255)
-    rating = models.IntegerField()
+    rating = models.FloatField()
     custom_id = models.CharField(max_length=255, unique=True, blank=True,primary_key=True)
 
     def save(self, *args, **kwargs):
