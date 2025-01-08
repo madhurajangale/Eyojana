@@ -1,5 +1,5 @@
-General Layout
-.admin-profile-container {
+
+.admin-container {
     width: 100%;
     margin: 0;
     margin-top: 5rem;
@@ -10,6 +10,10 @@ General Layout
   .admin-profile-img {
     width: 100%;
     height: auto;
+  }
+
+  .admin-header-img{
+    width: -webkit-fill-available;
   }
   
   header {
@@ -53,12 +57,17 @@ General Layout
     padding: 30px 2rem;
     background-color: #f9fafb;
   }
-  
+  .category-section-title{
+    font-size: 1.5em;
+    color: #495f14;
+    margin-bottom: 20px;
+  }
   .admin-category-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 900px;
+    max-width: 1200px;
+    
     margin: 0 auto;
   }
   
@@ -68,6 +77,7 @@ General Layout
     padding: 20px;
     color: #495f14;
     background-color: #fff;
+    font-size: large;
     font-family: 'Arial', sans-serif;
     border: 1px solid #c5d08a;
     border-radius: 12px;

@@ -149,10 +149,10 @@ function Admin({ adminEmail }) {
     <div className="admin-container">
       <div className="admin-header">
         <img src={adminhome} alt="Admin Home" className="admin-header-img" />
-        <h1 className="admin-title">Welcome, Admin</h1>
+        
       </div>
       <div className="admin-category-section">
-        <h2 className="category-section-title">View Applications by Category</h2>
+        <h2 className="category-section-title">View Applications</h2>
         <div className="admin-category-list">
           {categories.map((category, index) => (
             <button
