@@ -52,11 +52,7 @@ function App() {
                 <Route path="/chat" element={<Chat />}/>
                 <Route path="/contact" element={<Contact />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
-<<<<<<< HEAD
-                
-=======
                 <Route path='/map' element={<Map />} />
->>>>>>> d98c9e42de074e2b4116c2cdb6e22ea1d15c0fb6
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
