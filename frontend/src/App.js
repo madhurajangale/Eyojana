@@ -53,8 +53,10 @@ function App() {
                 <Route path="/chat" element={<Chat />}/>
                 <Route path="/contact" element={<Contact />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
+<<<<<<< HEAD
+                
+=======
                 <Route path='/map' element={<Map />} />
-                <Route path="/applications/:category" element={<Applications />} />
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
