@@ -70,7 +70,7 @@ const UserApplications = () => {
                   <p><strong>Category:</strong> {app.category}</p>
                   <p><strong>Status:</strong> {app.status}</p>
                   <button
-                    className="btn btn-primary w-100"
+                    className="btn  w-100"
                     onClick={() => handleViewDocuments(app.id)}
                   >
                     View Documents

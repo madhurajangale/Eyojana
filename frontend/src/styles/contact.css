@@ -14,6 +14,11 @@
   
   .input-group {
     margin-bottom: 15px;
+    
+  }
+
+  .radio-label{
+    margin-right: 35px;
   }
   
   label {
@@ -37,16 +42,18 @@
   
   .submit-button {
     padding: 10px;
-    background-color: #007bff;
+    background-color: #779307;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
+    width: 150px;
+    margin-left: 160px;
   }
   
   .submit-button:hover {
-    background-color: #0056b3;
+    background-color: #719a10;
   }
   
   .error {

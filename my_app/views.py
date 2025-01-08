@@ -32,6 +32,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.db.models import Count
+
+
 
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
@@ -470,4 +473,60 @@ class UserProfileEditView(APIView):
             raise NotFound(detail="User not found.", code=status.HTTP_404_NOT_FOUND) 
         
 
+class UserStateView(APIView):
+    def get(self, request):
+        try:
+            state = request.GET.get('state')  # Optional: Filter by a specific state
+            if state:
+                user_count = User.objects.filter(state=state).count()
+                return Response({'state': state, 'user_count': user_count}, status=status.HTTP_200_OK)
+            
+            # Get counts for all states
+            states = User.objects.values('state').annotate(user_count=Count('state'))
+            return Response({'states': list(states)}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class UserCityView(APIView):
+    def get(self, request):
+        try:
+            city = request.GET.get('city')  # Optional: Filter by a specific city
+            if city:
+                user_count = User.objects.filter(city=city).count()
+                return Response({'city': city, 'user_count': user_count}, status=status.HTTP_200_OK)
+            
+            # Get counts for all cities
+            cities = User.objects.values('city').annotate(user_count=Count('city'))
+            return Response({'cities': list(cities)}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UserPincodeView(APIView):
+    def get(self, request):
+        try:
+            pincode = request.GET.get('pincode')  # Optional: Filter by a specific pincode
+            if pincode:
+                user_count = User.objects.filter(pincode=pincode).count()
+                return Response({'pincode': pincode, 'user_count': user_count}, status=status.HTTP_200_OK)
+            
+            # Get counts for all pincodes
+            pincodes = User.objects.values('pincode').annotate(user_count=Count('pincode'))
+            return Response({'pincodes': list(pincodes)}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UserAllView(APIView):
+    def get(self, request):
+        try:
+            # Get counts for all states, cities, and pincodes
+            states = User.objects.values('state').annotate(user_count=Count('state'))
+            cities = User.objects.values('city').annotate(user_count=Count('city'))
+            pincodes = User.objects.values('pincode').annotate(user_count=Count('pincode'))
+
+            return Response({
+                'states': list(states),
+                'cities': list(cities),
+                'pincodes': list(pincodes)
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
