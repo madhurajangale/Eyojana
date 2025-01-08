@@ -18,6 +18,7 @@ import Chat from './components/Chat';
 import AdminHome from './pages/AdminHome';
 import Contact from './components/Contact';
 import Map from './components/Map';
+import Applications from './components/Applications';
 function App() {
   return (
     <div className="App">
