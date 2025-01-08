@@ -18,6 +18,7 @@ import Chat from './components/Chat';
 import AdminHome from './pages/AdminHome';
 import Contact from './components/Contact';
 import Map from './components/Map';
+import Applications from './components/Applications';
 function App() {
   return (
     <div className="App">
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/contact" element={<Contact />}/>
                 <Route path='/adminhome' element={<AdminHome />} />
                 <Route path='/map' element={<Map />} />
+                <Route path="/applications/:category" element={<Applications />} />
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
