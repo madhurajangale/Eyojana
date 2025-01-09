@@ -462,7 +462,7 @@ class LoginView(APIView):
 
             return JsonResponse({
                 'message': 'Login successful',
-                'data': user.email  
+                'email': user.email  
             }, status=status.HTTP_200_OK)
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -485,7 +485,7 @@ def admin_login(request):
             if not check_password(password, admin.password):
                 return JsonResponse({"error": "Invalid email or password."}, status=401)
 
-            return JsonResponse({"message": "Login successful!", "admin": admin.adminname}, status=200)
+            return JsonResponse({"message": "Login successful!", "email": admin.email}, status=200)
 
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data."}, status=400)

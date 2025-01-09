@@ -110,7 +110,8 @@ def verify_pan_card(text, required_text):
     """
     Verifies a PAN card by checking specific fields and patterns.
     """
-    required_text = ["INCOME TAX DEPARTMENT", "GOVT. OF INDIA"] 
+    new_text = ["INCOME TAX DEPARTMENT", "GOVT. OF INDIA"] 
+    required_text.extend(new_text)
     pan_pattern = r"[A-Z]{5}[0-9]{4}[A-Z]{1}"  # Example: ABCDE1234F
     # if any(field not in text for field in required_text):
     #     return False
@@ -124,6 +125,8 @@ def verify_aadhaar_card(text, required_text):
     """
     Verifies an Aadhaar card by checking specific fields and patterns.
     """
+    new_text = [""] 
+    required_text.extend(new_text)
     aadhaar_pattern = r"[0-9]{4}\s[0-9]{4}\s[0-9]{4}"  # Example: 1234 5678 9101
 
     if any(field not in text for field in required_text):
@@ -272,7 +275,8 @@ def verify_voter_id(text, required_text):
     """
     Verifies a Voter ID by checking specific fields and patterns.
     """
-    required_text = ["ELECTION COMMISSION OF INDIA"]
+    new_text = ["ELECTION COMMISSION OF INDIA"]
+    required_text.extend(new_text)
     voter_id_pattern = r"[A-Z]{3}[0-9]{7}"  # Example: ABC1234567
     # if any(field not in text for field in required_text):
     #     return False
@@ -333,7 +337,7 @@ def verify_passport(text, required_text):
 # -----------------------------------------------------------------------------------------------------------------
 
 
-def verify_document(image_path, doc_type):  #doc_type is taking doc_name
+def verify_document(image_path, doc_type, required_text):  #doc_type is taking doc_name
     """
     Function to verify a document by extracting text and checking for unique document features.
     
@@ -358,12 +362,13 @@ def verify_document(image_path, doc_type):  #doc_type is taking doc_name
     _text = pytesseract.image_to_string(preprocessed_image, config=custom_config)
     # cleaning the text 
     extracted_text = re.sub(r"[^A-Za-z0-9\s]", "", _text)
+    # print(extracted_text)
     required_text = [""]
 
     # Check for required text fields
-    for text in required_text:
-        if text not in extracted_text:
-            return False  # Text field not found, verification failed
+    # for text in required_text:
+    #     if text not in extracted_text:
+    #         return False  # Text field not found, verification failed
         
     
     # Perform specific checks based on document type
@@ -431,6 +436,7 @@ def upload_documents():
 
     # Validate that the required metadata is present
     doc_name = request.form.get('docName')
+    required_text = request.form.get('required_text', '')
     # doc_type = request.form.get('docType')
 
 
@@ -448,7 +454,7 @@ def upload_documents():
 
         # Verify the document
         try:
-            is_verified = verify_document(file_path, doc_name)
+            is_verified = verify_document(file_path, doc_name, required_text)
             return jsonify({
                 "name": doc_name,
                 # "type": doc_type,

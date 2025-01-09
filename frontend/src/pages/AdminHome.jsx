@@ -112,11 +112,11 @@
 
 
 
-import React from "react";
+import React,{useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/admin.css";
 import adminhome from "../images/adminhome.png";
-
+import { AuthContext } from "../context/AuthContext";
 const categories = [
   { text: "Business" },
   { text: "Banking, Financial Services and Insurance" },
@@ -138,7 +138,8 @@ const categories = [
 
 function Admin({ adminEmail }) {
   const navigate = useNavigate();
-
+  const { login, admin } = useContext(AuthContext);
+  console.log(admin)
   const handleCategoryClick = (category) => {
     // Encode the category to handle spaces
     const encodedCategory = encodeURIComponent(category);
