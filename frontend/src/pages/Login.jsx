@@ -121,7 +121,7 @@ import { AuthContext } from "../context/AuthContext";
 import Loginimg from "../images/Loginimg.png";
 
 const Login = () => {
-  const { login, user } = useContext(AuthContext);
+  const { login,admin,user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("User"); // Default role is 'User'
@@ -139,8 +139,8 @@ const Login = () => {
     }
 
     // Determine API endpoint based on role
-    const endpoint = role === "Admin" 
-      ? "http://127.0.0.1:8000/api/admin/login/" 
+    const endpoint = role === "Admin"
+      ? "http://127.0.0.1:8000/api/admin/login/"
       : "http://127.0.0.1:8000/api/login/";
 
     try {
@@ -156,21 +156,24 @@ const Login = () => {
       console.log("data:", data);
 
       if (response.ok) {
-        // Assume the API returns user data and a token
-        login({ email: data.data });
         localStorage.setItem("authToken", data.authToken); // Save token for future requests
         setShowPopup(true);
         setTimeout(() => {
           setShowPopup(false);
+          // Call the login function with the user data and role
+          login(data, role === "Admin");
+
           // Navigate based on role
           if (role === "Admin") {
             navigate("/adminhome");
           } else {
             navigate("/");
           }
+          console.log("auth")
+          console.log(user)
+          console.log(admin)
         }, 3000);
       } else {
-        // Handle error message from API response
         setErrorMessage(data.message || "Login failed. Please try again.");
       }
     } catch (error) {
@@ -178,7 +181,6 @@ const Login = () => {
       setErrorMessage("An error occurred. Please try again later.");
     }
   };
-
   return (
     <div className={styles.login}>
       <div className={styles["login-box"]}>

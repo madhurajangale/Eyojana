@@ -90,6 +90,7 @@ const ProfilePage = () => {
 
   // Fetch user data on initial render
   useEffect(() => {
+    console.log(user)
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/profile/${user.email}`);

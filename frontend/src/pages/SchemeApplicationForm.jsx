@@ -389,7 +389,7 @@ const handleDocumentChange = (index, e) => {
 
         {/* Right Section */}
         <div className={styles.rightSection}>
-          <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <form  encType="multipart/form-data">
             {/* Step 1: Basic Info */}
             {step === 1 && (
               <div className={styles.formColumn}>
