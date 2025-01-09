@@ -172,17 +172,18 @@
 
 
 
-import React, { useState,useContext,useEffect } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../styles/applicationForm.module.css";
 import formImage from "../images/signup.png";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+
 const SchemeApplicationForm = () => {
   const [step, setStep] = useState(1); // Tracks the current step
-  const {login, user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    user_email: "",
+    user_email: user.email || "",
     scheme_name: "",
     category: "",
     documents: [{ file: null, name: "" }],
@@ -202,62 +203,80 @@ const SchemeApplicationForm = () => {
   const location = useLocation();
   const { category } = location.state || {};
   const { scheme } = location.state || {};
+
+  useEffect(() => {
+    // Pre-fill user details from backend
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/profile/${user.email}`
+        );
+        if (response.status === 200) {
+          const data = response.data.data;
+          setFormData((prev) => ({
+            ...prev,
+            age: data.age,
+            caste: data.caste,
+            city: data.city,
+            district: data.district,
+            employment_status: data.employment_status,
+            gender: data.gender,
+            income: data.income,
+            marital_status: data.marital_status,
+            state: data.state,
+            pincode: data.pincode,
+            scheme_name: scheme,
+            category: category,
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [user.email, category, scheme]);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
-// ----------------------------------------------------------------------------------------------------------------
-const handleDocumentChange = (index, e) => {
+
+  const handleDocumentChange = (index, e) => {
     const { name, value, files } = e.target;
     const updatedDocuments = [...formData.documents];
-  
-    if (name === "file") {
-      // Update file in the document
-      updatedDocuments[index].file = files[0];
-      // After file is uploaded, call the verification API
-      verifyDocument(files[0], updatedDocuments[index].name);
 
+    if (name === "file") {
+      updatedDocuments[index].file = files[0];
+      verifyDocument(files[0], updatedDocuments[index].name);
     } else if (name === "name") {
-      // Update document name
       updatedDocuments[index].name = value;
-    } 
-  
-    // Update the state to reflect the changes
+    }
+
     setFormData({ ...formData, documents: updatedDocuments });
   };
-  
-  // Function to call the backend API for document verification
-  const verifyDocument = async (file, docName, docType) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('docName', docName);
-    // formData.append('docType', docType);
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
-  
+  const verifyDocument = async (file, docName) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("docName", docName);
+
     try {
-      const response = await fetch('http://localhost:5500/upload-documents', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5500/upload-documents", {
+        method: "POST",
         body: formData,
       });
       const result = await response.json();
-      console.log(result);
       if (result.success) {
-        alert('Document verified successfully!');
+        alert("Document verified successfully!");
       } else {
-        alert('Document verification failed!');
+        alert("Document verification failed!");
       }
     } catch (error) {
-      console.error('Error verifying document:', error);
-      alert('An error occurred during verification!');
+      console.error("Error verifying document:", error);
+      alert("An error occurred during verification!");
     }
   };
-  
-
-
-// ------------------------------------------------------------------------------------------------------------------
 
   const handleAddDocument = () => {
     setFormData((prev) => ({
@@ -308,102 +327,86 @@ const handleDocumentChange = (index, e) => {
       console.error(error);
       setMessage("An error occurred while submitting the application.");
     }
-    email()
+    emailNotification();
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/profile/${user.email}`);
-        console.log(response)
-        if (response.status === 200) {
-          setFormData(() => ({
-              // Spread the previous state to keep existing values
-            
-           
-            age: response.data.data.age,
-            caste: response.data.data.caste,
-            documents: [{ file: null, name: "" }],
-            city: response.data.data.city,
-            district: response.data.data.district,
-            user_email: response.data.data.email,
-            employment_status: response.data.data.employment_status,
-            gender: response.data.data.gender,
-            income: response.data.data.income,
-            marital_status: response.data.data.marital_status,
-            scheme_name:scheme,
-            category:category,
-            pincode: response.data.data.pincode,
-           
-            state: response.data.data.state
-          })); // Populate userData state with fetched data
-        }
-        
-        
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  const email = () => {
-    const email = "user@example.com"; // Replace with dynamic email
-    const taskTitle = "Sample Task"; // Replace with dynamic task title
-
-    fetch('/send_email', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            email: user.email,
-            schemename: "abc",
-        }),
+  const emailNotification = () => {
+    fetch("http://localhost:5001/application-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email,
+        schemename: formData.scheme_name,
+      }),
     })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Failed to send email');
-        })
-        .then((data) => {
-            alert(data.message); // Success message
-        })
-        .catch((error) => {
-            console.error(error);
-            alert('Error sending email');
-        });
-};
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Failed to send email");
+      })
+      .then((data) => {
+        alert(data.message);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Error sending email");
+      });
+  };
 
   return (
     <div className={styles.applicationPage}>
       <div className={styles.applicationCard}>
-        {/* Left Section */}
         <div className={styles.leftSection}>
           <h2>Apply for Scheme</h2>
           <p>Fill out the form step by step to complete your application.</p>
           <img src={formImage} alt="Form" style={{ maxWidth: "300px", marginBottom: "20px" }} />
         </div>
 
-        {/* Right Section */}
         <div className={styles.rightSection}>
-          <form  encType="multipart/form-data">
-            {/* Step 1: Basic Info */}
+          <form encType="multipart/form-data">
             {step === 1 && (
               <div className={styles.formColumn}>
                 <label>Email</label>
-                <input type="email" id="user_email" value={formData.user_email} onChange={handleChange} required />
+                <input type="email" id="user_email" value={formData.user_email} disabled required />
                 <label>Scheme Name</label>
-                <input type="text" id="scheme_name" value={formData.scheme_name} onChange={handleChange} required />
+                <input type="text" id="scheme_name" value={formData.scheme_name} disabled required />
                 <label>Category</label>
-                <input type="text" id="category" value={formData.category} onChange={handleChange} required />
+                <input type="text" id="category" value={formData.category} disabled required />
               </div>
             )}
 
-            {/* Step 2: Documents */}
             {step === 2 && (
+              <div className={styles.formColumn}>
+              <label>City</label>
+              <input type="text" id="city" value={formData.city} onChange={handleChange} required />
+              <label>District</label>
+              <input type="text" id="district" value={formData.district} onChange={handleChange} required />
+              <label>State</label>
+              <input type="text" id="state" value={formData.state} onChange={handleChange} required />
+              <label>Pincode</label>
+              <input type="number" id="pincode" value={formData.pincode} onChange={handleChange} required />
+            </div>
+            )}
+
+            {step === 3 && (
+              <div className={styles.formColumn}>
+                <label>Age</label>
+                <input type="number" id="age" value={formData.age} onChange={handleChange} required />
+                <label>Gender</label>
+                <select id="gender" value={formData.gender} onChange={handleChange} required>
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            )}
+
+            {step === 4 && (
+              
               <div className={styles.formColumn}>
                 <label>Documents</label>
                 {formData.documents.map((doc, index) => (
@@ -426,56 +429,30 @@ const handleDocumentChange = (index, e) => {
                       <option value="Driving License">Driving License</option>
                       <option value="Voter ID">Voter ID</option>
                     </select>
-
-                    <button type="button" onClick={() => handleRemoveDocument(index)}>
-                      Remove
-                    </button>
+                    <button type="button" onClick={() => handleRemoveDocument(index)}>Remove</button>
                   </div>
                 ))}
-                <button type="button" onClick={handleAddDocument}>
-                  Add Another Document
-                </button>
+                <button type="button" onClick={handleAddDocument}>Add Another Document</button>
               </div>
             )}
 
-            {/* Step 3: Personal Details */}
-            {step === 3 && (
-              <div className={styles.formColumn}>
-                <label>Age</label>
-                <input type="number" id="age" value={formData.age} onChange={handleChange} required />
-                <label>Gender</label>
-                <select id="gender" value={formData.gender} onChange={handleChange} required>
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            )}
-
-            {/* Step 4: Address */}
-            {step === 4 && (
-              <div className={styles.formColumn}>
-                <label>City</label>
-                <input type="text" id="city" value={formData.city} onChange={handleChange} required />
-                <label>District</label>
-                <input type="text" id="district" value={formData.district} onChange={handleChange} required />
-                <label>State</label>
-                <input type="text" id="state" value={formData.state} onChange={handleChange} required />
-                <label>Pincode</label>
-                <input type="number" id="pincode" value={formData.pincode} onChange={handleChange} required />
-              </div>
-            )}
-
-            {/* Navigation Buttons */}
             <div className={styles.buttonGroup}>
-              {step > 1 && <button type="button" onClick={handleBack}>Back</button>}
+              {step > 1 && (
+                <button type="button" onClick={handleBack}>
+                  Back
+                </button>
+              )}
               {step < 4 ? (
-                <button type="button" onClick={handleNext}>Next</button>
+                <button type="button" onClick={handleNext}>
+                  Next
+                </button>
               ) : (
-                <button type="submit" onClick={handleSubmit}>Submit</button>
+                <button type="submit" onClick={handleSubmit}>
+                  Submit
+                </button>
               )}
             </div>
+
           </form>
           {message && <p className={styles.message}>{message}</p>}
         </div>
