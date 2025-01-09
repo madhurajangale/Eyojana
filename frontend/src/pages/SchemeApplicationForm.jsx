@@ -172,8 +172,8 @@
 
 
 
-import React, { useState,useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState,useContext,useEffect } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
 import styles from "../styles/applicationForm.module.css";
 import formImage from "../images/signup.png";
 import axios from "axios";
@@ -199,7 +199,9 @@ const SchemeApplicationForm = () => {
   });
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { category } = location.state || {};
+  const { scheme } = location.state || {};
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
@@ -308,6 +310,44 @@ const handleDocumentChange = (index, e) => {
     }
     email()
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/profile/${user.email}`);
+        console.log(response)
+        if (response.status === 200) {
+          setFormData(() => ({
+              // Spread the previous state to keep existing values
+            
+           
+            age: response.data.data.age,
+            caste: response.data.data.caste,
+            documents: [{ file: null, name: "" }],
+            city: response.data.data.city,
+            district: response.data.data.district,
+            user_email: response.data.data.email,
+            employment_status: response.data.data.employment_status,
+            gender: response.data.data.gender,
+            income: response.data.data.income,
+            marital_status: response.data.data.marital_status,
+            scheme_name:scheme,
+            category:category,
+            pincode: response.data.data.pincode,
+           
+            state: response.data.data.state
+          })); // Populate userData state with fetched data
+        }
+        
+        
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   const email = () => {
     const email = "user@example.com"; // Replace with dynamic email
     const taskTitle = "Sample Task"; // Replace with dynamic task title
