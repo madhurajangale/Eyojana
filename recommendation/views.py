@@ -85,6 +85,7 @@ import requests
 class UpdateRatingView(APIView):
     def post(self, request):
         try:
+            print("update")
             user_email = request.data.get("user")
             scheme_name = request.data.get("scheme")
 
