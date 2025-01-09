@@ -33,12 +33,69 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.db.models import Count
-
-
-
+import os
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
 fs = GridFS(db)
+
+class UploadSchemeFromPathAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Retrieve the file path from the request data
+        file_path = request.data.get('file_path')
+        if not file_path:
+            return Response({"error": "No file path provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the file exists
+        if not os.path.exists(file_path):
+            return Response({"error": f"File not found at {file_path}."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Load and parse the JSON file with explicit UTF-8 encoding
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+        except UnicodeDecodeError as e:
+            return Response({"error": f"Encoding error: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError as e:
+            return Response({"error": f"Invalid JSON format: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": f"Error reading file: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Ensure the data is a list (to handle multiple schemes)
+        if not isinstance(data, list):
+            return Response({"error": "Expected a JSON array of objects."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check for duplicate scheme names
+        existing_names = set(Scheme.objects.values_list('schemename', flat=True))
+        new_names = set()
+        duplicates = []
+
+        # Validate and save each scheme
+        errors = []
+        for scheme_data in data:
+            schemename = scheme_data.get('schemename')
+            if not schemename:
+                errors.append({"error": "Missing 'schemename' in data", "data": scheme_data})
+                continue
+
+            if schemename in existing_names or schemename in new_names:
+                duplicates.append(schemename)
+                continue
+
+            new_names.add(schemename)
+            serializer = SchemeSerializer(data=scheme_data)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                errors.append(serializer.errors)
+
+        # Prepare the response
+        response_data = {"message": "Schemes uploaded successfully."}
+        if duplicates:
+            response_data["duplicates"] = duplicates
+        if errors:
+            response_data["errors"] = errors
+
+        return Response(response_data, status=status.HTTP_201_CREATED if not errors else status.HTTP_400_BAD_REQUEST)
 
 def applications_by_category(request):
     if request.method == 'GET':
@@ -188,16 +245,16 @@ class SchemeListView(APIView):
 
             if not schemes:
                 return Response({"message": "No schemes found."}, status=status.HTTP_404_NOT_FOUND)
-            
+            logger.debug("Schemes QuerySet: %s", schemes)
 
             serializer = SchemeSerializer(schemes, many=True)
 
-            
+            logger.debug("Serialized Data: %s", serializer.data)
 
             return Response({"schemes": serializer.data}, status=status.HTTP_200_OK)
 
         except Exception as e:
-            
+            logger.error("Error: %s", str(e))
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class GetPincode(APIView):

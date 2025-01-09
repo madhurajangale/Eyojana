@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import SignupView, LoginView, AdminSignupView,UserProfileView,UserProfileEditView, UserAllView, UserCityView, UserPincodeView, UserStateView
-from .views import SchemeCreateView
+from .views import SchemeCreateView,UploadSchemeFromPathAPIView
 from .views import UserApplicationsView, FileDownloadView , applications_by_pincode, applications_by_category
 from django.conf import settings
 from django.conf.urls.static import static
@@ -28,4 +28,5 @@ urlpatterns = [
     path("user_count_by_city/",  UserCityView.as_view(), name="user_count_by_city"),
     path("user_count_by_pincode/",  UserAllView.as_view(), name="user_count_by_pincode_all"),
     path('applications/by-category/', applications_by_category, name='applications_by_category'),
+    path('upload-schemes',UploadSchemeFromPathAPIView.as_view() ,name='upload_schemes'),
 ]
