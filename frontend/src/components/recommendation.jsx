@@ -31,17 +31,18 @@ export default function Recommendation() {
   }, []);
 
   return (
-    <div>
-      <h2>Recommended Schemes</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul>
-        {eligibleSchemes.map((scheme, index) => (
-          <li key={index}>
-            <strong>{scheme.scheme_name}</strong>
-            <p>Required Documents: {scheme.documents}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <div style={{ padding: '20px', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+  <h2 style={{ fontSize: '24px', color: '#779307', marginBottom: '15px', marginTop: '5rem' }}>Recommended Schemes</h2>
+  {error && <p style={{ color: 'red', fontWeight: 'bold', marginBottom: '15px' }}>{error}</p>}
+  <ul style={{ listStyleType: 'none', padding: 0 }}>
+    {eligibleSchemes.map((scheme, index) => (
+      <li key={index} style={{ marginBottom: '15px', padding: '15px', backgroundColor: '#e7f9ce', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}>
+        <strong style={{ fontSize: '19px' }}>{scheme.scheme_name}</strong>
+        <p style={{ color: '#555', fontSize: '14px', marginTop:'2rem' }}>Required Documents: <span style={{ color: '#555', fontWeight: 'bold' }}>{scheme.documents}</span></p>
+      </li>
+    ))}
+  </ul>
+</div>
+
   );
 }
