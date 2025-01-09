@@ -175,7 +175,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-content">
         <div className="logo">
-          <a className="navbar-brand" href="#s">
+          <a className="navbar-brand" href="/">
             <img id="emblem" src={logo} alt="Logo" className="d-inline-block align-text-top" />
             <img src={eyojana} alt="Logo" width="120" height="30" className="d-inline-block align-text-top ms-3"/>
           </a>
@@ -183,12 +183,10 @@ function Navbar() {
 
         <div className="nav-links">
           <ul>
-            <li><Link to="/" data-key="home">Home</Link></li>
+           
             <li><Link to="/category" data-key="schemes">Schemes</Link></li>
-            <li><Link data-key="Community" to="/chat">Community</Link></li>
-            <li onClick={handleSchemeClick}><Link  data-key="schemes">Schemes</Link></li>
-            <li><a data-key="about" href="#about" onClick={() => navigateToSection('about')}>About</a></li>
-            <li><a data-key="faq" href="#faq" onClick={() => navigateToSection('faq')}>FAQs</a></li>
+            <li ><Link data-key="Community" to="/chat">Community</Link></li>
+          
             <li><Link data-key="Agent Support" to="/contact">Agent Support</Link></li>
             <li onClick={myApplication}><Link data-key="myapplications" >My Applications</Link></li>
           </ul>

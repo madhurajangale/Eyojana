@@ -21,7 +21,7 @@ import Contact from './components/Contact';
 import Map from './components/Map';
 import Applications from './components/Applications';
 import Recommendation from './components/recommendation';
-
+import AdminNav from './components/AdminNav';
 function App() {
     
   return (
@@ -41,7 +41,9 @@ function App() {
         <AuthProvider>
         <LanguageProvider>
       <BrowserRouter>
-        <Navbar />
+        if(user?.email){
+          
+        }
         <Routes>
           <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
