@@ -71,7 +71,8 @@ from flask_mail import Mail, Message
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:3000"])  # Replace with your frontend URL
+
 
 
 
@@ -124,6 +125,8 @@ def send_email():
 @app.route('/application-email', methods=['POST'])
 def application_email():
     data = request.json
+    print(f"Received data: {data}")  # Log the incoming data
+    
     recipient_email = data.get('email')  # Email of the user from form
     schemename = data.get('schemename')  # Scheme name from form
 
@@ -131,14 +134,27 @@ def application_email():
         return jsonify({'error': 'Email and scheme name are required'}), 400
 
     try:
-        message_body = f"You have successfully submitted the application for the scheme {schemename}."
+        message_body = f"""
+        Dear Applicant,
+
+        We are pleased to inform you that your application for the scheme '{schemename}' has been successfully submitted. 
+        If you have any questions or need further assistance, please do not hesitate to reach out to us.
+
+        Thank you for your time and consideration.
+
+        Best regards,
+        E-Yojana
+        
+        Email: info@eyojana.gov
+        Phone: +123 456 7890
+        Address: 123 Government Building, Mumbai
+        """
         msg = Message('Application Submitted', recipients=[recipient_email])
         msg.body = message_body
         mail.send(msg)
         return jsonify({'message': 'Email sent successfully!'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
     
 if __name__ == '__main__':

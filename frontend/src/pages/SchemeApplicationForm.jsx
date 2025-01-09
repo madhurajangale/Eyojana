@@ -331,7 +331,7 @@ const SchemeApplicationForm = () => {
   };
 
   const emailNotification = () => {
-    fetch("http://localhost:5001/application_email", {
+    fetch("http://localhost:5001/application-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -366,7 +366,7 @@ const SchemeApplicationForm = () => {
         </div>
 
         <div className={styles.rightSection}>
-          <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <form encType="multipart/form-data">
             {step === 1 && (
               <div className={styles.formColumn}>
                 <label>Email</label>
@@ -379,6 +379,34 @@ const SchemeApplicationForm = () => {
             )}
 
             {step === 2 && (
+              <div className={styles.formColumn}>
+              <label>City</label>
+              <input type="text" id="city" value={formData.city} onChange={handleChange} required />
+              <label>District</label>
+              <input type="text" id="district" value={formData.district} onChange={handleChange} required />
+              <label>State</label>
+              <input type="text" id="state" value={formData.state} onChange={handleChange} required />
+              <label>Pincode</label>
+              <input type="number" id="pincode" value={formData.pincode} onChange={handleChange} required />
+            </div>
+            )}
+
+            {step === 3 && (
+              <div className={styles.formColumn}>
+                <label>Age</label>
+                <input type="number" id="age" value={formData.age} onChange={handleChange} required />
+                <label>Gender</label>
+                <select id="gender" value={formData.gender} onChange={handleChange} required>
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            )}
+
+            {step === 4 && (
+              
               <div className={styles.formColumn}>
                 <label>Documents</label>
                 {formData.documents.map((doc, index) => (
@@ -408,41 +436,23 @@ const SchemeApplicationForm = () => {
               </div>
             )}
 
-            {step === 3 && (
-              <div className={styles.formColumn}>
-                <label>Age</label>
-                <input type="number" id="age" value={formData.age} onChange={handleChange} required />
-                <label>Gender</label>
-                <select id="gender" value={formData.gender} onChange={handleChange} required>
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            )}
-
-            {step === 4 && (
-              <div className={styles.formColumn}>
-                <label>City</label>
-                <input type="text" id="city" value={formData.city} onChange={handleChange} required />
-                <label>District</label>
-                <input type="text" id="district" value={formData.district} onChange={handleChange} required />
-                <label>State</label>
-                <input type="text" id="state" value={formData.state} onChange={handleChange} required />
-                <label>Pincode</label>
-                <input type="number" id="pincode" value={formData.pincode} onChange={handleChange} required />
-              </div>
-            )}
-
             <div className={styles.buttonGroup}>
-              {step > 1 && <button type="button" onClick={handleBack}>Back</button>}
+              {step > 1 && (
+                <button type="button" onClick={handleBack}>
+                  Back
+                </button>
+              )}
               {step < 4 ? (
-                <button type="button" onClick={handleNext}>Next</button>
+                <button type="button" onClick={handleNext}>
+                  Next
+                </button>
               ) : (
-                <button type="submit">Submit</button>
+                <button type="submit" onClick={handleSubmit}>
+                  Submit
+                </button>
               )}
             </div>
+
           </form>
           {message && <p className={styles.message}>{message}</p>}
         </div>
