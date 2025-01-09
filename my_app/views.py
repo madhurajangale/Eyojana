@@ -245,11 +245,16 @@ class SchemeListView(APIView):
 
             if not schemes:
                 return Response({"message": "No schemes found."}, status=status.HTTP_404_NOT_FOUND)
-           
+            logger.debug("Schemes QuerySet: %s", schemes)
+
             serializer = SchemeSerializer(schemes, many=True)
+
+            logger.debug("Serialized Data: %s", serializer.data)
+
             return Response({"schemes": serializer.data}, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.error("Error: %s", str(e))
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class GetPincode(APIView):

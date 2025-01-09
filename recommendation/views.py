@@ -17,51 +17,51 @@ from .serializers import UserRatingSerializer
 from rest_framework.exceptions import NotFound
 import logging
 
-class GetRecommendation(APIView):
-# Eligibility-based recommendation
- def get(self,request, email):
-    # Fetch user data from the database
-    user = User.objects.get(email=email)
+# class GetRecommendation(APIView):
+# # Eligibility-based recommendation
+#  def get(self,request, email):
+#     # Fetch user data from the database
+#     user = User.objects.get(email=email)
     
-    # Prepare the data to send to Flask
-    data = {
-        'username': user.username,
-                    'email': user.email,
-                    'phone_number': user.phone_number,
-                    'income': user.income,
-                    'age': user.age,
-                    'pincode': user.pincode,
-                    'city': user.city,
-                    'district': user.district,
-                    'state': user.state,
-                    'gender': user.gender,
-                    'caste': user.caste,
-                    'employment_status': user.employment_status,
-                    'marital_status': user.marital_status,
-    }
-    print("&&&&&&&&&&&&&&&&&&&&&&&")
-    # Send data to Flask (assuming Flask is running on localhost:5000)
-    flask_response = requests.post('http://localhost:5000/recommend', json=data)
+#     # Prepare the data to send to Flask
+#     data = {
+#         'username': user.username,
+#                     'email': user.email,
+#                     'phone_number': user.phone_number,
+#                     'income': user.income,
+#                     'age': user.age,
+#                     'pincode': user.pincode,
+#                     'city': user.city,
+#                     'district': user.district,
+#                     'state': user.state,
+#                     'gender': user.gender,
+#                     'caste': user.caste,
+#                     'employment_status': user.employment_status,
+#                     'marital_status': user.marital_status,
+#     }
+#     print("&&&&&&&&&&&&&&&&&&&&&&&")
+#     # Send data to Flask (assuming Flask is running on localhost:5000)
+#     flask_response = requests.post('http://localhost:5000/recommend', json=data)
     
-    # Get recommendations from Flask
-    recommendations = flask_response.json()
+#     # Get recommendations from Flask
+#     recommendations = flask_response.json()
 
-    return JsonResponse(recommendations)
+#     return JsonResponse(recommendations)
 
- def check_eligibility(user_data):
-    # Example eligibility criteria based on user data (can be expanded as needed)
-    eligible_schemes = []
+#  def check_eligibility(user_data):
+#     # Example eligibility criteria based on user data (can be expanded as needed)
+#     eligible_schemes = []
 
-    if user_data['income'] > 50000:  # Example: Income should be greater than 50k
-        eligible_schemes.append("Scheme A")
+#     if user_data['income'] > 50000:  # Example: Income should be greater than 50k
+#         eligible_schemes.append("Scheme A")
 
-    if user_data['age'] >= 18 and user_data['employment_status'] == 'Employed':  # Example: Age 18+ and employed
-        eligible_schemes.append("Scheme B")
+#     if user_data['age'] >= 18 and user_data['employment_status'] == 'Employed':  # Example: Age 18+ and employed
+#         eligible_schemes.append("Scheme B")
 
-    if user_data['pincode'] == "110001":  # Example: Specific pincode eligibility
-        eligible_schemes.append("Scheme C")
+#     if user_data['pincode'] == "110001":  # Example: Specific pincode eligibility
+#         eligible_schemes.append("Scheme C")
 
-    return eligible_schemes
+#     return eligible_schemes
 
 
 
@@ -115,7 +115,7 @@ class UpdateRatingView(APIView):
 
             # Send eligible schemes to Flask
             self.send_data_to_flask(eligibility_response,user_email)
-
+            print("**********")
             return Response(
                 {
                     "message": "Rating updated successfully.",
@@ -161,7 +161,7 @@ class UpdateRatingView(APIView):
         Send eligible schemes (with ratings) to the Flask app.
         """
         try:
-            flask_url = "http://127.0.0.1:5000/receive-data"  # Flask app URL
+            flask_url = "http://127.0.0.1:5002/receive-data"  # Flask app URL
             flask_data = {
                 "eligible_schemes": eligible_schemes,  # Pass eligible schemes with ratings
                 "user_email": user_email
@@ -177,8 +177,10 @@ class UpdateRatingView(APIView):
 
 
 class EligibilityCheckView(APIView):
-    def get(self, request, user_email):
+    def get(self,request, user_email):
         try:
+            print("reached")
+            print(user_email)
             # Fetch user data by email
             user = User.objects.get(email=user_email)
             print(f"User data: {user}")
@@ -268,11 +270,22 @@ class EligibilityCheckView(APIView):
             if user.income >= max_income:
                 print("Ineligible due to income exceeding maximum limit")
                 return False
+
         elif ">" in scheme.income:
             min_income = int(scheme.income.replace(">", "").replace(",", "").strip())
             if user.income <= min_income:
                 print("Ineligible due to income below minimum limit")
                 return False
+
+        elif "-" in scheme.income:
+            # Handle income range like "2,00,000 - 5,00,000"
+            income_range = scheme.income.replace(",", "").split("-")
+            min_income = int(income_range[0].strip())
+            max_income = int(income_range[1].strip())
+            if not (min_income <= user.income <= max_income):
+                print("Ineligible due to income not within the specified range")
+                return False
+
 
         # Check employment status
         if scheme.employment_status.lower() != "any" and user.employment_status.lower() != scheme.employment_status.lower():
@@ -299,223 +312,10 @@ class EligibilityCheckView(APIView):
 
 
 
-# class UpdateRatingView(APIView):
-#  def patch(self,request):
-    # try:
-        
-    #     data = json.loads(request.body.decode('utf-8')) 
-    #     user = data.get('user') 
-    #     scheme = data.get('scheme')
-        
-    #     # Find the unique combination in the MongoDB collection
-    #     rating_obj = get_object_or_404(UserRating, user=user, scheme=scheme)
-        
-    #     # Increment the rating by 0.5
-    #     rating_obj.rating += 0.5
-    #     rating_obj.save()
-        
-    #     response_data = {
-    #         'user': rating_obj.user,
-    #         'scheme': rating_obj.scheme,
-    #         'rating': 6,
-    #         'message': 'Rating updated successfully.'
-    #     }
-    #     return JsonResponse(response_data, status=200)
-    
-    # except Exception as e:
-    #     response_data = {
-    #         'error': str(e),
-    #         'message': 'Failed to update the rating.'
-    #     }
-    #     return JsonResponse(response_data, status=400)
 
-#working
-# from django.core.exceptions import ObjectDoesNotExist
-
-
-
-# logger = logging.getLogger(__name__)
-
-# class UpdateRatingView(APIView):
-#     def patch(self, request, *args, **kwargs):
-#         try:
-#             # Parse the JSON data from the request body
-#             data = json.loads(request.body.decode('utf-8'))
-#             user = data.get('user')
-#             scheme = data.get('scheme')
-            
-#             logger.info(f"Received data: user={user}, scheme={scheme}")
-
-#             try:
-#                 # Find the unique combination in the database
-#                 rating_obj = UserRating.objects.get(user=user, scheme=scheme)
-#                 logger.info(f"Found rating object: {rating_obj}")
-#                 logger.info(f"Current rating: {rating_obj.rating}")
-
-#                 # Increment the rating by 0.5
-#                 rating_obj.rating += 0.5
-#                 rating_obj.save()
-                
-#                 logger.info(f"Updated rating: {rating_obj.rating}")
-
-#                 response_data = {
-#                     'user': rating_obj.user,
-#                     'scheme': rating_obj.scheme,
-#                     'rating': rating_obj.rating,
-#                     'message': 'Rating updated successfully.'
-#                 }
-#                 return Response(response_data, status=200)
-            
-#             except ObjectDoesNotExist:
-#                 # Create a new entry with a rating of 0
-#                 new_rating = UserRating(user=user, scheme=scheme, rating=0)
-#                 new_rating.save()
-                
-#                 logger.info(f"Created new rating object: {new_rating}")
-                
-#                 response_data = {
-#                     'user': new_rating.user,
-#                     'scheme': new_rating.scheme,
-#                     'rating': new_rating.rating,
-#                     'message': 'New rating entry created with rating 0.'
-#                 }
-#                 return Response(response_data, status=201)
-        
-#         except Exception as e:
-#             logger.error(f"Error updating rating: {e}")
-#             response_data = {
-#                 'error': str(e),
-#                 'message': 'Failed to update the rating.'
-#             }
-#             return Response(response_data, status=400)
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import RequestFactory
-
-# class UpdateRatingView(APIView):
-#     def patch(self, request, *args, **kwargs):
-#         try:
-#             # Parse the JSON data from the request body
-#             data = json.loads(request.body.decode('utf-8'))
-#             user = data.get('user')
-#             scheme = data.get('scheme')
-            
-#             logger.info(f"Received data: user={user}, scheme={scheme}")
-
-#             try:
-#                 # Find the unique combination in the database
-#                 rating_obj = UserRating.objects.get(user=user, scheme=scheme)
-#                 logger.info(f"Found rating object: {rating_obj}")
-#                 logger.info(f"Current rating: {rating_obj.rating}")
-
-#                 # Increment the rating by 0.5
-#                 rating_obj.rating += 0.5
-#                 rating_obj.save()
-
-#                 logger.info(f"Updated rating: {rating_obj.rating}")
-
-#                 # Call EligibilityCheckView after saving
-#                 eligibility_response = self.call_eligibility_check(user,scheme)
-
-#                 response_data = {
-#                     'user': rating_obj.user,
-#                     'scheme': rating_obj.scheme,
-#                     'rating': rating_obj.rating,
-#                     'message': 'Rating updated successfully.',
-#                     'eligibility_response': eligibility_response
-#                 }
-#                 return Response(response_data, status=200)
-
-#             except ObjectDoesNotExist:
-#                 # Create a new entry with a rating of 0
-#                 new_rating = UserRating(user=user, scheme=scheme, rating=0)
-#                 new_rating.save()
-
-#                 logger.info(f"Created new rating object: {new_rating}")
-
-#                 # Call EligibilityCheckView after saving
-#                 eligibility_response = self.call_eligibility_check(user)
-
-#                 response_data = {
-#                     'user': new_rating.user,
-#                     'scheme': new_rating.scheme,
-#                     'rating': new_rating.rating,
-#                     'message': 'New rating entry created with rating 0.',
-#                     'eligibility_response': eligibility_response
-#                 }
-#                 return Response(response_data, status=201)
-
-#         except Exception as e:
-#             logger.error(f"Error updating rating: {e}")
-#             response_data = {
-#                 'error': str(e),
-#                 'message': 'Failed to update the rating.'
-#             }
-#             return Response(response_data, status=400)
-
-#     def call_eligibility_check(self, user_email,scheme):
-#         """
-#         Calls the eligibility check view logic.
-#         """
-#         try:
-#             eligibility_view = EligibilityCheckView()
-#             request_mock = RequestFactory().get(f"/eligibility-check/{user_email}/{scheme}") 
-#             response = eligibility_view.get(request_mock, user_email, scheme)  # Expecting user_email and scheme to be passed
-#             return response.data 
-#         except Exception as e:
-#             logger.error(f"Error calling eligibility check: {e}")
-#             return {"error": str(e), "message": "Failed to fetch eligibility"}
-
-    
-# class UpdateRatingView(APIView):
-#     def get_object(self, custom_id):
-#         """Retrieve the UserRating object based on custom_id."""
-#         try:
-#             return UserRating.objects.get(custom_id=custom_id)
-#         except UserRating.DoesNotExist:
-#             return None
-#     def patch(self, request, custom_id):
-#         try:
-#             # Log the incoming request
-#             print("Incoming Request Data:", request.data)
-#             print("Custom ID:", custom_id)
-#             rating=self.get_object(custom_id)
-#             # Fetch the existing UserRating entry by user email and scheme name
-#             # rating = UserRating.objects.filter(user=user_email, scheme=scheme_name).first()
-#             if not rating:
-#                 return JsonResponse({'status': 'error', 'message': 'User rating not found.'}, status=404)
-            
-#             mongo_id = rating.id  # 'id' is the default attribute for MongoDB's ObjectId field
-#             print("MongoDB _id:", str(mongo_id))
-            
-#             # Prepare updated data, allowing partial updates
-#             updated_data = {
-#                 "user": rating.user,
-#                 "scheme": rating.scheme,
-#                 "rating": request.data.get("rating", rating.rating)  # Update rating or keep the current value
-#             }
-
-#             # Serialize the updated data
-#             serializer = UserRatingSerializer(instance=rating, data=updated_data, partial=False)
-            
-#             if serializer.is_valid():
-#                 # Save updates to the existing entry
-#                 updated_instance = serializer.save()
-                
-#                 print(f"Updated Instance Details: {updated_instance}")
-                
-#                 return JsonResponse({
-#                     'status': 'success',
-#                     'message': 'Rating updated successfully.',
-#                     'data': serializer.data
-#                 }, status=200)
-
-#             print("Serializer Errors:", serializer.errors)
-#             return JsonResponse({'status': 'error', 'message': 'Invalid data.', 'errors': serializer.errors}, status=400)
-
-#         except Exception as e:
-#             print(f"Unexpected Error: {str(e)}")
-#             return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred.', 'error': str(e)}, status=500)
 
 
 

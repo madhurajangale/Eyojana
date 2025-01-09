@@ -62,8 +62,8 @@ const SchemeList = () => {
     }, [selectedLang]);
     const handleViewScheme = async (schemeName) => { 
       try { 
-        const response = await axios.post('http://127.0.0.1:8000/api/update-rating/', 
-        { user: user.email, scheme: schemeName,rating: 5 }); 
+        const response = await axios.post('http://127.0.0.1:8000/recommend/update-rating/', 
+        { user: user.email, scheme: schemeName,rating:0 }); 
         
         console.log(response.data); 
         navigate('/scheme-details', 
