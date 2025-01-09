@@ -1,81 +1,124 @@
 /* Chat.css */
 
 body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-  }
-  
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 90vh; /* Full height */
-    margin: 0 auto;
-    margin-top: 4rem;
-    padding: 20px;
-    background-color: #f1f1f1;
-  }
-  
-  .chat-header {
-    text-align: center;
-    margin-bottom: 20px;
-    flex-shrink: 0;
-  }
-  
-  .messages-container {
-    flex-grow: 1; /* Take up remaining space */
-    overflow-y: auto; /* Enable vertical scrolling */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh; /* Full height */
+  margin: 0 auto;
+  margin-top: 4rem;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.chat-header {
+  text-align: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.messages-container {
+  flex-grow: 1; /* Take up remaining space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 10px;
+  font-size: 16px;
+  align-items: flex-start;
+}
+
+.my-message {
+  align-self: flex-end;
+  background-color: #d1f7c4; /* Light green for user's messages */
+  color: #333;
+  border-radius: 10px;
     padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .message-box {
-    background-color: #e7f9ce;
-    border: 1px solid #8BC34A;
-    border-radius: 8px;
-    padding: 10px;
-    max-width: 70%;
-    word-wrap: break-word;
     text-align: left;
-  }
-  
-  .input-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center align the input fields and button */
-    gap: 10px;
-    flex-shrink: 0; /* Ensure it doesn't shrink */
-  }
-  
-  .username-input,
-  .message-input {
-    width: 80%; /* Make the input fields shorter */
+}
+
+.other-message {
+  align-self: flex-start;
+  background-color: #f1f1f1; /* Light gray for other users' messages */
+  color: #333;
+  border-radius: 10px;
     padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
+    text-align: left;
+}
+
+.message-box {
+  border-radius: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+ 
+  word-wrap: break-word;
   
-  .send-button {
-    width: 10%; /* Make the button shorter */
-    padding: 10px 20px;
-    background-color: #8BC34A;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
   
-  .send-button:hover {
-    background-color: #779307;
-  }
-  
+}
+
+.message-box strong {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Timestamp styles */
+.message-box small {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+  text-align: right; /* Align timestamp to the right */
+}
+
+
+.input-container {
+  display: flex;
+  /* margin-left: 5rem; */
+  margin-right: 5rem;
+  width: 70%;;
+  align-items: center; /* Center align the input fields and button */
+  gap: 10px;
+  flex-shrink: 0; /* Ensure it doesn't shrink */
+}
+
+.username-input{
+  width: 20%; /* Make the input fields shorter */
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.message-input {
+  width: 80%; /* Make the input fields shorter */
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.send-button {
+  width: 45px; /* Adjust button width */
+  padding: 10px;
+  background-color: #8BC34A;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.send-button:hover {
+  background-color: #779307;
+}
