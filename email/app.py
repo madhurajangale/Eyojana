@@ -119,6 +119,25 @@ def send_email():
         return jsonify({'message': 'Your message for personalized support has been sent successfully! You will be contacted shortly.'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+    
+@app.route('/application-email', methods=['POST'])
+def application_email():
+    data = request.json
+    recipient_email = data.get('email')  # Email of the user from form
+    schemename = data.get('schemename')  # Scheme name from form
+
+    if not recipient_email or not schemename:
+        return jsonify({'error': 'Email and scheme name are required'}), 400
+
+    try:
+        message_body = f"You have successfully submitted the application for the scheme {schemename}."
+        msg = Message('Application Submitted', recipients=[recipient_email])
+        msg.body = message_body
+        mail.send(msg)
+        return jsonify({'message': 'Email sent successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
     
