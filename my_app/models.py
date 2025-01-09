@@ -72,7 +72,7 @@ class User(models.Model):
         db_table = 'user'
 
 class Scheme(models.Model):
-    schemename = models.CharField(max_length=100,unique=True)
+    schemename = models.CharField(max_length=1000,unique=True)
     category = models.CharField(max_length=255)
     gender = models.CharField(max_length=20, null=True, blank=True)
     age_range = models.CharField(max_length=50, default='0')
@@ -82,8 +82,8 @@ class Scheme(models.Model):
     documents = models.JSONField(default=list)
     ministry = models.CharField(max_length=100, null=True, blank=True)
     employment_status = models.CharField(max_length=20, null=True, blank=True)
-    benefits=models.CharField(max_length=500, null=True, blank=True)
-    details=models.CharField(max_length=500, null=True, blank=True)
+    benefits=models.CharField(max_length=10000, null=True, blank=True)
+    details=models.CharField(max_length=10000, null=True, blank=True)
 
     def __str__(self):
         return self.schemename

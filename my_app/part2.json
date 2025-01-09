@@ -1,0 +1,29 @@
+[
+    {
+    "schemename": "Promotion of Energy Audit and Conservation of Energy (PEACE): Incentive for Implementing Energy Audit Recommendations",
+    "category":"Business & Entrepreneurship",
+    "gender": "Female",
+    "age_range": "25-37",
+    
+    "marital_status": "Widowed",
+    "income": "< 2,00,000",
+    "caste": [
+        "OBC",
+        "SC"
+    ],
+    "ministry": "Ministry of Finance",
+    "employment_status": "Unemployed",
+    "documents": [
+        "Academic Certificates",
+        "GST Certificate",
+        "Bank Passbook",
+        "PAN Card",
+        "Electricity Bill",
+        "Business Registration Certificate",
+        "Income Certificate",
+        "Aadhar Card"
+    ],
+    "benefits": "50% of the cost of eligible components, subject to a maximum limit of ₹ 10,00,000/ -.Investments made after the energy audit alone will be eligible for the subsidy.",
+    "details":"The scheme comprises four main components: Awareness Programme; Training Programme; Detailed Energy Audit; and Implementation of Energy Audit Recommendations. The Incentive for lmplementing Energy Audit Recommendations component of this scheme is introduced to incentivise MSMEs to implement the recommendations of the Energy Audit Report and to optimize energy consumption leading to energy saving and money savings in electricity bills."
+}
+]
