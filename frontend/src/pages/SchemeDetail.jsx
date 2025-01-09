@@ -1,122 +1,100 @@
-import React,{useState,useEffect} from 'react';
-import { Link , useLocation,useNavigate } from 'react-router-dom';
-import schemeData from '../dataset/dataset_final.json';
-import '../styles/SchemeDetail.css'; // Updated CSS file
-import axios from 'axios';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../styles/SchemeDetail.css";
+import { useLanguage } from "../context/LanguageContext";
+
 const SchemeDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
-    const { selectedLang } = useLanguage();
-      const [translatedTexts, setTranslatedTexts] = useState({});
+  const { selectedLang } = useLanguage();
   const { schemeName } = location.state || {};
-  const schemedetail = schemeData.find(
-    (scheme) => scheme['Scheme Name'].toLowerCase() === schemeName.toLowerCase()
-  );
-  const translateTexts = async (language) => {
-    const elements = document.querySelectorAll("[data-key]");
-    const textMap = {};
-  
-    // Extract text content by `data-key`
-    elements.forEach((element) => {
-      const key = element.getAttribute("data-key");
-      textMap[key] = element.textContent.trim();
-    });
-    if (language === "en") {
-      // Revert to original text written in the code
-      Object.keys(textMap).forEach((key) => {
-        const element = document.querySelector(`[data-key="${key}"]`);
-        if (element) {
-          element.textContent = textMap[key]; // Use the `data-key` as the original English text
-        }
-      });
-      return; // Exit the function for English
-    }
-    try {
-      // Send texts for translation
-      const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
-        sentences: Object.values(textMap),
-        target_lang: language,
-      });
-     console.log(response)
-      const translations = response.data.translated_sentences;
-  
-      // Apply translations back to the DOM
-      Object.keys(textMap).forEach((key, index) => {
-        const element = document.querySelector(`[data-key="${key}"]`);
-        if (element) {
-          element.textContent = translations[index];
-        }
-      });
-    } catch (error) {
-      console.error("Error translating texts:", error);
+
+  const [schemeDetail, setSchemeDetail] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSchemeDetail = async () => {
+      try {
+        setLoading(true);
+        console.log(schemeName);
+        const response = await axios.get(`http://127.0.0.1:8000/api/scheme/${schemeName}/`);
+        setSchemeDetail(response.data.scheme);
+      } catch (err) {
+        setError("Failed to fetch scheme details.");
+        console.error("Error fetching scheme details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSchemeDetail();
+  }, [schemeName]);
+
+  const handleViewDetail = () => {
+    if (schemeDetail) {
+      const { schemename: scheme, category } = schemeDetail;
+      navigate("/schemeform", { state: { scheme, category } });
     }
   };
-    useEffect(() => {
-      translateTexts(selectedLang); // Translate texts when language changes
-    }, [selectedLang]);
-  if (!schemedetail) {
-    return <div className="error-message">Scheme not found</div>;
+
+  if (loading) {
+    return <div className="loading-message">Loading...</div>;
   }
-const handleViewDetail = () => {
-  const scheme=schemedetail['Scheme Name']
-  const category=schemedetail.Category
-  navigate('/schemeform', { state: { scheme, category } });
-}
+
+  if (error || !schemeDetail) {
+    return <div className="error-message">{error || "Scheme not found"}</div>;
+  }
+
   return (
-<div className="scheme-detail-container">
-  <div className="scheme-header">
-    <h1 className="scheme-title" data-key="scheme-name">{schemedetail["Scheme Name"]}</h1>
-    <p className="scheme-category" data-key="scheme-category">{schemedetail.Category}</p>
-  </div>
+    <div className="scheme-detail-container">
+      <div className="scheme-header">
+        <h1 className="scheme-title" data-key="scheme-name">{schemeDetail.schemename}</h1>
+        <p className="scheme-category" data-key="scheme-category">{schemeDetail.category}</p>
+      </div>
 
-  <div className="scheme-info">
-    <div className="info-section">
-      <p data-key="gender"><strong>Gender:</strong> {schemedetail.Gender}</p>
-      <p data-key="age-range"><strong>Age Range:</strong> {schemedetail["Age Range"]}</p>
-      <p data-key="state"><strong>State:</strong> {schemedetail.State}</p>
+      <div className="scheme-info">
+        <div className="info-section">
+          <p data-key="gender"><strong>Gender:</strong> {schemeDetail.gender}</p>
+          <p data-key="age-range"><strong>Age Range:</strong> {schemeDetail.age_range}</p>
+        </div>
+        <div className="info-section">
+          <p data-key="marital-status"><strong>Marital Status:</strong> {schemeDetail.marital_status}</p>
+          <p data-key="income"><strong>Income:</strong> {schemeDetail.income}</p>
+          <p data-key="caste"><strong>Caste:</strong> {schemeDetail.caste.join(", ")}</p>
+        </div>
+        <div className="info-section">
+          <p data-key="ministry"><strong>Ministry:</strong> {schemeDetail.ministry}</p>
+          <p data-key="employment-status"><strong>Employment Status:</strong> {schemeDetail.employment_status}</p>
+        </div>
+      </div>
+
+      <div className="scheme-benefits">
+        <h3 data-key="benefits-header">Benefits</h3>
+        <p data-key="benefits">{schemeDetail.benefits}</p>
+      </div>
+
+      <div className="scheme-details">
+        <h3 data-key="details-header">Details</h3>
+        <p data-key="details">{schemeDetail.details}</p>
+      </div>
+
+      <div className="scheme-documents">
+        <h3 data-key="documents-header">Required Documents</h3>
+        <ul>
+          {schemeDetail.documents.map((doc, index) => (
+            <li key={index} data-key={`document-${index}`}>{doc}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <button onClick={handleViewDetail} className="applybtn" data-key="apply-now">
+          Apply Now
+        </button>
+      </div>
     </div>
-    <div className="info-section">
-      <p data-key="marital-status"><strong>Marital Status:</strong> {schemedetail["Marital Status"]}</p>
-      <p data-key="income"><strong>Income:</strong> {schemedetail.Income}</p>
-      <p data-key="caste"><strong>Caste:</strong> {schemedetail.Caste}</p>
-    </div>
-    <div className="info-section">
-      <p data-key="ministry"><strong>Ministry:</strong> {schemedetail.Ministry}</p>
-      <p data-key="employment-status"><strong>Employment Status:</strong> {schemedetail["Employment Status"]}</p>
-    </div>
-  </div>
-
-  <div className="scheme-benefits">
-    <h3 data-key="benefits-header">Benefits</h3>
-    <p data-key="benefits">{schemedetail.Benefits}</p>
-  </div>
-
-  <div className="scheme-details">
-    <h3 data-key="details-header">Details</h3>
-    <p data-key="details">{schemedetail.Details}</p>
-  </div>
-
-  <div className="scheme-documents">
-    <h3 data-key="documents-header">Required Documents</h3>
-    <ul>
-      {schemedetail.Documents.map((doc, index) => (
-       
-        
-        <p key={index} data-key={`document-${index}`}>{doc}</p>
-      ))}
-    </ul>
-  </div>
-
-  <div>
-    
-      <button onClick={handleViewDetail} type="submit" className="applybtn" data-key="apply-now">
-        Apply Now
-      </button>
-    
-  </div>
-</div>
-
   );
 };
 
