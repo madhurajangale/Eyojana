@@ -42,13 +42,16 @@
   .nav-login {
     margin-left: auto; 
   }
-  
   .nav-links ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+  }
+  .search-container {
+    max-height: 300px; /* Adjust height as necessary */
+    overflow-y: auto;
   }
   
   .nav-links li {
@@ -150,3 +153,19 @@
       margin-top: 15px;
     }
   }
+
+  .search-bar .dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    z-index: 100;
+  }
+  
+  .search-bar .dropdown li:hover {
+    background-color: #f0f0f0;
+  }
+  

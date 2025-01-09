@@ -1,136 +1,117 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png'; 
 import '../styles/navbar.css'; 
 import axios from 'axios';
 import eyojana from '../images/e-yojana.png';
-// import { AuthProvider } from "../components/AuthContext";
-// import { useAuth } from "../components/AuthContext";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GTranslateRoundedIcon from '@mui/icons-material/GTranslateRounded';
+import SearchIcon from '@mui/icons-material/Search';
 import { useLanguage } from '../context/LanguageContext';
+
 function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
-    const [translatedTexts, setTranslatedTexts] = useState({});
-    const [loading, setLoading] = useState(false);
-    const { selectedLang, setSelectedLang } = useLanguage();
-  const navigate = useNavigate(); // Hook for navigation in React Router
-//   const { isLoggedIn } = useAuth();
-// const { setIsLoggedIn } = useAuth();
-// const fetchTextFromTags = () => {
-//   const tags = ['h1', 'p', 'span', 'div', 'option', 'select']; // Specify tags to search
-//   let texts = [];
-//   tags.forEach((tag) => {
-//     const elements = document.querySelectorAll(tag);
-//     elements.forEach((element) => {
-//       const id = element.id || element.textContent.slice(0, 20); // Use ID or partial text for mapping
-//       texts.push({ id, text: element.textContent });
-//     });
-//   });
-//   return texts;
-// };
+  const [translatedTexts, setTranslatedTexts] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { selectedLang, setSelectedLang } = useLanguage();
+  const navigate = useNavigate();
+  
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [schemes, setSchemes] = useState([]);
+  const [filteredSchemes, setFilteredSchemes] = useState([]);
+  const [allSchemes, setAllSchemes] = useState([]);
+  const toggleSearchBar = () => {
+    setShowSearchBar((prev) => !prev); // Toggle the visibility
+  };
+  let schemeNames = [];
+  // Fetch schemes from backend API
+  useEffect(() => {
+    // Fetch schemes from backend API
+    axios.get('http://127.0.0.1:8000/api/schemes')  // Replace with your actual API endpoint
+      .then((response) => {
+        console.log(response)
+        setAllSchemes(response.data.schemes); // Adjust based on the actual response
+    setFilteredSchemes(response.data.schemes);
+      })
+      .catch((error) => {
+        console.error('Error fetching schemes:', error);
+      });
+  }, []);
+  
+  useEffect(() => {
+    if (searchQuery) {
+      console.log("searching");
+      const filteredResults = allSchemes.filter((scheme) =>
+        scheme.schemename.toLowerCase().includes(searchQuery.toLowerCase()) // Filter based on scheme name
+      );
+      setFilteredSchemes(filteredResults); // Update filteredSchemes state
+      console.log(filteredSchemes); // Log filtered results immediately after filtering
+    } else {
+      setFilteredSchemes(allSchemes); // Show all schemes when search query is empty
+    }
+  }, [searchQuery, allSchemes]); // Re-run effect when searchQuery or allSchemes change
+  
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
 
-// const translateTexts = async (texts, language) => {
-//   setLoading(true);
-//   try {
-//     const response = await axios.post('http://127.0.0.1:8000/api/translate/', {
-//       sentences: texts.map((item) => item.text),
-//       target_lang: language,
-//     });
+  const translateTexts = async (language) => {
+    const elements = document.querySelectorAll("[data-key]");
+    const textMap = {};
 
-//     const translations = response.data.translated_sentences;
-
-//     // Map translations back to elements
-//     const mappedTranslations = {};
-//     texts.forEach((item, index) => {
-//       mappedTranslations[item.id] = translations[index];
-//     });
-
-//     setTranslatedTexts(mappedTranslations);
-
-//     // Apply translations to <option> tags directly
-//     document.querySelectorAll('option').forEach((option) => {
-//       const originalText = option.textContent;
-//       const translatedText = translations.find((t) =>
-//         t.startsWith(originalText.slice(0, 20))
-//       );
-//       if (translatedText) {
-//         option.textContent = translatedText;
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error translating texts:', error);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-const translateTexts = async (language) => {
-  const elements = document.querySelectorAll("[data-key]");
-  const textMap = {};
-
-  // Extract text content by `data-key`
-  elements.forEach((element) => {
-    const key = element.getAttribute("data-key");
-    textMap[key] = element.textContent.trim();
-  });
-  console.log(textMap)
-  if (language === "en") {
-    // Revert to original text written in the code
-    Object.keys(textMap).forEach((key) => {
-      const element = document.querySelector(`[data-key="${key}"]`);
-      if (element) {
-        element.textContent = textMap[key]; // Use the `data-key` as the original English text
-      }
-    });
-    return; // Exit the function for English
-  }
-  try {
-    // Send texts for translation
-    const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
-      sentences: Object.values(textMap),
-      target_lang: language,
+    // Extract text content by `data-key`
+    elements.forEach((element) => {
+      const key = element.getAttribute("data-key");
+      textMap[key] = element.textContent.trim();
     });
 
-    const translations = response.data.translated_sentences;
+    if (language === "en") {
+      // Revert to original text written in the code
+      Object.keys(textMap).forEach((key) => {
+        const element = document.querySelector(`[data-key="${key}"]`);
+        if (element) {
+          element.textContent = textMap[key];
+        }
+      });
+      return;
+    }
 
-    // Apply translations back to the DOM
-    Object.keys(textMap).forEach((key, index) => {
-      const element = document.querySelector(`[data-key="${key}"]`);
-      if (element) {
-        element.textContent = translations[index];
-      }
-    });
-  } catch (error) {
-    console.error("Error translating texts:", error);
-  }
-};
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
+        sentences: Object.values(textMap),
+        target_lang: language,
+      });
+
+      const translations = response.data.translated_sentences;
+
+      Object.keys(textMap).forEach((key, index) => {
+        const element = document.querySelector(`[data-key="${key}"]`);
+        if (element) {
+          element.textContent = translations[index];
+        }
+      });
+    } catch (error) {
+      console.error("Error translating texts:", error);
+    }
+  };
+
   useEffect(() => {
     translateTexts(selectedLang); // Translate texts when language changes
   }, [selectedLang]);
-const handleLogout = () => {
-// eslint-disable-next-line no-restricted-globals
-  if (confirm("Are you sure you want to logout?")) {
-      // Clear the token and reset login state
-  // localStorage.removeItem("authToken");
-  // localStorage.removeItem("Email");
-  //  setIsLoggedIn(false);
-    // If the user clicks "OK", navigate to the login page
-    navigate("/login");
-  }
-  
-};
 
-  // const logout = (setIsLoggedIn) =>{
-  //   // setIsLoggedIn(false);
-  // }
+  const handleLogout = () => {
+    // if (confirm("Are you sure you want to logout?")) {
+    //   navigate("/login");
+    // }
+  };
+
   const navigateToSection = (section) => {
-    // If not on the home page, navigate to home page first
     if (window.location.pathname !== '/') {
       navigate('/'); // Redirect to home page
     }
-    
-    // Scroll to the section after redirection
+
     setTimeout(() => {
       document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
     }, 100); // Slight delay to ensure home page is fully loaded before scrolling
@@ -150,7 +131,7 @@ const handleLogout = () => {
           <ul>
             <li><Link to="/" data-key="home">Home</Link></li>
             <li><Link to="/category" data-key="schemes">Schemes</Link></li>
-            <li><a data-key="about" href="#about" onClick={() => navigateToSection('about')} >About</a></li>
+            <li><a data-key="about" href="#about" onClick={() => navigateToSection('about')}>About</a></li>
             <li><a data-key="faq" href="#faq" onClick={() => navigateToSection('faq')}>FAQs</a></li>
             <li><Link data-key="Agent Support" to="/contact">Agent Support</Link></li>
             <li><Link data-key="myapplications" to="/myapplications">My Applications</Link></li>
@@ -158,54 +139,85 @@ const handleLogout = () => {
         </div>
 
         <div className="nav-login">
-          
-          {/* {!isLoggedIn?(<Link to="/login">
-            <button id="loginbutton" className="btn">Login</button>
-          </Link>):(
-            <Link to="/">
-            <button id="loginbutton"  className="btn">LogOut</button>
-          </Link>
-          )} */}
-        
-          
+          {/* Login/Logout button will go here */}
         </div>
-        <div className="language">
-          
-           {/* Language Selector Icon (Click to toggle dropdown) */}
-      <GTranslateRoundedIcon
-        sx={{ color: '#779307', cursor: 'pointer' }}
-        fontSize="large"
-        onClick={() => setShowDropdown(!showDropdown)} // Toggle dropdown visibility
-      />
 
-      {/* Conditionally render the dropdown based on showDropdown state */}
-      {showDropdown && (
-        <div>
-          
-          <select
-            id="language-select"
-            value={selectedLang}
-            onChange={(e) => setSelectedLang(e.target.value)}
-          >
-            <option value="en">English</option>
-            <option value="as">Assamese</option>
-            <option value="bn">Bengali</option>
-            <option value="gu">Gujarati</option>
-            <option value="hi">Hindi</option>
-            <option value="kn">Kannada</option>
-            <option value="ml">Malayalam</option>
-            <option value="mr">Marathi</option>
-            <option value="ne">Nepali</option>
-            <option value="or">Odia (Oriya)</option>
-            <option value="pa">Punjabi</option>
-            <option value="ta">Tamil</option>
-            <option value="te">Telugu</option>
-            <option value="ur">Urdu</option>
-          </select>
+        <div className="search" onClick={toggleSearchBar} style={{ cursor: 'pointer' }}>
+          <SearchIcon sx={{ color: '#779307' }} fontSize="large" />
+        </div>
+
+        {showSearchBar && (
+  <div className="search-bar">
+    <input
+      type="text"
+      placeholder="Search..."
+      value={searchQuery}
+      onChange={handleSearchChange}
+      style={{
+        padding: '10px',
+        fontSize: '16px',
+        width: '100%',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        marginTop: '10px',
+      }}
+    />
+    <div className="search-results">
+      {filteredSchemes.length > 0 && (
+        <div className="dropdown">
+          <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+            {filteredSchemes.map((scheme, index) => (
+              <li
+                key={index}
+                style={{
+                  padding: '10px',
+                  borderBottom: '1px solid #ccc',
+                  cursor: 'pointer',
+                  backgroundColor: '#fff',
+                }}
+                onClick={() => {
+                  setSearchQuery(scheme.schemename); // Set the search bar to the clicked scheme
+                  setFilteredSchemes([]); // Clear the dropdown after selection
+                }}
+              >
+                {scheme.schemename}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-          
+      {filteredSchemes.length === 0 && searchQuery && (
+        <div style={{ padding: '10px', color: '#888' }}>No results found</div>
+      )}
+    </div>
+  </div>
+)}
+
+
+        <div className="language">
+          <GTranslateRoundedIcon sx={{ color: '#779307', cursor: 'pointer' }} fontSize="large" onClick={() => setShowDropdown(!showDropdown)} />
+          {showDropdown && (
+            <div>
+              <select id="language-select" value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)}>
+                <option value="en">English</option>
+                <option value="as">Assamese</option>
+                <option value="bn">Bengali</option>
+                <option value="gu">Gujarati</option>
+                <option value="hi">Hindi</option>
+                <option value="kn">Kannada</option>
+                <option value="ml">Malayalam</option>
+                <option value="mr">Marathi</option>
+                <option value="ne">Nepali</option>
+                <option value="or">Odia (Oriya)</option>
+                <option value="pa">Punjabi</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="ur">Urdu</option>
+              </select>
+            </div>
+          )}
         </div>
+
         <div className="profile-icon">
           <Link to="/profile">
             <AccountCircleIcon sx={{ color: '#779307' }} fontSize="large" />
