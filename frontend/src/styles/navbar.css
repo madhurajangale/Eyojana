@@ -76,11 +76,11 @@
     text-align: center;
     line-height: 35px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
   }
   
-  .btn:hover {
-    color: rgb(34, 167, 71);
-  }
+ 
   .language{
     margin-right: 50px;
    }

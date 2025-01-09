@@ -1,4 +1,5 @@
 import './App.css';
+import { useContext } from 'react';
 import Home from './pages/Home';
 import Category from './components/Category';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -20,7 +21,9 @@ import Contact from './components/Contact';
 import Map from './components/Map';
 import Applications from './components/Applications';
 import Recommendation from './components/recommendation';
+
 function App() {
+    
   return (
     <div className="App">
       
