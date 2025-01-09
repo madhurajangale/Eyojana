@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png'; 
 import '../styles/navbar.css'; 
@@ -8,7 +8,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GTranslateRoundedIcon from '@mui/icons-material/GTranslateRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLanguage } from '../context/LanguageContext';
-
+import { AuthContext } from '../context/AuthContext';
 function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [translatedTexts, setTranslatedTexts] = useState({});
@@ -21,6 +21,8 @@ function Navbar() {
   const [schemes, setSchemes] = useState([]);
   const [filteredSchemes, setFilteredSchemes] = useState([]);
   const [allSchemes, setAllSchemes] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useContext(AuthContext); // {user}
   const toggleSearchBar = () => {
     setShowSearchBar((prev) => !prev); // Toggle the visibility
   };
@@ -102,9 +104,61 @@ function Navbar() {
   }, [selectedLang]);
 
   const handleLogout = () => {
-    // if (confirm("Are you sure you want to logout?")) {
-    //   navigate("/login");
-    // }
+    // Show a confirmation alert
+    if (window.confirm("Are you sure you want to log out?")) {
+      // Clear user email
+      user.email = "";
+      
+      // Navigate to the home page
+      navigate("/");
+    }
+  };
+  const myApplication=()=>{
+    if (user?.email) {
+      // Navigate to the profile page if user is logged in
+      navigate("/myapplications");
+    } else {
+      // Ask the user to log in
+      if (window.confirm("You need to log in to access  your applications. Do you want to log in now?")) {
+        navigate("/login"); // Navigate to the login page if confirmed
+      }
+      else{
+        navigate("/")
+      }
+    }
+  }
+  const handleSchemeClick=()=>{
+    if (user?.email) {
+      // Navigate to the profile page if user is logged in
+      navigate("/category");
+    } else {
+      // Ask the user to log in
+      if (window.confirm("You need to log in to access  Schemes. Do you want to log in now?")) {
+        navigate("/login"); // Navigate to the login page if confirmed
+      }
+      else{
+        navigate("/")
+      }
+    }
+  }
+  const handleProfileClick = () => {
+    if (user?.email) {
+      // Navigate to the profile page if user is logged in
+      navigate("/profile");
+    } else {
+      // Ask the user to log in
+      if (window.confirm("You need to log in to access your profile. Do you want to log in now?")) {
+        navigate("/login"); // Navigate to the login page if confirmed
+      }
+      else{
+        navigate("/")
+      }
+    }
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Set logged-in state to true on login
+    navigate("/login");
   };
 
   const navigateToSection = (section) => {
@@ -121,7 +175,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-content">
         <div className="logo">
-          <a className="navbar-brand" href="#s">
+          <a className="navbar-brand" href="/">
             <img id="emblem" src={logo} alt="Logo" className="d-inline-block align-text-top" />
             <img src={eyojana} alt="Logo" width="120" height="30" className="d-inline-block align-text-top ms-3"/>
           </a>
@@ -129,12 +183,12 @@ function Navbar() {
 
         <div className="nav-links">
           <ul>
-            <li><Link to="/" data-key="home">Home</Link></li>
+           
             <li><Link to="/category" data-key="schemes">Schemes</Link></li>
-            <li><a data-key="about" href="#about" onClick={() => navigateToSection('about')}>About</a></li>
-            <li><a data-key="faq" href="#faq" onClick={() => navigateToSection('faq')}>FAQs</a></li>
+            <li ><Link data-key="Community" to="/chat">Community</Link></li>
+          
             <li><Link data-key="Agent Support" to="/contact">Agent Support</Link></li>
-            <li><Link data-key="myapplications" to="/myapplications">My Applications</Link></li>
+            <li onClick={myApplication}><Link data-key="myapplications" >My Applications</Link></li>
           </ul>
         </div>
 
@@ -218,11 +272,20 @@ function Navbar() {
           )}
         </div>
 
-        <div className="profile-icon">
+        <div className="profile-icon" onClick={handleProfileClick}>
           <Link to="/profile">
             <AccountCircleIcon sx={{ color: '#779307' }} fontSize="large" />
           </Link>
         </div>
+        <div className="nav-login">
+  {/* Toggle between Login and Logout based on user.email */}
+  {user?.email ? (
+    <button onClick={handleLogout} className="btn btn-danger">Logout</button>
+  ) : (
+    <button onClick={handleLogin} className="btn">Login</button>
+  )}
+</div>
+
       </div>
     </nav>
   );

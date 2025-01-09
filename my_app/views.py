@@ -237,25 +237,39 @@ class UpdateRatingView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class SchemeDetailView(APIView):
+    def get(self, request, scheme_name):
+        try:
+            scheme = Scheme.objects.filter(schemename__iexact=scheme_name).first()
+            if not scheme:
+                return Response({"message": "Scheme not found."}, status=status.HTTP_404_NOT_FOUND)
+
+            serializer = SchemeSerializer(scheme)
+            return Response({"scheme": serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error("Error: %s", str(e))
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class SchemeListView(APIView):
     def get(self, request):
         try:
-            schemes = Scheme.objects.all()
+            category = request.query_params.get('category', None)
+            if category:
+                schemes = Scheme.objects.filter(category__iexact=category)
+            else:
+                schemes = Scheme.objects.all()
 
-            if not schemes:
+            if not schemes.exists():
                 return Response({"message": "No schemes found."}, status=status.HTTP_404_NOT_FOUND)
-            logger.debug("Schemes QuerySet: %s", schemes)
 
             serializer = SchemeSerializer(schemes, many=True)
-
-            logger.debug("Serialized Data: %s", serializer.data)
-
             return Response({"schemes": serializer.data}, status=status.HTTP_200_OK)
 
         except Exception as e:
             logger.error("Error: %s", str(e))
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class GetPincode(APIView):
     def get(self, request):
@@ -448,7 +462,7 @@ class LoginView(APIView):
 
             return JsonResponse({
                 'message': 'Login successful',
-                'data': user.email  
+                'email': user.email  
             }, status=status.HTTP_200_OK)
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -471,7 +485,7 @@ def admin_login(request):
             if not check_password(password, admin.password):
                 return JsonResponse({"error": "Invalid email or password."}, status=401)
 
-            return JsonResponse({"message": "Login successful!", "admin": admin.adminname}, status=200)
+            return JsonResponse({"message": "Login successful!", "email": admin.email}, status=200)
 
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data."}, status=400)
