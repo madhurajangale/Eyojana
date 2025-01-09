@@ -20,6 +20,7 @@ import Contact from './components/Contact';
 import Map from './components/Map';
 import Applications from './components/Applications';
 import Recommendation from './components/recommendation';
+import MyUsers from './components/UserList';
 function App() {
   return (
     <div className="App">
@@ -57,6 +58,7 @@ function App() {
                 <Route path='/map' element={<Map />} />
                 <Route path="/applications/:category" element={<Applications />} />
                 <Route path="/recommendation" element={<Recommendation />} />
+                <Route path="/myusers" element={<MyUsers/>}/> 
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
