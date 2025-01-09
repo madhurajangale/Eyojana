@@ -32,6 +32,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.db.models import Count
+
+
+
 mongo_client = MongoClient('mongodb+srv://shravanipatil1427:Shweta2509@cluster0.xwf6n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['Cluster0']
 fs = GridFS(db)
@@ -45,19 +49,15 @@ def applications_by_category(request):
             return JsonResponse({"error": "Both category and admin_email are required."}, status=400)
 
         try:
-            # Fetch the admin
             admin = Admin.objects.get(email=admin_email)
 
-            # Get all users matching the admin's pincode
             matching_users = User.objects.filter(pincode=admin.pincode)
 
-            # Get all user applications in the specified category
             matching_applications = UserApplications.objects.filter(
                 category=category,
                 user_email__in=matching_users.values_list('email', flat=True)
             )
 
-            # Serialize data
             applications_data = [
                 {
                     "id": app.id,
@@ -82,18 +82,14 @@ def applications_by_category(request):
 def applications_by_pincode(request, admin_email):
     if request.method == 'GET':
         try:
-            # Fetch the admin object by email
             admin = Admin.objects.get(email=admin_email)
 
-            # Get all users whose pincode matches the admin's pincode
             matching_users = User.objects.filter(pincode=admin.pincode)
 
-            # Get all user applications for these matching users
             matching_applications = UserApplications.objects.filter(
                 user_email__in=matching_users.values_list('email', flat=True)
             )
 
-            # Serialize the matching applications
             applications_data = [
                 {
                     "id": app.id,
@@ -107,7 +103,6 @@ def applications_by_pincode(request, admin_email):
                 for app in matching_applications
             ]
 
-            # Return the matching applications as a JSON response
             return JsonResponse({"applications": applications_data}, status=200)
 
         except Admin.DoesNotExist:
@@ -140,28 +135,51 @@ class UpdateRatingView(APIView):
                     {"error": "Missing user, scheme, or rating field."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+
             custom_id = f"{user_email}_{scheme_name}"
             try:
                 user_rating = UserRating.objects.get(custom_id=custom_id)
-                user_rating.rating = new_rating  
-                user_rating.save()
-                return Response(
-                    {"message": "Rating updated successfully.", "rating": new_rating},
-                    status=status.HTTP_200_OK,
-                )
+                if user_rating.rating < 5.0:
+                    new_rating = user_rating.rating + 0.5
+                    if new_rating > 5.0:
+                        new_rating = 5.0
+                    
+                    user_rating.rating = new_rating
+                    user_rating.save()  
+                    return Response(
+                        {
+                            "message": "Rating updated successfully.",
+                            "rating": user_rating.rating,
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+                else:
+                    return Response(
+                        {
+                            "message": "Rating is already at maximum (5.0).",
+                            "rating": user_rating.rating,
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+
             except UserRating.DoesNotExist:
+                adjusted_rating = min(new_rating, 5.0)  
                 user_rating = UserRating.objects.create(
                     user=user_email,
                     scheme=scheme_name,
-                    rating=new_rating,
+                    rating=adjusted_rating,
                 )
                 return Response(
-                    {"message": "New rating created successfully.", "rating": new_rating},
+                    {
+                        "message": "New rating created successfully.",
+                        "rating": user_rating.rating,
+                    },
                     status=status.HTTP_201_CREATED,
                 )
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class SchemeListView(APIView):
     def get(self, request):
@@ -299,6 +317,7 @@ class FetchDocumentsView(APIView):
 class UserApplicationsView(APIView):
     def post(self, request):
         documents = []
+        
         for key, value in request.data.items():
             if key.startswith('documents['):
                 index = int(key.split('[')[1].split(']')[0])
@@ -306,6 +325,7 @@ class UserApplicationsView(APIView):
                 while len(documents) <= index:
                     documents.append({})
                 documents[index][field] = value
+
         for key, value in request.FILES.items():
             if key.startswith('documents['):
                 index = int(key.split('[')[1].split(']')[0])
@@ -313,6 +333,7 @@ class UserApplicationsView(APIView):
 
         mutable_data = request.data.dict()
         mutable_data['documents'] = documents
+
         serializer = UserApplicationsSerializer(data=mutable_data)
         if serializer.is_valid():
             application = serializer.save()
@@ -452,4 +473,60 @@ class UserProfileEditView(APIView):
             raise NotFound(detail="User not found.", code=status.HTTP_404_NOT_FOUND) 
         
 
+class UserStateView(APIView):
+    def get(self, request):
+        try:
+            state = request.GET.get('state')  # Optional: Filter by a specific state
+            if state:
+                user_count = User.objects.filter(state=state).count()
+                return Response({'state': state, 'user_count': user_count}, status=status.HTTP_200_OK)
+            
+            # Get counts for all states
+            states = User.objects.values('state').annotate(user_count=Count('state'))
+            return Response({'states': list(states)}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class UserCityView(APIView):
+    def get(self, request):
+        try:
+            city = request.GET.get('city')  # Optional: Filter by a specific city
+            if city:
+                user_count = User.objects.filter(city=city).count()
+                return Response({'city': city, 'user_count': user_count}, status=status.HTTP_200_OK)
+            
+            # Get counts for all cities
+            cities = User.objects.values('city').annotate(user_count=Count('city'))
+            return Response({'cities': list(cities)}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UserPincodeView(APIView):
+    def get(self, request):
+        try:
+            pincode = request.GET.get('pincode')  # Optional: Filter by a specific pincode
+            if pincode:
+                user_count = User.objects.filter(pincode=pincode).count()
+                return Response({'pincode': pincode, 'user_count': user_count}, status=status.HTTP_200_OK)
+            
+            # Get counts for all pincodes
+            pincodes = User.objects.values('pincode').annotate(user_count=Count('pincode'))
+            return Response({'pincodes': list(pincodes)}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UserAllView(APIView):
+    def get(self, request):
+        try:
+            # Get counts for all states, cities, and pincodes
+            states = User.objects.values('state').annotate(user_count=Count('state'))
+            cities = User.objects.values('city').annotate(user_count=Count('city'))
+            pincodes = User.objects.values('pincode').annotate(user_count=Count('pincode'))
+
+            return Response({
+                'states': list(states),
+                'cities': list(cities),
+                'pincodes': list(pincodes)
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
