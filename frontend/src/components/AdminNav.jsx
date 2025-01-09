@@ -1,12 +1,17 @@
-import React from 'react';
+import React,{useContext,useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png'; 
 import '../styles/navbar.css'; 
 import axios from 'axios';
 import eyojana from '../images/e-yojana.png';
-import { color } from 'd3';
+
 import { AuthContext } from '../context/AuthContext';
+  
+
+const AdminNav = () => {
   const { admin } = useContext(AuthContext);
+  const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleCommunity=()=>{
     if (admin?.email) {
       // Navigate to the profile page if user is logged in
@@ -31,25 +36,38 @@ import { AuthContext } from '../context/AuthContext';
         navigate("/login"); // Navigate to the login page if confirmed
       }
       else{
-        navigate("/")
+        navigate("/adminhome")
       }
     }
   }
+  const handleLogout = () => {
+    // Show a confirmation alert
+    if (window.confirm("Are you sure you want to log out?")) {
+      // Clear user email
+      admin.email = "";
+      
+      // Navigate to the home page
+      navigate("/adminhome");
+    }
+  };
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Set logged-in state to true on login
+    navigate("/login");
+  };
   const handleAnalysis=()=>{
     if (admin?.email) {
       // Navigate to the profile page if user is logged in
-      navigate("/");
+      navigate("/map");
     } else {
       // Ask the user to log in
       if (window.confirm("You need to log in to access Analysis. Do you want to log in now?")) {
         navigate("/login"); // Navigate to the login page if confirmed
       }
       else{
-        navigate("/")
+        navigate("/adminhome")
       }
     }
   }
-const AdminNav = () => {
   return (
     <nav className="navbar">
       <div className="navbar-content">
@@ -63,10 +81,10 @@ const AdminNav = () => {
         <div className="nav-links">
           <ul>
             <li><Link to="/" data-key="home">Home</Link></li>
-            <li><Link onClick={handleAnalysis} to="/" data-key="home">Analysis</Link></li>
+            <li><Link onClick={handleAnalysis} to="/adminhome/map" data-key="home">Analysis</Link></li>
             <li><Link onClick={handleUsers} to="/" data-key="home">Users</Link></li>
             <li><Link data-key="Community" to="/chat"onClick={handleCommunity}>Community</Link></li>
-           <button style={{ color: '#fff',backgroundColor:'#779307', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }} >{user?.email ? (
+           <button style={{ color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }} >{admin?.email ? (
     <button onClick={handleLogout} className="btn btn-danger">Logout</button>
   ) : (
     <button onClick={handleLogin} className="btn">Login</button>

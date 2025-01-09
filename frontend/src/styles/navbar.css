@@ -166,10 +166,12 @@
     background: white;
     border: 1px solid #ccc;
     border-radius: 4px;
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto;
-    width: 100%;
+    width: 40%;
     z-index: 100;
+   
+    flex-direction: column;
   }
   
   .search-bar .dropdown li:hover {

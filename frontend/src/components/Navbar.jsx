@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect,useContext,useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png'; 
 import '../styles/navbar.css'; 
@@ -15,7 +15,7 @@ function Navbar() {
   const [loading, setLoading] = useState(false);
   const { selectedLang, setSelectedLang } = useLanguage();
   const navigate = useNavigate();
-  
+  const dropdownRef = useRef(null); 
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [schemes, setSchemes] = useState([]);
@@ -23,6 +23,7 @@ function Navbar() {
   const [allSchemes, setAllSchemes] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { user } = useContext(AuthContext); // {user}
+  const searchBarRef = useRef(null);
   const toggleSearchBar = () => {
     setShowSearchBar((prev) => !prev); // Toggle the visibility
   };
@@ -40,7 +41,36 @@ function Navbar() {
         console.error('Error fetching schemes:', error);
       });
   }, []);
-  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchBarRef.current && !searchBarRef.current.contains(event.target)) {
+        setSearchQuery(''); // Clear the search bar if clicked outside
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setFilteredSchemes([]); // Close the dropdown if clicked outside
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   useEffect(() => {
     if (searchQuery) {
       console.log("searching");
@@ -184,7 +214,7 @@ function Navbar() {
         <div className="nav-links">
           <ul>
            
-            <li><Link to="/category" data-key="schemes">Schemes</Link></li>
+            <li><Link to="/category" onClick={handleSchemeClick} data-key="schemes">Schemes</Link></li>
             <li ><Link data-key="Community" to="/chat">Community</Link></li>
           
             <li><Link data-key="Agent Support" to="/contact">Agent Support</Link></li>
@@ -203,6 +233,7 @@ function Navbar() {
         {showSearchBar && (
   <div className="search-bar">
     <input
+    ref={searchBarRef}
       type="text"
       placeholder="Search..."
       value={searchQuery}
@@ -216,10 +247,10 @@ function Navbar() {
         marginTop: '10px',
       }}
     />
-    <div className="search-results">
+<div className="search-results">
       {filteredSchemes.length > 0 && (
-        <div className="dropdown">
-          <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+        <div className="dropdown" ref={dropdownRef}>
+          <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'block' }}>
             {filteredSchemes.map((scheme, index) => (
               <li
                 key={index}
@@ -239,9 +270,6 @@ function Navbar() {
             ))}
           </ul>
         </div>
-      )}
-      {filteredSchemes.length === 0 && searchQuery && (
-        <div style={{ padding: '10px', color: '#888' }}>No results found</div>
       )}
     </div>
   </div>
