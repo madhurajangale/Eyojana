@@ -154,6 +154,12 @@
     }
   }
 
+.search{
+  margin-top: 5px;
+}
+.language{
+  margin-left: 2rem;
+}
   .search-bar .dropdown {
     position: absolute;
     background: white;
