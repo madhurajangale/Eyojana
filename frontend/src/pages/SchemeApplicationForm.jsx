@@ -183,6 +183,7 @@ const SchemeApplicationForm = () => {
   const [step, setStep] = useState(1); // Tracks the current step
   const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
+    required_text: "",
     user_email: user.email || "",
     scheme_name: "",
     category: "",
@@ -248,7 +249,7 @@ const SchemeApplicationForm = () => {
 
     if (name === "file") {
       updatedDocuments[index].file = files[0];
-      verifyDocument(files[0], updatedDocuments[index].name);
+      verifyDocument(files[0], updatedDocuments[index].name, index);
     } else if (name === "name") {
       updatedDocuments[index].name = value;
     }
@@ -256,10 +257,11 @@ const SchemeApplicationForm = () => {
     setFormData({ ...formData, documents: updatedDocuments });
   };
 
-  const verifyDocument = async (file, docName) => {
+  const verifyDocument = async (file, docName, index) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("docName", docName);
+    formData.append("required_text", formData.required_text);
 
     try {
       const response = await fetch("http://localhost:5500/upload-documents", {
@@ -271,10 +273,12 @@ const SchemeApplicationForm = () => {
         alert("Document verified successfully!");
       } else {
         alert("Document verification failed!");
+        handleRemoveDocument(index);
       }
     } catch (error) {
       console.error("Error verifying document:", error);
       alert("An error occurred during verification!");
+      handleRemoveDocument(index);
     }
   };
 
@@ -286,10 +290,11 @@ const SchemeApplicationForm = () => {
   };
 
   const handleRemoveDocument = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      documents: prev.documents.filter((_, idx) => idx !== index),
-    }));
+    setFormData((prevFormData) => {
+      const updatedDocuments = [...prevFormData.documents];
+      updatedDocuments.splice(index, 1); 
+      return { ...prevFormData, documents: updatedDocuments }; 
+    });
   };
 
   const handleNext = () => setStep((prev) => Math.min(prev + 1, 4));
@@ -369,6 +374,15 @@ const SchemeApplicationForm = () => {
           <form encType="multipart/form-data">
             {step === 1 && (
               <div className={styles.formColumn}>
+                <label>Name</label>
+                <input
+                  type="text"
+                  name="required_text"
+                  value={formData.required_text || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, required_text: e.target.value })
+                  }
+                />
                 <label>Email</label>
                 <input type="email" id="user_email" value={formData.user_email} disabled required />
                 <label>Scheme Name</label>
@@ -411,12 +425,6 @@ const SchemeApplicationForm = () => {
                 <label>Documents</label>
                 {formData.documents.map((doc, index) => (
                   <div key={index} className={styles.documentRow}>
-                    <input
-                      type="file"
-                      name="file"
-                      onChange={(e) => handleDocumentChange(index, e)}
-                      required
-                    />
                     <select
                       name="name"
                       value={doc.name}
@@ -429,6 +437,12 @@ const SchemeApplicationForm = () => {
                       <option value="Driving License">Driving License</option>
                       <option value="Voter ID">Voter ID</option>
                     </select>
+                    <input
+                      type="file"
+                      name="file"
+                      onChange={(e) => handleDocumentChange(index, e)}
+                      required
+                    />
                     <button type="button" onClick={() => handleRemoveDocument(index)}>Remove</button>
                   </div>
                 ))}

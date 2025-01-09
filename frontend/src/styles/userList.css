@@ -1,0 +1,117 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fffffb;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .users-list-container {
+    width: 90%;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #fff9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    color: #64e62c74;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    color: #c62828;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .users-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    justify-content: center;
+  }
+  
+  .user-item {
+    background: #ecf8bd;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    padding: 1rem;
+    width: calc(33.33% - 1rem);
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .user-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .user-summary p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  
+  .details-button {
+    background-color: #8ba815;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .details-button:hover {
+    background-color: #66bb6a;
+  }
+  
+  .user-details {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #c8e6c9;
+  }
+  
+  .user-details p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .user-item {
+      width: calc(50% - 1rem);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .users-list-container {
+      width: 95%;
+    }
+  
+    .user-item {
+      width: 100%;
+    }
+  
+    .user-summary {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .details-button {
+      margin-top: 0.5rem;
+    }
+  }
+  
