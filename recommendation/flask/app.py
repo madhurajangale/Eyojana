@@ -7,33 +7,13 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Sample data (user-item interaction matrix)
 
-
-# Convert the data into a DataFrame
-# df = pd.DataFrame(data)
-
-# # Set up the Reader object to define the rating scale
-# reader = Reader(rating_scale=(1, 5))
-
-# # Load the data into Surprise's Dataset format
-# dataset = Dataset.load_from_df(df[['user', 'item', 'rating']], reader)
-
-# # Train-test split
-# trainset, testset = train_test_split(dataset, test_size=0.2)
-
-# # Build and train the recommendation model (SVD in this case)
-# model = SVD()
-# model.fit(trainset)
-
-# # Test the model
-# predictions = model.test(testset)
-# rmse = accuracy.rmse(predictions)
-# print(f"RMSE: {rmse}")
 @app.route('/receive-data', methods=['POST'])
 def receive_data():
+    print("&&&&&&&&&&&&")
     # Parse incoming JSON data
     data = request.get_json()
+    print(data)
     eligible_schemes = data.get("eligible_schemes", [])
     user_email = data.get("user_email")
 
@@ -86,4 +66,4 @@ def receive_data():
 #     return jsonify({"recommended_schemes": top_items})
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5002)
