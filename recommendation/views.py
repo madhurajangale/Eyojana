@@ -80,10 +80,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 import json
+import requests
+
 class UpdateRatingView(APIView):
     def post(self, request):
         try:
-            print("**********")
             user_email = request.data.get("user")
             scheme_name = request.data.get("scheme")
 
@@ -93,40 +94,33 @@ class UpdateRatingView(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            # Create custom_id
+            # Create or update user rating logic (unchanged)
             custom_id = f"{user_email}_{scheme_name}"
-
-            # Try to get the user rating using the custom_id
             try:
                 user_rating = UserRating.objects.get(custom_id=custom_id)
-                # If found, increment the rating by 0.5
                 user_rating.rating += 0.5
-
-                # Ensure rating doesn't exceed the maximum value of 5
                 if user_rating.rating > 5:
                     user_rating.rating = 5
-
                 user_rating.save()
-                print("rating")
-                print(user_rating.rating)
             except UserRating.DoesNotExist:
-                # If not found, create a new entry with 0 rating
                 user_rating = UserRating.objects.create(
                     custom_id=custom_id,
                     user=user_email,
                     scheme=scheme_name,
-                    rating=0  # Set initial rating to 0
+                    rating=0  # Initial rating
                 )
 
-            # Call eligibility check and include the response
-            eligibility_response = self.call_eligibility_check(user_email, scheme_name)
+            # Fetch eligible schemes
+            eligibility_response = self.get_eligible_schemes(user_email)
 
-            # Add eligibility data to the final response
+            # Send eligible schemes to Flask
+            self.send_data_to_flask(eligibility_response,user_email)
+
             return Response(
                 {
                     "message": "Rating updated successfully.",
                     "rating": user_rating.rating,
-                    "eligibility": eligibility_response,  # Add eligibility details
+                    "eligible_schemes": eligibility_response,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -134,62 +128,99 @@ class UpdateRatingView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def call_eligibility_check(self, user_email, scheme_name):
+    def get_eligible_schemes(self, user_email):
+        """
+        Fetch eligible schemes using EligibilityCheckView and include their ratings.
+        """
         try:
-            print("testing")
             eligibility_view = EligibilityCheckView()
-            request_mock = RequestFactory().get(f"/eligibility-check/{user_email}/{scheme_name}") 
-            response = eligibility_view.get(request_mock, user_email, scheme_name)  # Expecting user_email and scheme to be passed
-            return response.data  # Return the response data from the eligibility check
+            request_mock = RequestFactory().get(f"/eligibility-check/{user_email}/")
+            response = eligibility_view.get(request_mock, user_email)
+            eligible_schemes = response.data.get("eligible_schemes", [])
+
+            # Add ratings to each eligible scheme
+            for scheme in eligible_schemes:
+                scheme_name = scheme.get("scheme_name")
+                if scheme_name:
+                    custom_id = f"{user_email}_{scheme_name}"
+                    try:
+                        # Fetch the rating if it exists
+                        user_rating = UserRating.objects.get(custom_id=custom_id)
+                        scheme["rating"] = user_rating.rating
+                    except UserRating.DoesNotExist:
+                        scheme["rating"] = 0  # Default rating if not found
+
+            return eligible_schemes
         except Exception as e:
-            logger.error(f"Error calling eligibility check: {e}")
-            return {"error": str(e), "message": "Failed to fetch eligibility"}
+            print(f"Error fetching eligible schemes: {e}")
+            return []
+
+
+    def send_data_to_flask(self, eligible_schemes, user_email):
+        """
+        Send eligible schemes (with ratings) to the Flask app.
+        """
+        try:
+            flask_url = "http://127.0.0.1:5000/receive-data"  # Flask app URL
+            flask_data = {
+                "eligible_schemes": eligible_schemes,  # Pass eligible schemes with ratings
+                "user_email": user_email
+            }
+            response = requests.post(flask_url, json=flask_data)
+
+            if response.status_code != 200:
+                print(f"Failed to send data to Flask: {response.text}")
+        except Exception as e:
+            print(f"Error sending data to Flask: {e}")
+
+
 
 
 class EligibilityCheckView(APIView):
-    def get(self, request, user_email, scheme_name):
+    def get(self, request, user_email):
         try:
             # Fetch user data by email
             user = User.objects.get(email=user_email)
             print(f"User data: {user}")
 
             # Fetch scheme data by scheme name
-            print(f"Scheme name: {scheme_name}")
+            
             try:
-                
-                scheme = Scheme.objects.get(schemename=scheme_name)
-                print(f"Scheme data: {scheme}")
+                # Fetch all schemes from the collection
+                schemes = Scheme.objects.all()  # Retrieves all scheme entries
+                eligible_schemes = []  # To store eligible schemes
+
+                for scheme in schemes:
+                    # Check eligibility for each scheme
+                    is_eligible = self.is_eligible(user, scheme)
+                    if is_eligible:
+                        eligible_schemes.append({
+                            'scheme_name': scheme.schemename,
+                            'documents': self.serialize_list(scheme.documents),
+                        })
+
+                # Return the eligible schemes
+                return Response({
+                    'user': user.email,
+                    'eligible_schemes': eligible_schemes,
+                }, status=status.HTTP_200_OK)
+
             except Scheme.DoesNotExist:
                 return Response({
-                    'error': 'Scheme not found'
+                    'error': 'No schemes found'
                 }, status=status.HTTP_404_NOT_FOUND)
-
-            # Check eligibility for the specific scheme
-            is_eligible = self.is_eligible(user, scheme)
-            eligibility_status = "Eligible" if is_eligible else "Not Eligible"
-
-            # Convert list fields to strings (you can choose how you want to format the list)
-            documents = self.serialize_list(scheme.documents)
-            
-
-            return Response({
-                'user': user.email,
-                'scheme': scheme.schemename,
-                'eligibility': eligibility_status,
-                'documents': documents,  # Send documents as a string
-               
-            }, status=status.HTTP_200_OK)
-        
-        except User.DoesNotExist:
-            return Response({
-                'error': 'User not found'
-            }, status=status.HTTP_404_NOT_FOUND)
+            except User.DoesNotExist:
+                return Response({
+                    'error': 'User not found'
+                }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            print(f"Error: {e}")
-            return Response({
-                'error': str(e),
-                'message': 'Failed to check eligibility'
-            }, status=status.HTTP_400_BAD_REQUEST)
+                print(f"Error: {e}")
+                return Response({
+                    'error': str(e),
+                    'message': 'Failed to check eligibility'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+
 
     def is_eligible(self, user, scheme):
     

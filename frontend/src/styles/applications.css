@@ -1,5 +1,14 @@
 .applications-container {
     padding: 20px;
+    margin-top: 5rem;
+  }
+
+  .applications-heading{
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #779307;
+    font-weight: bold;
+    
   }
   
   .applications-list {
@@ -16,11 +25,18 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
   }
+
+  .scheme-name{
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    
+    
+  }
   
   .view-details-btn {
     margin-top: 10px;
     padding: 8px 15px;
-    background-color: #007bff;
+    background-color: #779307;
     color: white;
     border: none;
     border-radius: 5px;
@@ -28,7 +44,7 @@
   }
   
   .view-details-btn:hover {
-    background-color: #0056b3;
+    background-color: #719a10;
   }
   .modal-overlay {
     position: fixed;

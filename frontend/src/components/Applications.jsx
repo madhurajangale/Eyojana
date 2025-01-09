@@ -128,12 +128,12 @@ function Applications() {
 
   return (
     <div className="applications-container">
-      <h2>Applications for {category}</h2>
+      <h2 className="applications-heading">Applications for {category}</h2>
       <div className="applications-list">
         {filteredApplications.length > 0 ? (
           filteredApplications.map((app) => (
             <div key={app.id} className="application-card">
-              <h3>{app.scheme_name}</h3>
+              <h4 className="scheme-name">{app.scheme_name}</h4>
               <p>User Email: {app.user_email}</p>
               <p>Status: {app.status}</p>
               <button
