@@ -25,9 +25,11 @@ def get_messages():
 @app.route('/messages', methods=['POST'])
 def post_message():
     message = request.json
-    messages_collection.insert_one(message)
-    socketio.emit('message', message)
-    return jsonify(message), 201
+    result = messages_collection.insert_one(message)
+    if result.inserted_id:
+        socketio.emit('message', message)
+        return jsonify(message), 201
+    return jsonify({'error': 'Failed to save message'}), 500
 
 @socketio.on('connect')
 def handle_connect():
