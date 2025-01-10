@@ -7,8 +7,8 @@ body {
   }
   
   .users-list-container {
-    width: 90%;
-    margin: 2rem auto;
+    width: 100%;
+    margin: auto;
     padding: 1.5rem;
     background-color: #fff9f9;
     border-radius: 8px;
@@ -16,7 +16,7 @@ body {
   }
   
   h1 {
-    color: #64e62c74;
+    
     text-align: center;
     margin-bottom: 1rem;
   }
@@ -30,6 +30,7 @@ body {
   
   .users-list {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 1rem;
     padding: 0;
@@ -42,8 +43,9 @@ body {
     background: #ecf8bd;
     border: 1px solid #c8e6c9;
     border-radius: 8px;
+    
     padding: 1rem;
-    width: calc(33.33% - 1rem);
+    width: 70%;
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   }

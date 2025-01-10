@@ -51,12 +51,13 @@ const MainApp = () => {
         <Route path="/scheme" element={<Scheme />} />
         <Route path="/scheme-details" element={<SchemeDetail />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/adminhome/chat" element={<Chat />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/adminhome/map" element={<Map />} />
         <Route path="/applications/:category" element={<Applications />} />
         <Route path="/recommendation" element={<Recommendation />} />
-        <Route path="/myusers" element={<MyUsers/>}/>
+        <Route path="/adminhome/myusers" element={<MyUsers/>}/>
       </Routes>
     </div>
   );

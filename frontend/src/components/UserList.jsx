@@ -35,7 +35,7 @@ const UsersList = ({ adminEmail }) => {
 
   return (
     <div className="users-list-container">
-      <h1>Users Matching Admin's Pincode</h1>
+      <h1 style={{ fontSize: '20px', color: '#779307'}}>Users from your Area</h1>
       {error && <p className="error-message">{error}</p>}
       {users.length > 0 ? (
         <ul className="users-list">

@@ -44,7 +44,7 @@ body, html {
 
 .my-message {
   align-self: flex-end;
-  background-color: #d1f7c4; /* Light green for user's messages */
+  background-color: #e7f9ce; /* Light green for user's messages */
   color: #333;
   border-radius: 10px;
     padding: 10px;
@@ -58,6 +58,14 @@ body, html {
   border-radius: 10px;
     padding: 10px;
     text-align: left;
+}
+
+.admin-message {
+  background-color: #ffe5b4; /* Light orange */
+  border: 2px solid #ff9f00; /* Orange border */
+  border-radius: 10px;
+  align-self: flex-start;
+  padding: 5px;
 }
 
 .message-box {

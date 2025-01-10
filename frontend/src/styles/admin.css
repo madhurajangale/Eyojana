@@ -61,13 +61,14 @@
     font-size: 1.5em;
     color: #495f14;
     margin-bottom: 20px;
+    text-align: center;
   }
   .admin-category-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
     max-width: 1200px;
-    
+    font-size: larger;
     margin: 0 auto;
   }
   
