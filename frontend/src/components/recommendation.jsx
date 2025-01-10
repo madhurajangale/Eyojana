@@ -16,7 +16,7 @@ export default function Recommendation() {
       const response = await axios.get(
         `http://127.0.0.1:8000/recommend/eligibility-check/${user.email}/`
       );
-      setEligibleSchemes(response.data.eligible_schemes);
+      setEligibleSchemes(response.data.flask_response.recommended_schemes);
     } catch (err) {
       setError("An unexpected error occurred: " + err.message);
     }
@@ -84,6 +84,7 @@ export default function Recommendation() {
               Required Documents:{" "}
               <span style={{ color: "#555", fontWeight: "bold" }}>
                 {scheme.documents}
+                
               </span>
             </p>
             <button

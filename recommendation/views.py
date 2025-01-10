@@ -128,7 +128,7 @@ class UpdateRatingView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+    
     def get_eligible_schemes(self, user_email):
         """
         Fetch eligible schemes using EligibilityCheckView and include their ratings.
@@ -192,20 +192,33 @@ class EligibilityCheckView(APIView):
                 # Fetch all schemes from the collection
                 schemes = Scheme.objects.all()  # Retrieves all scheme entries
                 eligible_schemes = []  # To store eligible schemes
-
+                
                 for scheme in schemes:
                     # Check eligibility for each scheme
                     is_eligible = self.is_eligible(user, scheme)
+                    custom_id = f"{user_email}_{scheme.schemename}"
+                    print(custom_id)
+                    
+                    try:
+                        user_rating = UserRating.objects.get(custom_id=custom_id)
+                        rating_value = user_rating.rating
+                    except user_rating.DoesNotExist:
+                        rating_value = 0
                     if is_eligible:
                         eligible_schemes.append({
                             'scheme_name': scheme.schemename,
                             'documents': self.serialize_list(scheme.documents),
+                            'rating': rating_value,
                         })
-
+                self.send_data_to_flask(eligible_schemes, user_email)
                 # Return the eligible schemes
+                flask_response = self.send_data_to_flask(eligible_schemes, user_email)
+                
+                # Return the eligible schemes and Flask response
                 return Response({
                     'user': user.email,
                     'eligible_schemes': eligible_schemes,
+                    'flask_response': flask_response,
                 }, status=status.HTTP_200_OK)
 
             except Scheme.DoesNotExist:
@@ -217,21 +230,18 @@ class EligibilityCheckView(APIView):
                     'error': 'User not found'
                 }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-                print(f"Error: {e}")
-                return Response({
-                    'error': str(e),
-                    'message': 'Failed to check eligibility'
-                }, status=status.HTTP_400_BAD_REQUEST)
-
+            print(f"Error: {e}")
+            return Response({
+                'error': str(e),
+                'message': 'Failed to check eligibility'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 
     def is_eligible(self, user, scheme):
     
      try:
         # Check gender
-        if user.gender.lower() != scheme.gender.lower():
-            print("Ineligible due to gender mismatch")
-            return False
+       
 
         # Check age range
         age_range = scheme.age_range.split("-")  # Assuming "22-47"
@@ -241,9 +251,7 @@ class EligibilityCheckView(APIView):
             return False
 
         # Check marital status
-        if scheme.marital_status.lower() != "any" and user.marital_status.lower() != scheme.marital_status.lower():
-            print("Ineligible due to marital status mismatch")
-            return False
+        
 
         # Check caste
         
@@ -299,7 +307,26 @@ class EligibilityCheckView(APIView):
         print(f"Error in eligibility check: {e}")
         return False
 
+    def send_data_to_flask(self, eligible_schemes, user_email):
         
+        try:
+            flask_url = "http://127.0.0.1:5002/receive-data"  # Flask app URL
+            flask_data = {
+                "eligible_schemes": eligible_schemes,  # Pass eligible schemes with ratings
+                "user_email": user_email,
+                
+            }
+            response = requests.post(flask_url, json=flask_data)
+
+            if response.status_code == 200:
+                # Return the response JSON
+                return response.json()
+            else:
+                print(f"Failed to send data to Flask: {response.text}")
+                return {"error": f"Failed to prioritize schemes: {response.text}"}
+        except Exception as e:
+            print(f"Error sending data to Flask: {e}")
+            return {"error": str(e)} 
 
     def serialize_list(self, input_list):
         """
@@ -310,6 +337,7 @@ class EligibilityCheckView(APIView):
             return json.dumps(input_list)  # Convert list to JSON string
         else:
             return str(input_list)  # If it's not a list, return the string version
+    
 
 
 class SchemeEligibilityView(APIView):
@@ -322,10 +350,7 @@ class SchemeEligibilityView(APIView):
     
      try:
         # Check gender
-        if user.gender.lower() != scheme.gender.lower():
-            print("Ineligible due to gender mismatch")
-            return False, "Ineligible due to gender mismatch"
-
+        
         # Check age range
         age_range = scheme.age_range.split("-")  # Assuming "22-47"
         min_age, max_age = int(age_range[0]), int(age_range[1])
@@ -334,9 +359,7 @@ class SchemeEligibilityView(APIView):
             return False, "Ineligible due to age not in range"
 
         # Check marital status
-        if scheme.marital_status.lower() != "any" and user.marital_status.lower() != scheme.marital_status.lower():
-            print("Ineligible due to marital status mismatch")
-            return False, "Ineligible due to marital status mismatch"
+       
 
         # Check caste
         
@@ -391,6 +414,7 @@ class SchemeEligibilityView(APIView):
      except Exception as e:
         print(f"Error in eligibility check: {e}")
         return False
+     
 
 
 

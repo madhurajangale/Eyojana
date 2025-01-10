@@ -72,17 +72,18 @@ const SchemeDetail = () => {
 
       <div className="scheme-info">
         <div className="info-section">
-          <p data-key="gender"><strong>Gender:</strong> {schemeDetail.gender}</p>
+          
           <p data-key="age-range"><strong>Age Range:</strong> {schemeDetail.age_range}</p>
+          <p data-key="employment-status"><strong>Employment Status:</strong> {schemeDetail.employment_status}</p>
         </div>
         <div className="info-section">
-          <p data-key="marital-status"><strong>Marital Status:</strong> {schemeDetail.marital_status}</p>
+          
           <p data-key="income"><strong>Income:</strong> {schemeDetail.income}</p>
           <p data-key="caste"><strong>Caste:</strong> {schemeDetail.caste.join(", ")}</p>
         </div>
         <div className="info-section">
           <p data-key="ministry"><strong>Ministry:</strong> {schemeDetail.ministry}</p>
-          <p data-key="employment-status"><strong>Employment Status:</strong> {schemeDetail.employment_status}</p>
+          
         </div>
       </div>
 

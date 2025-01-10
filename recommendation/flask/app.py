@@ -16,6 +16,7 @@ def receive_data():
     print(data)
     eligible_schemes = data.get("eligible_schemes", [])
     user_email = data.get("user_email")
+    
 
     if not eligible_schemes:
         return jsonify({"message": "No schemes provided", "recommended_schemes": []}), 400
@@ -31,11 +32,15 @@ def receive_data():
     # Sort the schemes by rating in descending order
     sorted_schemes = schemes_df.sort_values(by='rating', ascending=False)
 
-    # Convert the sorted schemes to a list of dictionaries
-    recommended_schemes = sorted_schemes.to_dict(orient='records')
+    top_schemes = sorted_schemes.head(3)
+
+    # Convert the top schemes to a list of dictionaries
+    recommended_schemes = top_schemes.to_dict(orient='records')
+
     print("Recommended Schemes:")
     print(recommended_schemes)
-    # Return the sorted schemes as the prioritized list
+
+    # Return the top 3 schemes as the prioritized list
     return jsonify({
         "message": "Schemes prioritized successfully",
         "recommended_schemes": recommended_schemes

@@ -48,7 +48,7 @@ const AdminNav = () => {
       admin.email = "";
       
       // Navigate to the home page
-      navigate("/adminhome");
+      navigate("/");
     }
   };
   const handleLogin = () => {
