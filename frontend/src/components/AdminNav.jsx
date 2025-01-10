@@ -6,6 +6,7 @@ import axios from 'axios';
 import eyojana from '../images/e-yojana.png';
 
 import { AuthContext } from '../context/AuthContext';
+import { width } from '@mui/system';
   
 
 const AdminNav = () => {
@@ -70,7 +71,7 @@ const AdminNav = () => {
   }
   return (
     <nav className="navbar">
-      <div className="navbar-content">
+      <div className="navbar-content" style={{width: '100%'}}>
         <div className="logo">
           <a className="navbar-brand" href="#s">
             <img id="emblem" src={logo} alt="Logo" className="d-inline-block align-text-top" />
@@ -78,8 +79,8 @@ const AdminNav = () => {
           </a>
         </div>
 
-        <div className="nav-links">
-          <ul>
+        <div className="nav-links" >
+          <ul style={{display: 'flex', listStyle: 'none', justifyContent: 'flex-end', padding: '0'}}>
             <li><Link to="/" data-key="home">Home</Link></li>
             <li><Link onClick={handleAnalysis} to="/adminhome/map" data-key="home">Analysis</Link></li>
             <li><Link onClick={handleUsers} to="/" data-key="home">Users</Link></li>

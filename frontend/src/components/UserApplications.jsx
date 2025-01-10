@@ -52,7 +52,7 @@ const UserApplications = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4 text-center">User Applications</h1>
+      <h1 className="mb-4 text-center " style={{ fontSize: '20px', color: '#779307'}}>User Applications</h1>
       
       {message && <div className="alert alert-danger" role="alert">{message}</div>}
 

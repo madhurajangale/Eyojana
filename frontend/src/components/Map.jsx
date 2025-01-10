@@ -48,7 +48,7 @@ const GraphComponent = () => {
   const pincodeCounts = Array.isArray(pincodeData) ? pincodeData.map((item) => item.user_count) : [];
 
   return (
-    <div style={{ textAlign: "center", padding: "20px", margin: "4rem" }} >
+    <div style={{ textAlign: "center", padding: "20px"}} >
       <h1 style={{ fontSize: '26px', fontWeight: 'bold', color: '#779307' }}>Graphical Representation</h1>
 
       {/* Bar Chart for States */}
