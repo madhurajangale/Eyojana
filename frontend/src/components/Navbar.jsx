@@ -215,6 +215,38 @@ function Navbar() {
     }
   };
 
+  const handleAgentClick = () => {
+    if (user?.email) {
+      // Navigate to the profile page if user is logged in
+      navigate("/contact");
+    } else {
+      // Ask the user to log in
+      if (window.confirm("You need to log in to access your Agent Support section. Do you want to log in now?")) {
+        navigate("/login"); // Navigate to the login page if confirmed
+      }
+      else{
+        navigate("/")
+      }
+    }
+  };
+
+  const handleCommunityClick = () => {
+    if (user?.email) {
+      // Navigate to the profile page if user is logged in
+      navigate("/chat");
+    } else {
+      // Ask the user to log in
+      if (window.confirm("You need to log in to access your Community chat. Do you want to log in now?")) {
+        navigate("/login"); // Navigate to the login page if confirmed
+      }
+      else{
+        navigate("/")
+      }
+    }
+  };
+
+
+
   const handleLogin = () => {
     setIsLoggedIn(true); // Set logged-in state to true on login
     navigate("/login");
@@ -244,10 +276,10 @@ function Navbar() {
         <div className="nav-links">
           <ul>
            
-            <li><Link to="/category" onClick={handleSchemeClick} data-key="schemes">Schemes</Link></li>
-            <li ><Link data-key="Community" to="/chat">Community</Link></li>
+            <li onClick={handleSchemeClick} ><Link to="/category" data-key="schemes">Schemes</Link></li>
+            <li onClick={handleCommunityClick}  ><Link data-key="Community" to="/chat">Community</Link></li>
           
-            <li><Link data-key="Agent Support" to="/contact">Agent Support</Link></li>
+            <li onClick={handleAgentClick} ><Link data-key="Agent Support"  to="/contact">Agent Support</Link></li>
             <li onClick={myApplication}><Link data-key="myapplications" >My Applications</Link></li>
           </ul>
         </div>

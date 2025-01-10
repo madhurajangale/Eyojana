@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';  // Assuming this is where you get selected language
@@ -13,9 +13,11 @@ import Stepsdown from '../images/Steps-down.png';
 import Step1 from '../images/Steps-1st.png';
 import Step2 from '../images/Steps-2nd.png';
 import Step3 from '../images/Steps-3rd.png';
+import Recommendation from '../components/recommendation';
+import { AuthContext } from '../context/AuthContext'; 
 const Home = () => {
   const [open, setOpen] = useState(null);
-  
+  const { user } = useContext(AuthContext); 
   const [translatedTexts, setTranslatedTexts] = useState({});
   const [loading, setLoading] = useState(false);
   const { selectedLang } = useLanguage(); // Get selected language from context
@@ -92,6 +94,15 @@ const Home = () => {
       <span className="visually-hidden" data-key="nextText">Next</span>
     </button>
   </div>
+
+  {user?.email && (
+        <section>
+          <div>
+            <Recommendation />
+          </div>
+        </section>
+      )}
+    
 
   <section id="about">
     <div className='scheme1' align='center'>
