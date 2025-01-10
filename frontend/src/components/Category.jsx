@@ -80,7 +80,7 @@ const translateTexts = async (language) => {
         <div className="icon">{cat.icon}</div>
         <h3 data-key={`title-${index}`} className="title">{cat.title}</h3>
         <button data-key={`view-${index}`} className="view-button"
-        onClick={() => handleViewCategory(cat.title)}>View</button>
+        onClick={() => handleViewCategory(cat.title)}>Details</button>
       </div>
     ))}
   </div>

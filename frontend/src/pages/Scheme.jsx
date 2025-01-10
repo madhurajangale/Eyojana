@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../styles/Scheme.css";
-import axios from 'axios';
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from "../context/LanguageContext";
 import { AuthContext } from "../context/AuthContext";
 
 const SchemeList = () => {
@@ -12,27 +12,59 @@ const SchemeList = () => {
   const { category } = location.state || {};
   const { user } = useContext(AuthContext);
   const [schemes, setSchemes] = useState([]);
+  const [translatedSchemes, setTranslatedSchemes] = useState([]);
+  const [buttonText, setButtonText] = useState("View");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchSchemes = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("http://127.0.0.1:8000/api/schemes/", {
-          params: { category },
-        });
-        setSchemes(response.data.schemes || []);
-      } catch (err) {
-        setError("Failed to fetch schemes.");
-        console.error("Error fetching schemes:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchAndTranslateSchemes = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("http://127.0.0.1:8000/api/schemes/", {
+        params: { category },
+      });
 
-    fetchSchemes();
-  }, [category]);
+      const fetchedSchemes = response.data.schemes || [];
+      const textsToTranslate = [
+        ...fetchedSchemes.map((scheme) => scheme.schemename),
+        "Details", // Add button text for translation
+      ];
+
+      const translatedTexts = selectedLang === "en"
+        ? textsToTranslate
+        : await translateTexts(textsToTranslate, selectedLang);
+
+      const translatedData = fetchedSchemes.map((scheme, index) => ({
+        ...scheme,
+        schemename: translatedTexts[index],
+      }));
+
+      setTranslatedSchemes(translatedData);
+      setButtonText(translatedTexts[translatedTexts.length - 1]); // Last translated text is "View"
+    } catch (err) {
+      setError("Failed to fetch schemes.");
+      console.error("Error fetching schemes:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const translateTexts = async (texts, language) => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
+        sentences: texts,
+        target_lang: language,
+      });
+      return response.data.translated_sentences;
+    } catch (error) {
+      console.error("Error translating texts:", error);
+      return texts; // Fallback to original texts if translation fails
+    }
+  };
+
+  useEffect(() => {
+    fetchAndTranslateSchemes();
+  }, [category, selectedLang]);
 
   const handleViewScheme = async (schemeName) => {
     try {
@@ -49,26 +81,27 @@ const SchemeList = () => {
 
   return (
     <div className="scheme-list-container">
-      <h1 className="title" data-key="availableSchemesTitle"style={{ fontSize: '15px', color: '#779307'}}>Available Schemes</h1>
+      <h1 className="title" style={{ fontSize: "15px", color: "#779307" }}>
+        {selectedLang === "en" ? "Available Schemes" : "अनुपलब्ध योजनाएँ"} {/* Example Translation */}
+      </h1>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p className="error-message">{error}</p>
-      ) : schemes.length > 0 ? (
-        schemes.map((scheme, index) => (
+      ) : translatedSchemes.length > 0 ? (
+        translatedSchemes.map((scheme, index) => (
           <div key={index} className="scheme-card">
-            <h2 className="scheme-name" data-key={`schemeName-${index}`}>{scheme.schemename}</h2>
+            <h2 className="scheme-name">{scheme.schemename}</h2>
             <button
               className="view-button"
               onClick={() => handleViewScheme(scheme.schemename)}
-              data-key={`viewButton-${index}`}
             >
-              View
+              {buttonText}
             </button>
           </div>
         ))
       ) : (
-        <p className="no-schemes-message" data-key="noSchemesMessage">
+        <p className="no-schemes-message">
           No schemes found for the selected category.
         </p>
       )}
@@ -77,4 +110,3 @@ const SchemeList = () => {
 };
 
 export default SchemeList;
-
