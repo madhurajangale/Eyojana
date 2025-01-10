@@ -112,7 +112,7 @@ function Navbar() {
       setFilteredSchemes(allSchemes); // Show all schemes when search query is empty
     }
   }, [searchQuery, allSchemes]); // Re-run effect when searchQuery or allSchemes change
-  
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -261,51 +261,52 @@ function Navbar() {
         </div>
 
         {showSearchBar && (
-  <div className="search-bar">
-    <input
-    ref={searchBarRef}
-      type="text"
-      placeholder="Search..."
-      value={searchQuery}
-      onChange={handleSearchChange}
-      style={{
-        padding: '10px',
-        fontSize: '16px',
-        width: '100%',
-        height: '40px',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-       
-      }}
-    />
-<div className="search-results">
-  {filteredSchemes.length > 0 && (
-    <div className="dropdown" ref={dropdownRef}>
-      <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'block' }}>
-        {filteredSchemes.map((scheme, index) => (
-          <li
-            key={index}
-            style={{
-              padding: '10px',
-              borderBottom: '1px solid #ccc',
-              cursor: 'pointer',
-              backgroundColor: '#fff',
-            }}
-            onClick={() => {
-              setSearchQuery(scheme.schemename); // Update search bar value
-              handleViewScheme(scheme.schemename); // Navigate to scheme details
-              setFilteredSchemes([]); // Clear dropdown
-            }}
-          >
-            {scheme.schemename}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )}
+ <div className="search-bar">
+ <input
+   ref={searchBarRef}
+   type="text"
+   placeholder="Search..."
+   value={searchQuery}
+   onChange={handleSearchChange}
+   style={{
+     padding: '10px',
+     fontSize: '16px',
+     width: '100%',
+     height: '40px',
+     border: '1px solid #ccc',
+     borderRadius: '4px',
+   }}
+ />
+ <div className="search-results">
+   {filteredSchemes.length > 0 && (
+     <div className="dropdown" ref={dropdownRef}>
+       <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'block' }}>
+         {filteredSchemes.map((scheme, index) => (
+           <li
+             key={index}
+             style={{
+               padding: '10px',
+               borderBottom: '1px solid #ccc',
+               cursor: 'pointer',
+               backgroundColor: '#fff',
+             }}
+             onClick={() => {
+               // Navigate or perform action for clicked scheme
+               setSearchQuery(scheme.schemename); // Update search bar value
+               setFilteredSchemes([]); // Clear dropdown
+               setShowSearchBar(false); // Optionally close search bar
+               handleViewScheme(scheme.schemename); // Navigate to details
+             }}
+           >
+             {scheme.schemename}
+           </li>
+         ))}
+       </ul>
+     </div>
+   )}
+ </div>
 </div>
 
-  </div>
 )}
 
 
