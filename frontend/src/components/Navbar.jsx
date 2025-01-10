@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useContext,useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../images/logo.png'; 
 import '../styles/navbar.css'; 
 import axios from 'axios';
@@ -15,6 +15,7 @@ function Navbar() {
   const [loading, setLoading] = useState(false);
   const { selectedLang, setSelectedLang } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   const dropdownRef = useRef(null); 
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,6 +25,33 @@ function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { user } = useContext(AuthContext); // {user}
   const searchBarRef = useRef(null);
+  const { schemeName } = location.state || {};
+  const [schemeDetail, setSchemeDetail] = useState(null);
+   const [error, setError] = useState(null);
+   const handleViewScheme = async (schemeName) => {
+   
+      navigate("/scheme-details", { state: { schemeName } });
+   
+  };
+
+  useEffect(() => {
+    const fetchSchemeDetail = async () => {
+      try {
+        setLoading(true);
+        console.log(schemeName);
+        const response = await axios.get(`http://127.0.0.1:8000/api/scheme/${schemeName}/`);
+        setSchemeDetail(response.data.scheme);
+      } catch (err) {
+        setError("Failed to fetch scheme details.");
+        console.error("Error fetching scheme details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSchemeDetail();
+  }, [schemeName]);
+  
   const toggleSearchBar = () => {
     setShowSearchBar((prev) => !prev); // Toggle the visibility
   };
@@ -248,30 +276,32 @@ function Navbar() {
       }}
     />
 <div className="search-results">
-      {filteredSchemes.length > 0 && (
-        <div className="dropdown" ref={dropdownRef}>
-          <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'block' }}>
-            {filteredSchemes.map((scheme, index) => (
-              <li
-                key={index}
-                style={{
-                  padding: '10px',
-                  borderBottom: '1px solid #ccc',
-                  cursor: 'pointer',
-                  backgroundColor: '#fff',
-                }}
-                onClick={() => {
-                  setSearchQuery(scheme.schemename); // Set the search bar to the clicked scheme
-                  setFilteredSchemes([]); // Clear the dropdown after selection
-                }}
-              >
-                {scheme.schemename}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+  {filteredSchemes.length > 0 && (
+    <div className="dropdown" ref={dropdownRef}>
+      <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'block' }}>
+        {filteredSchemes.map((scheme, index) => (
+          <li
+            key={index}
+            style={{
+              padding: '10px',
+              borderBottom: '1px solid #ccc',
+              cursor: 'pointer',
+              backgroundColor: '#fff',
+            }}
+            onClick={() => {
+              setSearchQuery(scheme.schemename); // Update search bar value
+              handleViewScheme(scheme.schemename); // Navigate to scheme details
+              setFilteredSchemes([]); // Clear dropdown
+            }}
+          >
+            {scheme.schemename}
+          </li>
+        ))}
+      </ul>
     </div>
+  )}
+</div>
+
   </div>
 )}
 
