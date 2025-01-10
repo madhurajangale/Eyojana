@@ -130,7 +130,7 @@ const ProfilePage = () => {
   return (
     <div className={styles.profilePage}>
       <div className={styles.profileCard}>
-        <h1 data-key="profileTitle">Profile</h1>
+        <h1 data-key="profileTitle" style={{ fontSize: '20px', color: '#779307'}}>Profile</h1>
         <div className={styles.profileDetails}>
           {Object.entries(userData).map(([key, value]) => (
             <div className={styles.profileField} key={key}>

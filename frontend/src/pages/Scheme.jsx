@@ -49,7 +49,7 @@ const SchemeList = () => {
 
   return (
     <div className="scheme-list-container">
-      <h1 className="title" data-key="availableSchemesTitle">Available Schemes</h1>
+      <h1 className="title" data-key="availableSchemesTitle"style={{ fontSize: '15px', color: '#779307'}}>Available Schemes</h1>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (

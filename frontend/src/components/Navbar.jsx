@@ -9,6 +9,7 @@ import GTranslateRoundedIcon from '@mui/icons-material/GTranslateRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLanguage } from '../context/LanguageContext';
 import { AuthContext } from '../context/AuthContext';
+
 function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [translatedTexts, setTranslatedTexts] = useState({});
@@ -203,13 +204,14 @@ function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="navbar-content">
-        <div className="logo">
+      <div className="logo">
           <a className="navbar-brand" href="/">
             <img id="emblem" src={logo} alt="Logo" className="d-inline-block align-text-top" />
             <img src={eyojana} alt="Logo" width="120" height="30" className="d-inline-block align-text-top ms-3"/>
           </a>
         </div>
+      <div className="navbar-content">
+        
 
         <div className="nav-links">
           <ul>
@@ -222,12 +224,12 @@ function Navbar() {
           </ul>
         </div>
 
-        <div className="nav-login">
+        <div className="navspace">
           {/* Login/Logout button will go here */}
-        </div>
+        
 
         <div className="search" onClick={toggleSearchBar} style={{ cursor: 'pointer' }}>
-          <SearchIcon sx={{ color: '#779307' }} fontSize="large" />
+          <SearchIcon sx={{ color: '#779307'}} fontSize="large" />
         </div>
 
         {showSearchBar && (
@@ -242,9 +244,10 @@ function Navbar() {
         padding: '10px',
         fontSize: '16px',
         width: '100%',
+        height: '40px',
         border: '1px solid #ccc',
         borderRadius: '4px',
-        marginTop: '10px',
+       
       }}
     />
 <div className="search-results">
@@ -277,7 +280,7 @@ function Navbar() {
 
 
         <div className="language">
-          <GTranslateRoundedIcon sx={{ color: '#779307', cursor: 'pointer' }} fontSize="large" onClick={() => setShowDropdown(!showDropdown)} />
+          <GTranslateRoundedIcon sx={{ color: '#779307', cursor: 'pointer', marginRight: '30px' , marginLeft: '10px' , marginTop: '3px'  }} fontSize="large" onClick={() => setShowDropdown(!showDropdown)} />
           {showDropdown && (
             <div>
               <select id="language-select" value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)}>
@@ -302,7 +305,7 @@ function Navbar() {
 
         <div className="profile-icon" onClick={handleProfileClick}>
           <Link to="/profile">
-            <AccountCircleIcon sx={{ color: '#779307' }} fontSize="large" />
+            <AccountCircleIcon sx={{ color: '#779307', marginRight: '30px' , marginTop: '3px'}} fontSize="large" />
           </Link>
         </div>
         <div className="nav-login">
@@ -312,7 +315,7 @@ function Navbar() {
   ) : (
     <button onClick={handleLogin} className="btn">Login</button>
   )}
-</div>
+</div></div>
 
       </div>
     </nav>

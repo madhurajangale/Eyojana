@@ -74,7 +74,7 @@ const Chat = () => {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h1>E-yojana Community Chat</h1>
+        <h1 style={{ fontSize: '20px', color: '#779307'}}>E-yojana Community Chat</h1>
       </div>
       <div className="messages-container">
         {messages.map((msg, index) => (
