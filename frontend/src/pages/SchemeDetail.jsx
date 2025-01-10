@@ -15,6 +15,8 @@ const SchemeDetail = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log("scheme")
+    console.log(schemeName)
     const fetchSchemeDetail = async () => {
       try {
         setLoading(true);
