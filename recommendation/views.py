@@ -312,6 +312,86 @@ class EligibilityCheckView(APIView):
             return str(input_list)  # If it's not a list, return the string version
 
 
+class SchemeEligibilityView(APIView):
+    def get(self, request, user_email,schemename):
+         user = User.objects.get(email=user_email)
+         scheme = Scheme.objects.get(schemename=schemename)
+         is_eligible,message = self.is_eligible(user, scheme)
+         return Response({'is_eligible': is_eligible,'message':message}, status=status.HTTP_200_OK)
+    def is_eligible(self, user, scheme):
+    
+     try:
+        # Check gender
+        if user.gender.lower() != scheme.gender.lower():
+            print("Ineligible due to gender mismatch")
+            return False, "Ineligible due to gender mismatch"
+
+        # Check age range
+        age_range = scheme.age_range.split("-")  # Assuming "22-47"
+        min_age, max_age = int(age_range[0]), int(age_range[1])
+        if not (min_age <= user.age <= max_age):
+            print("Ineligible due to age not in range")
+            return False, "Ineligible due to age not in range"
+
+        # Check marital status
+        if scheme.marital_status.lower() != "any" and user.marital_status.lower() != scheme.marital_status.lower():
+            print("Ineligible due to marital status mismatch")
+            return False, "Ineligible due to marital status mismatch"
+
+        # Check caste
+        
+
+# Safely parse the caste field
+        if isinstance(scheme.caste, str):
+            try:
+                eligible_castes = [caste.strip().lower() for caste in json.loads(scheme.caste)]
+            except json.JSONDecodeError:
+                print("Error: Invalid caste format")
+                return False
+        elif isinstance(scheme.caste, list):
+            eligible_castes = [caste.strip().lower() for caste in scheme.caste]
+        else:
+            print("Error: Unsupported caste type")
+            return False
+
+        if user.caste.lower() not in eligible_castes:
+            print("Ineligible due to caste mismatch")
+            return False, "Ineligible due to caste mismatch"
+
+        # Check income
+        if "<" in scheme.income:
+            max_income = int(scheme.income.replace("<", "").replace(",", "").strip())
+            if user.income >= max_income:
+                print("Ineligible due to income exceeding maximum limit")
+                return False, "Ineligible due to income exceeding maximum limit"
+
+        elif ">" in scheme.income:
+            min_income = int(scheme.income.replace(">", "").replace(",", "").strip())
+            if user.income <= min_income:
+                print("Ineligible due to income below minimum limit")
+                return False, "Ineligible due to income below minimum limit"
+
+        elif "-" in scheme.income:
+            # Handle income range like "2,00,000 - 5,00,000"
+            income_range = scheme.income.replace(",", "").split("-")
+            min_income = int(income_range[0].strip())
+            max_income = int(income_range[1].strip())
+            if not (min_income <= user.income <= max_income):
+                print("Ineligible due to income not within the specified range")
+                return False, "Ineligible due to income not within the specified range"
+
+
+        # Check employment status
+        if scheme.employment_status.lower() != "any" and user.employment_status.lower() != scheme.employment_status.lower():
+            print("Ineligible due to employment status mismatch")
+            return False, "Ineligible due to employment status mismatch"
+
+        # If all checks pass, user is eligible
+        return True , "Eligible"
+     except Exception as e:
+        print(f"Error in eligibility check: {e}")
+        return False
+
 
 
 from django.urls import reverse

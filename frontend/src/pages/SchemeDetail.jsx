@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/SchemeDetail.css";
 import { useLanguage } from "../context/LanguageContext";
-
+import { AuthContext } from "../context/AuthContext";
 const SchemeDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedLang } = useLanguage();
   const { schemeName } = location.state || {};
-
+  const { login, user } = useContext(AuthContext);
   const [schemeDetail, setSchemeDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,11 +32,25 @@ const SchemeDetail = () => {
     fetchSchemeDetail();
   }, [schemeName]);
 
-  const handleViewDetail = () => {
-    if (schemeDetail) {
-      const { schemename: scheme, category } = schemeDetail;
-      navigate("/schemeform", { state: { scheme, category } });
-    }
+  const handleViewDetail = async() => {
+    
+      try{
+        console.log("reached")
+        const response=await axios.get(`http://127.0.0.1:8000/recommend/scheme/${user.email}/${schemeDetail.schemename}/`);
+        console.log(response)
+        console.log(response.data.is_eligible)
+        if(response.data.is_eligible ){
+          const { schemename: scheme, category } = schemeDetail;
+          navigate("/schemeform", { state: { scheme, category } });
+        }
+        else{
+          window.alert(`${response.data.message}`);
+        }
+        }
+        catch(err){
+          setError("An unexpected error occurred: " + err.message);
+        }
+      
   };
 
   if (loading) {
