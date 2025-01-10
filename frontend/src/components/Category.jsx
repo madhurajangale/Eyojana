@@ -73,7 +73,7 @@ const translateTexts = async (language) => {
   };
   return (
     <div className="category-page">
-  <h1 data-key="pageTitle">schemes based on categories</h1>
+  <h1 data-key="pageTitle" style={{ fontSize: '20px', color: '#779307'}}>schemes based on categories</h1>
   <div className="category-grid">
     {categories.map((cat, index) => (
       <div key={index} className="category-card">

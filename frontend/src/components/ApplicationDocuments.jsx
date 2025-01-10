@@ -28,7 +28,7 @@ const ApplicationDocuments = ({ applicationId, onClose }) => {
 
   return (
     <div className="mt-4">
-      <h2 className="mb-3 text-center">Application Documents</h2>
+      <h2 className="mb-3 text-center" style={{ fontSize: '20px', color: '#779307'}}>Application Documents</h2>
       <button className="btn btn-danger mb-3" onClick={onClose}>
         Close Documents
       </button>
