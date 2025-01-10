@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/contact.css"; // Import the CSS file
+import { useLanguage } from '../context/LanguageContext';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const ContactUsForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +15,50 @@ const ContactUsForm = () => {
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const { selectedLang } = useLanguage();
+  const [translatedTexts, setTranslatedTexts] = useState({});
+  
+  const translateTexts = async (language) => {
+    const elements = document.querySelectorAll("[data-key]");
+    const textMap = {};
+
+    elements.forEach((element) => {
+      const key = element.getAttribute("data-key");
+      textMap[key] = element.textContent.trim();
+    });
+
+    if (language === "en") {
+      Object.keys(textMap).forEach((key) => {
+        const element = document.querySelector(`[data-key="${key}"]`);
+        if (element) {
+          element.textContent = textMap[key];
+        }
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
+        sentences: Object.values(textMap),
+        target_lang: language,
+      });
+      const translations = response.data.translated_sentences;
+
+      Object.keys(textMap).forEach((key, index) => {
+        const element = document.querySelector(`[data-key="${key}"]`);
+        if (element) {
+          element.textContent = translations[index];
+        }
+      });
+    } catch (error) {
+      console.error("Error translating texts:", error);
+    }
+  };
+
+  useEffect(() => {
+    translateTexts(selectedLang);
+  }, [selectedLang]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,17 +73,12 @@ const ContactUsForm = () => {
       newErrors.email = "Invalid email address.";
     if (!formData.message) newErrors.message = "Message is required.";
     if (!formData.supportOption) newErrors.supportOption = "Support option is required.";
-    
-    // Validate phone number if 'call' option is selected
     if (formData.supportOption === "call" && !formData.phone) {
       newErrors.phone = "Phone number is required for call support.";
     }
-
-    // Validate WhatsApp number if 'chat' option is selected
     if (formData.supportOption === "chat" && !formData.whatsapp) {
       newErrors.whatsapp = "WhatsApp number is required for chat support.";
     }
-    
     return newErrors;
   };
 
@@ -48,8 +90,6 @@ const ContactUsForm = () => {
       return;
     }
     setErrors({});
-
-    // Only include the relevant phone or whatsapp number based on the support option
     const requestData = {
       ...formData,
       phone: formData.supportOption === "call" ? formData.phone : undefined,
@@ -79,10 +119,10 @@ const ContactUsForm = () => {
 
   return (
     <div className="contact-form-container">
-      <h1 style={{ fontSize: '20px', color: '#779307'}}>Get Support from Agent</h1>
+      <h1 data-key="pageTitle" style={{ fontSize: '20px', color: '#779307' }}>Get Support from Agent</h1>
       <form onSubmit={handleSubmit} className="contact-form">
         <div className="input-group">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name" data-key="nameLabel">Name</label>
           <input
             type="text"
             id="name"
@@ -91,10 +131,10 @@ const ContactUsForm = () => {
             onChange={handleChange}
             className="input"
           />
-          {errors.name && <p className="error">{errors.name}</p>}
+          {errors.name && <p className="error" data-key="nameError">{errors.name}</p>}
         </div>
         <div className="input-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" data-key="emailLabel">Email</label>
           <input
             type="email"
             id="email"
@@ -103,10 +143,10 @@ const ContactUsForm = () => {
             onChange={handleChange}
             className="input"
           />
-          {errors.email && <p className="error">{errors.email}</p>}
+          {errors.email && <p className="error" data-key="emailError">{errors.email}</p>}
         </div>
         <div className="input-group">
-          <label htmlFor="message">Message</label>
+          <label htmlFor="message" data-key="messageLabel">Message</label>
           <textarea
             id="message"
             name="message"
@@ -114,14 +154,12 @@ const ContactUsForm = () => {
             onChange={handleChange}
             className="textarea"
           />
-          {errors.message && <p className="error">{errors.message}</p>}
+          {errors.message && <p className="error" data-key="messageError">{errors.message}</p>}
         </div>
-        
-        {/* Support Option - Call or Chat */}
         <div className="input-group">
-          <label>How would you like to get support?</label>
+          <label data-key="supportOptionLabel">How would you like to get support?</label>
           <div>
-            <label className="radio-label">
+            <label className="radio-label" data-key="chatOption">
               <input
                 type="radio"
                 name="supportOption"
@@ -131,7 +169,7 @@ const ContactUsForm = () => {
               />
               Chat with an agent
             </label>
-            <label>
+            <label data-key="callOption">
               <input
                 type="radio"
                 name="supportOption"
@@ -142,13 +180,11 @@ const ContactUsForm = () => {
               Call me for support
             </label>
           </div>
-          {errors.supportOption && <p className="error">{errors.supportOption}</p>}
+          {errors.supportOption && <p className="error" data-key="supportOptionError">{errors.supportOption}</p>}
         </div>
-
-        {/* Phone number field (only show if 'call' is selected) */}
         {formData.supportOption === "call" && (
           <div className="input-group">
-            <label htmlFor="phone">Phone Number</label>
+            <label htmlFor="phone" data-key="phoneLabel">Phone Number</label>
             <input
               type="text"
               id="phone"
@@ -157,14 +193,12 @@ const ContactUsForm = () => {
               onChange={handleChange}
               className="input"
             />
-            {errors.phone && <p className="error">{errors.phone}</p>}
+            {errors.phone && <p className="error" data-key="phoneError">{errors.phone}</p>}
           </div>
         )}
-
-        {/* WhatsApp number field (only show if 'chat' is selected) */}
         {formData.supportOption === "chat" && (
           <div className="input-group">
-            <label htmlFor="whatsapp">WhatsApp Number</label>
+            <label htmlFor="whatsapp" data-key="whatsappLabel">WhatsApp Number</label>
             <input
               type="text"
               id="whatsapp"
@@ -173,14 +207,13 @@ const ContactUsForm = () => {
               onChange={handleChange}
               className="input"
             />
-            {errors.whatsapp && <p className="error">{errors.whatsapp}</p>}
+            {errors.whatsapp && <p className="error" data-key="whatsappError">{errors.whatsapp}</p>}
           </div>
         )}
-        
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-button" data-key="submitButton">
           Submit
         </button>
-        {success && <p className="success">{success}</p>}
+        {success && <p className="success" data-key="successMessage">{success}</p>}
       </form>
     </div>
   );

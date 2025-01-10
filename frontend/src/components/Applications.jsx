@@ -1,113 +1,67 @@
-// import React, { useEffect, useState } from "react";
-// import { useLocation } from "react-router-dom";
-// import "../styles/applications.css";
-
-// function Applications() {
-//   const [allApplications, setAllApplications] = useState([]);
-//   const [filteredApplications, setFilteredApplications] = useState([]);
-//   const [selectedApplication, setSelectedApplication] = useState(null); // For modal content
-//   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
-//   const location = useLocation();
-//   const { adminEmail } = location.state || {};
-//   const category = location.pathname.split("/").pop();
-
-//   useEffect(() => {
-//     // Fetch all applications for the admin
-//     fetch(`http://127.0.0.1:8000/api/admin/rani@gmail.com/applications/`)
-//       .then((response) => response.json())
-//       .then((data) => {
-//         if (data.applications) {
-//           setAllApplications(data.applications);
-
-//           // Filter applications by category
-//           const categorizedApplications = data.applications.filter(
-//             (app) => app.category === category
-//           );
-//           setFilteredApplications(categorizedApplications);
-//         }
-//       });
-//   }, [adminEmail, category]);
-
-//   const viewDetails = (application) => {
-//     setSelectedApplication(application); // Set the selected application for modal
-//     setIsModalOpen(true); // Open the modal
-//   };
-
-//   const closeModal = () => {
-//     setIsModalOpen(false);
-//     setSelectedApplication(null);
-//   };
-
-//   return (
-//     <div className="applications-container">
-//       <h2>Applications for {category}</h2>
-//       <div className="applications-list">
-//         {filteredApplications.length > 0 ? (
-//           filteredApplications.map((app) => (
-//             <div key={app.id} className="application-card">
-//               <h3>{app.scheme_name}</h3>
-//               <p>User Email: {app.user_email}</p>
-//               <p>Status: {app.status}</p>
-//               <button
-//                 className="view-details-btn"
-//                 onClick={() => viewDetails(app)}
-//               >
-//                 View Details
-//               </button>
-//             </div>
-//           ))
-//         ) : (
-//           <p>No applications found for this category.</p>
-//         )}
-//       </div>
-
-//       {/* Modal */}
-//       {isModalOpen && selectedApplication && (
-//         <div className="modal-overlay">
-//           <div className="modal-content">
-//             <h2>Application Details</h2>
-//             <p><strong>Scheme Name:</strong> {selectedApplication.scheme_name}</p>
-//             <p><strong>User Email:</strong> {selectedApplication.user_email}</p>
-//             <p><strong>Category:</strong> {selectedApplication.category}</p>
-//             <p><strong>Status:</strong> {selectedApplication.status}</p>
-//             <p><strong>Applied Date:</strong> {selectedApplication.applied_date}</p>
-//             <button className="close-modal-btn" onClick={closeModal}>
-//               Close
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Applications;
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../styles/applications.css";
+import axios from 'axios';
+import { useLanguage } from '../context/LanguageContext';
+import { useNavigate } from "react-router-dom";
 
 function Applications() {
   const [allApplications, setAllApplications] = useState([]);
   const [filteredApplications, setFilteredApplications] = useState([]);
-  const [selectedApplication, setSelectedApplication] = useState(null); // Track the selected application
+  const [selectedApplication, setSelectedApplication] = useState(null);
   const location = useLocation();
   const { adminEmail } = location.state || {};
-  const category = decodeURIComponent(location.pathname.split("/").pop()); // Decode category
+  const category = decodeURIComponent(location.pathname.split("/").pop());
+  const navigate = useNavigate();
+  const { selectedLang } = useLanguage();
+
+  const translateTexts = async (language) => {
+    const elements = document.querySelectorAll("[data-key]");
+    const textMap = {};
+
+    // Extract text for translation
+    elements.forEach((element) => {
+      const key = element.getAttribute("data-key");
+      textMap[key] = element.textContent.trim();
+    });
+
+    if (language === "en") {
+      // Revert to original English
+      Object.keys(textMap).forEach((key) => {
+        const element = document.querySelector(`[data-key="${key}"]`);
+        if (element) {
+          element.textContent = textMap[key];
+        }
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/translate/", {
+        sentences: Object.values(textMap),
+        target_lang: language,
+      });
+
+      const translations = response.data.translated_sentences;
+
+      // Apply translations
+      Object.keys(textMap).forEach((key, index) => {
+        const element = document.querySelector(`[data-key="${key}"]`);
+        if (element) {
+          element.textContent = translations[index];
+        }
+      });
+    } catch (error) {
+      console.error("Error translating texts:", error);
+    }
+  };
 
   useEffect(() => {
-    // Fetch all applications for the admin
     fetch(`http://127.0.0.1:8000/api/admin/rani@gmail.com/applications/`)
       .then((response) => response.json())
       .then((data) => {
         if (data.applications) {
           setAllApplications(data.applications);
-
-          // Filter applications by category
           const categorizedApplications = data.applications.filter(
             (app) => app.category === category
           );
@@ -116,27 +70,32 @@ function Applications() {
       });
   }, [adminEmail, category]);
 
-  // Handle view details button click
+  useEffect(() => {
+    translateTexts(selectedLang);
+  }, [selectedLang, filteredApplications]); // Reapply translation when filtered applications change
+
   const handleViewDetails = (application) => {
-    setSelectedApplication(application); // Set the selected application for the modal
+    setSelectedApplication(application);
   };
 
-  // Handle closing the modal
   const handleCloseModal = () => {
-    setSelectedApplication(null); // Clear the selected application
+    setSelectedApplication(null);
   };
 
   return (
     <div className="applications-container">
-      <h2 className="applications-heading" style={{ fontSize: '20px', color: '#779307'}}>Applications for {category}</h2>
+      <h2 data-key="applicationsHeading" className="applications-heading" style={{ fontSize: '20px', color: '#779307' }}>
+        Applications for {category}
+      </h2>
       <div className="applications-list">
         {filteredApplications.length > 0 ? (
           filteredApplications.map((app) => (
             <div key={app.id} className="application-card">
-              <h4 className="scheme-name">{app.scheme_name}</h4>
-              <p>User Email: {app.user_email}</p>
-              <p>Status: {app.status}</p>
+              <h4 data-key={`schemeName-${app.id}`} className="scheme-name">{app.scheme_name}</h4>
+              <p data-key={`userEmail-${app.id}`}>User Email: {app.user_email}</p>
+              <p data-key={`status-${app.id}`}>Status: {app.status}</p>
               <button
+                data-key={`viewDetailsBtn-${app.id}`}
                 className="view-details-btn"
                 onClick={() => handleViewDetails(app)}
               >
@@ -145,21 +104,23 @@ function Applications() {
             </div>
           ))
         ) : (
-          <p>No applications found for this category.</p>
+          <p data-key="noApplicationsFound">No applications found for this category.</p>
         )}
       </div>
 
-      {/* Modal for application details */}
       {selectedApplication && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Application Details</h2>
+            <h2 data-key="modalHeading">Application Details</h2>
             <p><strong>Scheme Name:</strong> {selectedApplication.scheme_name}</p>
             <p><strong>User Email:</strong> {selectedApplication.user_email}</p>
             <p><strong>Status:</strong> {selectedApplication.status}</p>
             <p><strong>Submission Date:</strong> {selectedApplication.applied_date}</p>
-            {/* <p><strong>Additional Details:</strong> {selectedApplication.details}</p> */}
-            <button className="close-modal-btn" onClick={handleCloseModal}>
+            <button
+              data-key="closeModalBtn"
+              className="close-modal-btn"
+              onClick={handleCloseModal}
+            >
               Close
             </button>
           </div>
@@ -170,4 +131,3 @@ function Applications() {
 }
 
 export default Applications;
-
