@@ -6,8 +6,10 @@
   .applications-heading{
     font-size: 1.5rem;
     margin-bottom: 20px;
-    color: #779307;
+    color: #97b333;
+    display: flex;
     font-weight: bold;
+    justify-content: center;
     
   }
   
