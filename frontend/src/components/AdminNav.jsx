@@ -81,7 +81,8 @@ const AdminNav = () => {
 
         <div className="nav-links" >
           <ul style={{display: 'flex', listStyle: 'none', justifyContent: 'flex-end', padding: '0'}}>
-            <li><Link to="/adminhome" data-key="home">Home</Link></li>
+            <li><Link  to="/adminhome" data-key="home">Home</Link></li>
+
             <li><Link onClick={handleAnalysis} to="/adminhome/map" data-key="home">Analysis</Link></li>
             <li><Link onClick={handleUsers} to="/adminhome/myusers" data-key="home">Users</Link></li>
             <li><Link data-key="Community" to="/adminhome/chat"onClick={handleCommunity}>Community</Link></li>
