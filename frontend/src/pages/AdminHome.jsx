@@ -143,7 +143,7 @@ function Admin({ adminEmail }) {
   const handleCategoryClick = (category) => {
     // Encode the category to handle spaces
     const encodedCategory = encodeURIComponent(category);
-    navigate(`/applications/${encodedCategory}`, { state: { adminEmail } });
+    navigate(`/adminhome/applications/${encodedCategory}`, { state: { adminEmail } });
   };
 
   return (

@@ -55,7 +55,7 @@ const MainApp = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/adminhome/map" element={<Map />} />
-        <Route path="/applications/:category" element={<Applications />} />
+        <Route path="/adminhome/applications/:category" element={<Applications />} />
         <Route path="/recommendation" element={<Recommendation />} />
         <Route path="/adminhome/myusers" element={<MyUsers/>}/>
       </Routes>
