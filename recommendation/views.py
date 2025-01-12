@@ -185,7 +185,7 @@ class EligibilityCheckView(APIView):
             # Fetch user data by email
             user = User.objects.get(email=user_email)
             print(f"User data: {user}")
-
+            print(user.income)
             # Fetch scheme data by scheme name
             
             try:
@@ -202,7 +202,7 @@ class EligibilityCheckView(APIView):
                     try:
                         user_rating = UserRating.objects.get(custom_id=custom_id)
                         rating_value = user_rating.rating
-                    except user_rating.DoesNotExist:
+                    except UserRating.DoesNotExist:
                         rating_value = 0
                     if is_eligible:
                         eligible_schemes.append({
@@ -210,6 +210,7 @@ class EligibilityCheckView(APIView):
                             'documents': self.serialize_list(scheme.documents),
                             'rating': rating_value,
                         })
+                print(eligible_schemes)
                 self.send_data_to_flask(eligible_schemes, user_email)
                 # Return the eligible schemes
                 flask_response = self.send_data_to_flask(eligible_schemes, user_email)
@@ -244,11 +245,11 @@ class EligibilityCheckView(APIView):
        
 
         # Check age range
-        age_range = scheme.age_range.split("-")  # Assuming "22-47"
-        min_age, max_age = int(age_range[0]), int(age_range[1])
-        if not (min_age <= user.age <= max_age):
-            print("Ineligible due to age not in range")
-            return False
+        # age_range = scheme.age_range.split("-")  # Assuming "22-47"
+        # min_age, max_age = int(age_range[0]), int(age_range[1])
+        # if not (min_age <= user.age <= max_age):
+        #     print("Ineligible due to age not in range")
+        #     return False
 
         # Check marital status
         
@@ -276,6 +277,7 @@ class EligibilityCheckView(APIView):
         # Check income
         if "<" in scheme.income:
             max_income = int(scheme.income.replace("<", "").replace(",", "").strip())
+            print(max_income)
             if user.income >= max_income:
                 print("Ineligible due to income exceeding maximum limit")
                 return False
@@ -302,6 +304,7 @@ class EligibilityCheckView(APIView):
             return False
 
         # If all checks pass, user is eligible
+        
         return True
      except Exception as e:
         print(f"Error in eligibility check: {e}")

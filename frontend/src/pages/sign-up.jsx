@@ -324,7 +324,7 @@ const UserSignUp = () => {
       if (response.ok) {
         setSuccessMessage(true);
         setTimeout(() => {
-          navigate("/thank-you"); // Redirect after success
+          navigate("/login"); // Redirect after success
         }, 3000);
       } else {
         setErrorMessage(data.errors || "Sign-up failed. Please try again.");
